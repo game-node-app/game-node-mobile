@@ -39,7 +39,6 @@ const GameFigureWithQuickAdd = ({ game, children, linkProps, ...others }: GameFi
     const bind = useLongPress(
         (evt) => {
             modalUtils.open();
-            console.log("Long pressed!");
         },
         {
             onStart: onStart,
