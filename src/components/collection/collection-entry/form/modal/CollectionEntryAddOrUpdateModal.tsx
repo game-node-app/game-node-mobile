@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Container, Modal } from "@mantine/core";
-import LoginPromptCentered from "@/components/general/LoginPromptCentered";
+import { Container } from "@mantine/core";
 import CollectionEntryAddOrUpdateForm from "@/components/collection/collection-entry/form/CollectionEntryAddOrUpdateForm";
 import { BaseModalProps } from "@/util/types/modal-props";
-import { SessionAuth, useSessionContext } from "supertokens-auth-react/recipe/session";
 import { useUserLibrary } from "@/components/library/hooks/useUserLibrary";
-import { useRouter } from "next/router";
-import useOnMobile from "@/components/general/hooks/useOnMobile";
 import useUserId from "@/components/auth/hooks/useUserId";
 import { IonButton, IonButtons, IonContent, IonHeader, IonModal, IonTitle, IonToolbar } from "@ionic/react";
 
@@ -17,9 +13,18 @@ interface IGameAddModalProps extends BaseModalProps {
 const CollectionEntryAddOrUpdateModal = ({ opened, onClose, id }: IGameAddModalProps) => {
     const userId = useUserId();
     useUserLibrary(userId);
+    const [isExpanded, setIsExpanded] = useState(false);
 
     return (
-        <IonModal isOpen={opened} onDidDismiss={onClose}>
+        <IonModal
+            onIonBreakpointDidChange={(evt) => {
+                setIsExpanded(evt.detail.breakpoint > 0.75);
+            }}
+            isOpen={opened}
+            onDidDismiss={onClose}
+            initialBreakpoint={0.75}
+            breakpoints={[0, 0.25, 0.5, 0.75, 1]}
+        >
             <IonHeader>
                 <IonToolbar>
                     <IonTitle>Add to your library</IonTitle>
@@ -29,8 +34,8 @@ const CollectionEntryAddOrUpdateModal = ({ opened, onClose, id }: IGameAddModalP
                 </IonToolbar>
             </IonHeader>
             <IonContent className={""}>
-                <Container fluid className={"min-h-screen my-4"}>
-                    <CollectionEntryAddOrUpdateForm gameId={id} onClose={onClose} />
+                <Container fluid className={"my-4"}>
+                    <CollectionEntryAddOrUpdateForm gameId={id} onClose={onClose} showGameInfo={isExpanded} />
                 </Container>
             </IonContent>
         </IonModal>

@@ -47,12 +47,7 @@ const buildErrorView = () => {
     );
 };
 
-const GameInfoCarousel = ({
-    games,
-    isLoading,
-    isError,
-}: IGameInfoCarouselProps) => {
-    const onMobile = useOnMobile();
+const GameInfoCarousel = ({ games, isLoading, isError }: IGameInfoCarouselProps) => {
     if (isError) {
         return buildErrorView();
     }
@@ -63,17 +58,12 @@ const GameInfoCarousel = ({
 
     return (
         <Carousel
-            slideSize={{
-                base: "65%",
-                lg: "15%",
-            }}
+            slideSize={"65%"}
             height={"fit-content"}
             align="start"
-            slideGap={{
-                base: "xs",
-                lg: "md",
-            }}
-            controlsOffset="xs"
+            slideGap={"xs"}
+            withControls={false}
+            withIndicators={false}
             dragFree
         >
             {isLoading ? buildSkeletons() : buildGamesFigures(games)}

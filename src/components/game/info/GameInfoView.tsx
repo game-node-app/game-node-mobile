@@ -32,7 +32,12 @@ const GameInfoView = ({ id }: IGameInfoViewProps) => {
                     <Grid.Col span={{ xs: 12, lg: 3 }}>
                         <Flex wrap={"wrap"} justify={"center"} align={"start"} w={"inherit"} h={"inherit"}>
                             <Box className="w-full lg:w-96">
-                                <GameFigureImage game={game} />
+                                <GameFigureImage
+                                    game={game}
+                                    linkProps={{
+                                        onClick: (evt) => evt.preventDefault(),
+                                    }}
+                                />
                             </Box>
 
                             <Break />

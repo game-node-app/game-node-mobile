@@ -3,17 +3,7 @@ import GameInfoReviewEditor from "@/components/game/info/review/editor/GameInfoR
 import { DetailsBox } from "@/components/general/DetailsBox";
 import { z } from "zod";
 import { CreateReviewDto, ReviewsService } from "@/wrapper/server";
-import {
-    ActionIcon,
-    Box,
-    Button,
-    Flex,
-    Group,
-    Rating,
-    Stack,
-    Text,
-    Tooltip,
-} from "@mantine/core";
+import { ActionIcon, Box, Button, Flex, Group, Rating, Stack, Text, Tooltip } from "@mantine/core";
 import { Form, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Break from "@/components/general/Break";
@@ -26,6 +16,7 @@ import ReviewListItem from "@/components/review/view/ReviewListItem";
 import { useOwnCollectionEntryForGameId } from "@/components/collection/collection-entry/hooks/useOwnCollectionEntryForGameId";
 import { IconX } from "@tabler/icons-react";
 import GameRating from "@/components/general/input/GameRating";
+import { BaseModalChildrenProps } from "@/util/types/modal-props";
 
 const ReviewFormSchema = z.object({
     rating: z.number().min(0).max(5).default(5),
@@ -34,24 +25,18 @@ const ReviewFormSchema = z.object({
 
 export type TReviewFormValues = z.infer<typeof ReviewFormSchema>;
 
-interface IGameInfoReviewEditorViewProps {
+interface IGameInfoReviewEditorViewProps extends BaseModalChildrenProps {
     gameId: number;
 }
 
-const GameInfoReviewEditorView = ({
-    gameId,
-}: IGameInfoReviewEditorViewProps) => {
-    const [isEditMode, setIsEditMode] = useState<boolean>(true);
-    const hasSetEditMode = useRef<boolean>(false);
-
-    const { watch, handleSubmit, formState, setValue } =
-        useForm<TReviewFormValues>({
-            mode: "onSubmit",
-            resolver: zodResolver(ReviewFormSchema),
-            defaultValues: {
-                rating: 5,
-            },
-        });
+const GameInfoReviewEditorView = ({ gameId, onClose }: IGameInfoReviewEditorViewProps) => {
+    const { watch, handleSubmit, formState, setValue } = useForm<TReviewFormValues>({
+        mode: "onSubmit",
+        resolver: zodResolver(ReviewFormSchema),
+        defaultValues: {
+            rating: 5,
+        },
+    });
     const queryClient = useQueryClient();
 
     const userId = useUserId();
@@ -69,18 +54,15 @@ const GameInfoReviewEditorView = ({
             reviewQuery.invalidate();
             notifications.show({
                 title: "Success",
-                message:
-                    reviewQuery.data != undefined
-                        ? "Review successfully updated!"
-                        : "Review created!",
+                message: reviewQuery.data != undefined ? "Review successfully updated!" : "Review created!",
                 color: "green",
             });
+            if (onClose) onClose();
         },
         onError: () => {
             notifications.show({
                 title: "Failed",
-                message:
-                    "We couldn't save your review. If this persists, please contact support.",
+                message: "We couldn't save your review. If this persists, please contact support.",
                 color: "red",
             });
         },
@@ -92,49 +74,26 @@ const GameInfoReviewEditorView = ({
     const rating = watch("rating");
     const error = formState.errors.content || formState.errors.rating;
 
-    /**
-     * Effect to synchronize isEditMode with reviewQuery.data
-     */
-    useEffect(() => {
-        if (!hasSetEditMode.current && reviewQuery.data != undefined) {
-            setIsEditMode(false);
-            hasSetEditMode.current = true;
-        }
-    }, [isEditMode, reviewQuery.data]);
-
     const onSubmit = (data: TReviewFormValues) => {
         reviewMutation.mutate(data);
         reviewQuery.invalidate();
-        setIsEditMode(false);
     };
 
     if (collectionEntryQuery.data == undefined) {
         return null;
     }
 
-    const renderInnerContent = () => {
-        if (!isEditMode && reviewQuery.data != undefined) {
-            return (
-                <ReviewListItem
-                    review={reviewQuery.data}
-                    onEditStart={() => setIsEditMode(true)}
-                />
-            );
-        }
-
-        return (
+    return (
+        <Stack className={"w-full h-full min-h-[600px]"}>
             <form className={"w-full h-full"} onSubmit={handleSubmit(onSubmit)}>
-                <GameInfoReviewEditor
-                    gameId={gameId}
-                    onBlur={(v) => setValue("content", v)}
-                />
+                <Text className={"text-sm text-dimmed mb-2"}>
+                    Your reviews are public to all users. Please exercise common sense and respect our community
+                    guidelines while posting.
+                </Text>
+                <GameInfoReviewEditor gameId={gameId} onBlur={(v) => setValue("content", v)} />
                 <Break />
                 <Group mt={"md"} justify={"space-between"}>
-                    <Text
-                        fz={"sm"}
-                        ml={{ base: 0, lg: "0.5rem" }}
-                        className={"text-red-500"}
-                    >
+                    <Text fz={"sm"} ml={{ base: 0, lg: "0.5rem" }} className={"text-red-500"}>
                         {error?.message}
                     </Text>
                     <Group>
@@ -144,43 +103,13 @@ const GameInfoReviewEditorView = ({
                             value={rating}
                             onChange={(v) => setValue("rating", v)}
                         />
-                        {reviewQuery.data != undefined && (
-                            <Tooltip label={"Cancel edit"}>
-                                <ActionIcon
-                                    size={"lg"}
-                                    variant={"default"}
-                                    c={"red"}
-                                    onClick={() => setIsEditMode(false)}
-                                >
-                                    <IconX />
-                                </ActionIcon>
-                            </Tooltip>
-                        )}
-                        <Button
-                            type={"submit"}
-                            loading={reviewMutation.isPending}
-                        >
+                        <Button type={"submit"} loading={reviewMutation.isPending}>
                             Submit
                         </Button>
                     </Group>
                 </Group>
             </form>
-        );
-    };
-
-    return (
-        <DetailsBox
-            title={"Your review"}
-            description={
-                isEditMode
-                    ? "Write your opinions about this game. Reviews are public to all users."
-                    : undefined
-            }
-        >
-            <Flex wrap={"wrap"} w={"100%"} h={"100%"} justify={"start"}>
-                {renderInnerContent()}
-            </Flex>
-        </DetailsBox>
+        </Stack>
     );
 };
 

@@ -9,6 +9,9 @@ import {
     IconPencil,
     IconPencilPlus,
     IconPlus,
+    IconStarFilled,
+    IconStars,
+    IconStarsFilled,
     IconTrashFilled,
 } from "@tabler/icons-react";
 import { useOwnCollectionEntryForGameId } from "@/components/collection/collection-entry/hooks/useOwnCollectionEntryForGameId";
@@ -17,6 +20,7 @@ import useUserId from "@/components/auth/hooks/useUserId";
 import CollectionEntryAddOrUpdateModal from "@/components/collection/collection-entry/form/modal/CollectionEntryAddOrUpdateModal";
 import { useDisclosure } from "@mantine/hooks";
 import CollectionEntryRemoveModal from "@/components/collection/collection-entry/form/modal/CollectionEntryRemoveModal";
+import GameInfoReviewCreateUpdateModal from "@/components/game/info/review/editor/GameInfoReviewCreateUpdateModal";
 
 interface Props {
     gameId: number;
@@ -37,11 +41,17 @@ const GameInfoViewFab = ({ gameId }: Props) => {
 
     const [addModalOpened, addModalUtils] = useDisclosure();
     const [removeModalOpened, removeModalUtils] = useDisclosure();
+    const [reviewModalOpened, reviewModalUtils] = useDisclosure();
 
     return (
         <IonFab slot="fixed" horizontal="end" vertical="bottom" className={"me-2"}>
             <CollectionEntryAddOrUpdateModal id={gameId} onClose={addModalUtils.close} opened={addModalOpened} />
             <CollectionEntryRemoveModal opened={removeModalOpened} onClose={removeModalUtils.close} gameId={gameId} />
+            <GameInfoReviewCreateUpdateModal
+                gameId={gameId}
+                opened={reviewModalOpened}
+                onClose={reviewModalUtils.close}
+            />
             <IonFabButton
                 onClick={() => {
                     if (!gameInLibrary) {
@@ -58,6 +68,9 @@ const GameInfoViewFab = ({ gameId }: Props) => {
                     </IonFabButton>
                     <IonFabButton color={"warning"} onClick={addModalUtils.open}>
                         <IconEdit />
+                    </IonFabButton>
+                    <IonFabButton color={"secondary"} onClick={reviewModalUtils.open}>
+                        {hasReview ? <IconStarsFilled /> : <IconStars />}
                     </IonFabButton>
 
                     <IonFabButton color={"tertiary"}>

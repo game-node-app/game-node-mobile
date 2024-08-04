@@ -7,7 +7,6 @@ import { z } from "zod";
 import { notifications } from "@mantine/notifications";
 import { Collection, CollectionsEntriesService, GamePlatform, GameRepositoryService } from "@/wrapper/server";
 import { useGame } from "@/components/game/hooks/useGame";
-import { ImageSize } from "@/components/game/util/getSizedImageUrl";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { BaseModalChildrenProps } from "@/util/types/modal-props";
 import { useOwnCollectionEntryForGameId } from "@/components/collection/collection-entry/hooks/useOwnCollectionEntryForGameId";
@@ -15,10 +14,9 @@ import { SessionAuth, useSessionContext } from "supertokens-auth-react/recipe/se
 import { useUserLibrary } from "@/components/library/hooks/useUserLibrary";
 import useUserId from "@/components/auth/hooks/useUserId";
 import { useGamesResource } from "@/components/game/hooks/useGamesResource";
-import { DEFAULT_GAME_INFO_VIEW_DTO } from "@/components/game/info/GameInfoView";
 import CenteredLoading from "@/components/general/CenteredLoading";
 import CenteredErrorMessage from "@/components/general/CenteredErrorMessage";
-import { DateInput, DatePickerInput } from "@mantine/dates";
+import { DatePickerInput } from "@mantine/dates";
 
 const GameAddOrUpdateSchema = z
     .object({
@@ -53,6 +51,7 @@ type TGameAddOrUpdateValues = z.infer<typeof GameAddOrUpdateSchema>;
 
 interface IGameAddFormProps extends BaseModalChildrenProps {
     gameId: number;
+    showGameInfo?: boolean;
 }
 
 function buildCollectionOptions(collections: Collection[] | undefined): ComboboxItem[] {
@@ -81,7 +80,7 @@ function buildPlatformsOptions(platforms: GamePlatform[] | undefined): ComboboxI
         });
 }
 
-const CollectionEntryAddOrUpdateForm = ({ gameId, onClose }: IGameAddFormProps) => {
+const CollectionEntryAddOrUpdateForm = ({ gameId, onClose, showGameInfo = true }: IGameAddFormProps) => {
     const {
         watch,
         register,
@@ -160,8 +159,8 @@ const CollectionEntryAddOrUpdateForm = ({ gameId, onClose }: IGameAddFormProps) 
         onSuccess: () => {
             notifications.show({
                 title: "Success",
-                message: isUpdateAction ? "Game updated on your library!" : "Game added to your library!",
                 color: "green",
+                message: isUpdateAction ? "Game updated on your library!" : "Game added to your library!",
             });
 
             if (onClose) {
@@ -243,11 +242,20 @@ const CollectionEntryAddOrUpdateForm = ({ gameId, onClose }: IGameAddFormProps) 
                 onSubmit={handleSubmit(onSubmit)}
                 className="w-full h-full flex flex-col items-center justify-start gap-4"
             >
-                <Box className="min-w-[100%] max-w-fit max-h-fit">
-                    <GameFigureImage game={game!} />
-                </Box>
-                <Title size={"h5"}>{game?.name}</Title>
-                <Space />
+                {showGameInfo && (
+                    <>
+                        <Box className="min-w-[100%] max-w-fit max-h-fit">
+                            <GameFigureImage
+                                game={game!}
+                                linkProps={{
+                                    onClick: (evt) => evt.preventDefault(),
+                                }}
+                            />
+                        </Box>
+                        <Title size={"h5"}>{game?.name}</Title>
+                        <Space />
+                    </>
+                )}
                 <MultiSelect
                     {...register("collectionIds")}
                     value={collectionsIdsValue || []}

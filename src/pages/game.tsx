@@ -6,6 +6,7 @@ import { useGame } from "@/components/game/hooks/useGame";
 import CenteredLoading from "@/components/general/CenteredLoading";
 import GameExtraInfoView from "@/components/game/info/GameExtraInfoView";
 import GameInfoViewFab from "@/components/game/info/fab/GameInfoViewFab";
+import GameInfoReviewScreen from "@/components/game/info/review/GameInfoReviewScreen";
 
 interface Props {
     gameId: number;
@@ -26,13 +27,13 @@ const GamePage = ({ gameId }: Props) => {
             </IonHeader>
             <IonContent>
                 <GameInfoViewFab gameId={gameId} />
-
                 <Container fluid className={"min-h-screen my-4"}>
                     {gameQuery.isLoading ? (
                         <CenteredLoading />
                     ) : (
                         <Stack className={"w-full"}>
                             <GameInfoView id={gameId} />
+                            <GameInfoReviewScreen gameId={gameId} />
                             <GameExtraInfoView id={gameId} />
                         </Stack>
                     )}

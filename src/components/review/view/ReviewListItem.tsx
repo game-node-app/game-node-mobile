@@ -2,11 +2,7 @@ import React, { useMemo, useState } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import { DEFAULT_REVIEW_EDITOR_EXTENSIONS } from "@/components/game/info/review/editor/GameInfoReviewEditor";
 import { Box, Flex, Group, Stack, Transition } from "@mantine/core";
-import {
-    FindAllCommentsDto,
-    FindOneStatisticsDto,
-    Review,
-} from "@/wrapper/server";
+import { FindAllCommentsDto, FindOneStatisticsDto, Review } from "@/wrapper/server";
 import useOnMobile from "@/components/general/hooks/useOnMobile";
 import useUserId from "@/components/auth/hooks/useUserId";
 import ReviewListItemDropdownButton from "@/components/review/view/ReviewListItemDropdownButton";
@@ -25,11 +21,7 @@ interface IReviewListViewProps {
     onEditStart?: () => void;
 }
 
-const ReviewListItem = ({
-    review,
-    onEditStart,
-    withGameInfo,
-}: IReviewListViewProps) => {
+const ReviewListItem = ({ review, onEditStart, withGameInfo }: IReviewListViewProps) => {
     const onMobile = useOnMobile();
     const [isReadMore, setIsReadMore] = useState<boolean>(false);
     const [isCommentsOpen, setIsCommentsOpen] = useState(false);
@@ -62,12 +54,7 @@ const ReviewListItem = ({
 
     return (
         <Stack w={"100%"} align={"center"}>
-            <Group
-                w={"100%"}
-                justify={"space-evenly"}
-                wrap={onMobile ? "wrap" : "nowrap"}
-                align={"start"}
-            >
+            <Group w={"100%"} justify={"space-evenly"} wrap={onMobile ? "wrap" : "nowrap"} align={"start"}>
                 <Flex
                     direction={{
                         base: "row",
@@ -97,10 +84,7 @@ const ReviewListItem = ({
                         withHorizontalBreak={!onMobile}
                     />
 
-                    <GameRating
-                        value={review.rating}
-                        className={"mt-0 lg:mt-4"}
-                    />
+                    <GameRating value={review.rating} className={"mt-0 lg:mt-4"} />
                 </Flex>
                 <Stack className={"w-full"}>
                     <EditorContent
@@ -112,47 +96,22 @@ const ReviewListItem = ({
                     <Group justify={withGameInfo ? "space-between" : "end"}>
                         {withGameInfo && gameQuery.data != undefined && (
                             <Box className={"w-6/12 lg:w-4/12"}>
-                                <TextLink
-                                    href={`/game/${gameQuery.data?.id}`}
-                                    c={"dimmed"}
-                                >
+                                <TextLink href={`/game/${gameQuery.data?.id}`} c={"dimmed"}>
                                     {gameQuery.data?.name}
                                 </TextLink>
                             </Box>
                         )}
                         <Group>
-                            <ItemCommentsButton
-                                onClick={() => {
-                                    setIsCommentsOpen(!isCommentsOpen);
-                                }}
-                                sourceId={review.id}
-                                sourceType={
-                                    FindAllCommentsDto.sourceType.REVIEW
-                                }
-                            />
                             <ItemLikesButton
                                 targetUserId={review.profileUserId}
                                 sourceId={review.id}
-                                sourceType={
-                                    FindOneStatisticsDto.sourceType.REVIEW
-                                }
+                                sourceType={FindOneStatisticsDto.sourceType.REVIEW}
                             />
 
-                            <ReviewListItemDropdownButton
-                                review={review}
-                                onEditStart={onEditStart}
-                            />
+                            <ReviewListItemDropdownButton review={review} onEditStart={onEditStart} />
                         </Group>
                     </Group>
                 </Stack>
-            </Group>
-            <Group className={"w-full"} justify={"end"} wrap={"nowrap"}>
-                <Group className={"w-[95%] lg:w-[98%]"}>
-                    <ReviewListItemComments
-                        enabled={isCommentsOpen}
-                        review={review}
-                    />
-                </Group>
             </Group>
         </Stack>
     );

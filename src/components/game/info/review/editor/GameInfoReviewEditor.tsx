@@ -5,18 +5,21 @@ import { StarterKit } from "@tiptap/starter-kit";
 import { RichTextEditor, RichTextEditorProps } from "@mantine/tiptap";
 import useReviewForUserId from "@/components/review/hooks/useReviewForUserIdAndGameId";
 import useUserId from "@/components/auth/hooks/useUserId";
+import { Placeholder } from "@tiptap/extension-placeholder";
 
 interface IGameInfoReviewEditorProps extends BoxComponentProps {
     gameId: number;
     onBlur: (html: string) => void;
 }
 
-export const DEFAULT_REVIEW_EDITOR_EXTENSIONS = [StarterKit];
+export const DEFAULT_REVIEW_EDITOR_EXTENSIONS = [
+    StarterKit,
+    Placeholder.configure({
+        placeholder: "I had a great time playing this, but...",
+    }),
+];
 
-const GameInfoReviewEditor = ({
-    gameId,
-    onBlur,
-}: IGameInfoReviewEditorProps) => {
+const GameInfoReviewEditor = ({ gameId, onBlur }: IGameInfoReviewEditorProps) => {
     const userId = useUserId();
     const reviewQuery = useReviewForUserId(userId, gameId);
     const previousContent = useMemo(() => {
@@ -28,7 +31,7 @@ const GameInfoReviewEditor = ({
             extensions: DEFAULT_REVIEW_EDITOR_EXTENSIONS,
             content: previousContent,
             onBlur: (e) => {
-                let html = e.editor.getHTML();
+                const html = e.editor.getHTML();
                 onBlur(html ?? "");
             },
         },
@@ -38,14 +41,9 @@ const GameInfoReviewEditor = ({
     if (!editor) return null;
 
     return (
-        <Box p={0} mx={0} w={"100%"}>
-            <RichTextEditor
-                w={"100%"}
-                mx={0}
-                mih={{ base: "35vh", lg: "25vh" }}
-                editor={editor}
-            >
-                <RichTextEditor.Toolbar sticky stickyOffset={60} w={"100%"}>
+        <Box p={0} mx={0} w={"100%"} h={"100%"}>
+            <RichTextEditor w={"100%"} h={"100%"} mx={0} editor={editor}>
+                <RichTextEditor.Toolbar sticky w={"100%"}>
                     <RichTextEditor.ControlsGroup>
                         <RichTextEditor.Bold />
                         <RichTextEditor.Italic />
@@ -66,7 +64,7 @@ const GameInfoReviewEditor = ({
                         <RichTextEditor.OrderedList />
                     </RichTextEditor.ControlsGroup>
                 </RichTextEditor.Toolbar>
-                <RichTextEditor.Content w={"100%"} />
+                <RichTextEditor.Content w={"100%"} h={"100%"} mih={"35vh"} />
             </RichTextEditor>
         </Box>
     );

@@ -4,6 +4,7 @@ import { LongPressEventType, useLongPress } from "use-long-press";
 import { Box, Progress } from "@mantine/core";
 // import CollectionEntryAddOrUpdateModal from "@/components/collection/collection-entry/form/modal/CollectionEntryAddOrUpdateModal";
 import { useDisclosure } from "@mantine/hooks";
+import CollectionEntryAddOrUpdateModal from "@/components/collection/collection-entry/form/modal/CollectionEntryAddOrUpdateModal";
 
 interface GameFigureWIthQuickAddProps extends PropsWithChildren<IGameFigureProps> {}
 
@@ -53,13 +54,13 @@ const GameFigureWithQuickAdd = ({ game, children, linkProps, ...others }: GameFi
 
     return (
         <Box className={"w-full h-full"}>
-            {/*<CollectionEntryAddOrUpdateModal*/}
-            {/*    id={game!.id!}*/}
-            {/*    opened={modalOpened}*/}
-            {/*    onClose={() => {*/}
-            {/*        modalUtils.close();*/}
-            {/*    }}*/}
-            {/*/>*/}
+            <CollectionEntryAddOrUpdateModal
+                id={game!.id!}
+                opened={modalOpened}
+                onClose={() => {
+                    modalUtils.close();
+                }}
+            />
             <GameFigureImage
                 game={game}
                 {...others}

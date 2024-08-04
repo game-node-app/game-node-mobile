@@ -14,7 +14,7 @@ const SearchResultsPage = () => {
 
     const [layout, setLayout] = useState<GameViewLayoutOption>("grid");
 
-    const { data, isFetching, isLoading, hasNextPage, fetchNextPage } = useInfiniteSearchGames(
+    const { data, isFetching, isLoading, hasNextPage, fetchNextPage, isError } = useInfiniteSearchGames(
         {
             query: query,
             limit: 12,
@@ -41,6 +41,7 @@ const SearchResultsPage = () => {
             <IonContent fullscreen>
                 <Container fluid className={"min-h-screen my-4"}>
                     <Stack className={"w-full h-full"}>
+                        {isError && <Text c={"yellow"}>No results found. Please go back and try again.</Text>}
                         <GameView layout={layout}>
                             <Group className={"w-full justify-end"}>
                                 <GameView.LayoutSwitcher setLayout={setLayout} />

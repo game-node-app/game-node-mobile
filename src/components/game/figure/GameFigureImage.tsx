@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useEffect, useState } from "react";
+import React, { PropsWithChildren, useEffect, useMemo, useState } from "react";
 import { AspectRatio, Image, ImageProps, Skeleton, SkeletonProps } from "@mantine/core";
 import { getSizedImageUrl, ImageSize } from "@/components/game/util/getSizedImageUrl";
 import { TGameOrSearchGame } from "@/components/game/util/types";
@@ -22,13 +22,17 @@ export interface IGameFigureProps extends PropsWithChildren {
  * @constructor
  */
 const GameFigureImage = ({ game, imageProps, linkProps, onClick, children }: IGameFigureProps) => {
-    const { routeInfo } = useIonRouter();
+    const { routeInfo, canGoBack } = useIonRouter();
     const coverUrl = getCoverUrl(game);
     const sizedCoverUrl = getSizedImageUrl(coverUrl, ImageSize.COVER_BIG);
 
-    const defaultHref = routeInfo.tab ? `/${routeInfo.tab}/game/${game?.id}` : `${routeInfo.pathname}/game/${game?.id}`;
+    const href = useMemo(() => {
+        const paths = routeInfo.pathname.split("/");
+        const tab = paths[1];
+        return `/${tab}/game/${game?.id}`;
+    }, [game?.id, routeInfo.pathname]);
     return (
-        <Link to={defaultHref} className="w-full h-auto" onClick={onClick} {...linkProps}>
+        <Link to={href} className="w-full h-auto" onClick={onClick} {...linkProps}>
             <AspectRatio ratio={264 / 354} pos="relative" h={"100%"} w={"auto"}>
                 <Image
                     radius={"sm"}

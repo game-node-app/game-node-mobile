@@ -4,7 +4,6 @@ import { Redirect, Route } from "react-router-dom";
 import * as reactRouterDom from "react-router-dom";
 import {
     IonApp,
-    IonIcon,
     IonLabel,
     IonRouterOutlet,
     IonTabBar,
@@ -13,7 +12,6 @@ import {
     setupIonicReact,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import { ellipse, triangle } from "ionicons/icons";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MantineProvider } from "@mantine/core";
 import { theme } from "./util/theme";
@@ -92,10 +90,10 @@ const App: React.FC = () => {
     return (
         <IonApp>
             <MantineProvider theme={theme} forceColorScheme={"dark"}>
-                <QueryClientProvider client={queryClient}>
+                <QueryClientProvider  client={queryClient}>
                     <SuperTokensProvider>
                         <IonReactRouter>
-                            <IonTabs>
+                            <IonTabs >
                                 <IonRouterOutlet>
                                     {/*This renders the login UI on the /auth route*/}
                                     {getSuperTokensRoutesForReactRouterDom(reactRouterDom, [
