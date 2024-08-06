@@ -3,22 +3,24 @@ import { Box, Group, Overlay, Stack, Text, Title } from "@mantine/core";
 import { Activity } from "@/wrapper/server";
 import { useReview } from "@/components/review/hooks/useReview";
 import { useGame } from "@/components/game/hooks/useGame";
-import {
-    getSizedImageUrl,
-    ImageSize,
-} from "@/components/game/util/getSizedImageUrl";
+import { getSizedImageUrl, ImageSize } from "@/components/game/util/getSizedImageUrl";
 import useOnMobile from "@/components/general/hooks/useOnMobile";
 import ActivityItemLikes from "@/components/activity/input/ActivityItemLikes";
 import GameRating from "@/components/general/input/GameRating";
-import Link from "next/link";
 import { UserAvatarGroup } from "@/components/general/avatar/UserAvatarGroup";
 import ActivityCreateDate from "@/components/activity/item/ActivityCreateDate";
+import { Link } from "react-router-dom";
+import { useIonRouter } from "@ionic/react";
+import { getCommonRouteHref } from "@/util/getCommonRouteHref";
 
 interface Props {
     activity: Activity;
 }
 
 const ReviewActivityItem = ({ activity }: Props) => {
+    const {
+        routeInfo: { pathname },
+    } = useIonRouter();
     const onMobile = useOnMobile();
     const reviewQuery = useReview(activity.reviewId!);
     const gameId = reviewQuery.data?.gameId;
@@ -42,11 +44,7 @@ const ReviewActivityItem = ({ activity }: Props) => {
             className={"relative w-full mih-[160px] rounded-md"}
         >
             <Overlay backgroundOpacity={0.8} className={"z-0"}></Overlay>
-            <Group
-                className={
-                    "w-full h-full relative z-20 items-center flex-nowrap"
-                }
-            >
+            <Group className={"w-full h-full relative z-20 items-center flex-nowrap"}>
                 <Box className={"w-3/12 lg:w-2/12"}>
                     <UserAvatarGroup
                         userId={activity.profileUserId}
@@ -65,11 +63,12 @@ const ReviewActivityItem = ({ activity }: Props) => {
                 <Box className={"w-3/12"}>
                     <Stack gap={5}>
                         <Link
-                            href={`/game/${gameQuery.data?.id}?reviewId=${activity.reviewId}`}
+                            to={getCommonRouteHref(
+                                pathname,
+                                `/game/${gameQuery.data?.id}?reviewId=${activity.reviewId}`,
+                            )}
                         >
-                            <Title className={"text-sm lg:text-md"}>
-                                {gameQuery.data?.name}
-                            </Title>
+                            <Title className={"text-sm lg:text-md"}>{gameQuery.data?.name}</Title>
                         </Link>
                         <Text
                             c={"dimmed"}
@@ -83,19 +82,10 @@ const ReviewActivityItem = ({ activity }: Props) => {
                     </Stack>
                 </Box>
                 <Box className={"w-6/12 lg:w-3/12 ms-auto h-full"}>
-                    <Stack
-                        className={
-                            "w-full h-full items-end justify-between py-4 pe-2 lg:pe-3"
-                        }
-                    >
-                        <ActivityCreateDate
-                            createdAtDate={activity.createdAt}
-                        />
+                    <Stack className={"w-full h-full items-end justify-between py-4 pe-2 lg:pe-3"}>
+                        <ActivityCreateDate createdAtDate={activity.createdAt} />
 
-                        <GameRating
-                            value={reviewQuery.data?.rating}
-                            size={"md"}
-                        />
+                        <GameRating value={reviewQuery.data?.rating} size={"md"} />
 
                         <Group>
                             <ActivityItemLikes activity={activity} />

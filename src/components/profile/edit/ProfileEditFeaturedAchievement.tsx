@@ -10,8 +10,8 @@ import { shuffleArray } from "@/util/shuffleArray";
 import { useDisclosure } from "@mantine/hooks";
 import { AchievementDto, AchievementsService } from "@/wrapper/server";
 import { notifications } from "@mantine/notifications";
-import Link from "next/link";
 import CenteredLoading from "@/components/general/CenteredLoading";
+import { Link } from "react-router-dom";
 
 const ProfileEditFeaturedAchievement = () => {
     const [opened, modalUtils] = useDisclosure(false);
@@ -36,12 +36,9 @@ const ProfileEditFeaturedAchievement = () => {
 
     const featuredAchievementMutation = useMutation({
         mutationFn: async (achievementId: string) => {
-            return AchievementsService.achievementsControllerUpdateFeaturedObtainedAchievement(
-                achievementId,
-                {
-                    isFeatured: true,
-                },
-            );
+            return AchievementsService.achievementsControllerUpdateFeaturedObtainedAchievement(achievementId, {
+                isFeatured: true,
+            });
         },
         onSuccess: () => {
             notifications.show({
@@ -50,9 +47,7 @@ const ProfileEditFeaturedAchievement = () => {
         },
         onError: (err) => {
             notifications.show({
-                message:
-                    "Error while trying to update featured achievement: " +
-                    err.message,
+                message: "Error while trying to update featured achievement: " + err.message,
             });
         },
         onSettled: () => {
@@ -69,11 +64,7 @@ const ProfileEditFeaturedAchievement = () => {
         category: 0,
     };
 
-    if (
-        !userId ||
-        achievements.data == undefined ||
-        allObtainedAchievements.data == undefined
-    ) {
+    if (!userId || achievements.data == undefined || allObtainedAchievements.data == undefined) {
         return (
             <Group>
                 <Text>No obtained achievement found.</Text>
@@ -83,33 +74,21 @@ const ProfileEditFeaturedAchievement = () => {
 
     return (
         <Stack className={"w-full"}>
-            <Modal
-                opened={opened}
-                onClose={modalUtils.close}
-                title={"Select a new featured achievement"}
-            >
+            <Modal opened={opened} onClose={modalUtils.close} title={"Select a new featured achievement"}>
                 <Modal.Body>
                     {allObtainedAchievements.data ? (
                         <Stack>
                             <Select
                                 defaultValue={`${featuredAchievement?.id}`}
-                                data={allObtainedAchievements.data.map(
-                                    (obtainedAchievement) => {
-                                        const achievementEntity =
-                                            achievements.data.data.find(
-                                                (achievement) => {
-                                                    return (
-                                                        achievement.id ===
-                                                        obtainedAchievement.achievementId
-                                                    );
-                                                },
-                                            );
-                                        return {
-                                            label: achievementEntity!.name,
-                                            value: achievementEntity!.id,
-                                        };
-                                    },
-                                )}
+                                data={allObtainedAchievements.data.map((obtainedAchievement) => {
+                                    const achievementEntity = achievements.data.data.find((achievement) => {
+                                        return achievement.id === obtainedAchievement.achievementId;
+                                    });
+                                    return {
+                                        label: achievementEntity!.name,
+                                        value: achievementEntity!.id,
+                                    };
+                                })}
                                 onChange={(id) => {
                                     if (id) {
                                         featuredAchievementMutation.mutate(id);
@@ -118,26 +97,16 @@ const ProfileEditFeaturedAchievement = () => {
                             />
                         </Stack>
                     ) : (
-                        <Text>
-                            You have not obtained any achievements. Return here
-                            later, adventurer!
-                        </Text>
+                        <Text>You have not obtained any achievements. Return here later, adventurer!</Text>
                     )}
                 </Modal.Body>
             </Modal>
-            <Link href={"#"} onClick={modalUtils.open}>
+            <Link to={"#"} onClick={modalUtils.open}>
                 {featuredAchievementQuery.isLoading && <CenteredLoading />}
-                {featuredAchievementQuery.isSuccess &&
-                featuredAchievementReference ? (
-                    <AchievementItem
-                        targetUserId={userId!}
-                        achievement={featuredAchievementReference}
-                    />
+                {featuredAchievementQuery.isSuccess && featuredAchievementReference ? (
+                    <AchievementItem targetUserId={userId!} achievement={featuredAchievementReference} />
                 ) : (
-                    <AchievementItem
-                        targetUserId={userId}
-                        achievement={fakeSelectAchievement}
-                    />
+                    <AchievementItem targetUserId={userId} achievement={fakeSelectAchievement} />
                 )}
             </Link>
         </Stack>

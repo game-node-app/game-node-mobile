@@ -66,14 +66,14 @@ const GameInfoViewFab = ({ gameId }: Props) => {
                     <IonFabButton color={"danger"} onClick={removeModalUtils.open}>
                         <IconTrashFilled />
                     </IonFabButton>
-                    <IonFabButton color={"warning"} onClick={addModalUtils.open}>
+                    <IonFabButton color={"primary"} onClick={addModalUtils.open}>
                         <IconEdit />
                     </IonFabButton>
-                    <IonFabButton color={"secondary"} onClick={reviewModalUtils.open}>
+                    <IonFabButton color={"primary"} onClick={reviewModalUtils.open}>
                         {hasReview ? <IconStarsFilled /> : <IconStars />}
                     </IonFabButton>
 
-                    <IonFabButton color={"tertiary"}>
+                    <IonFabButton color={"primary"}>
                         {gameInFavorites ? <IconHeartFilled /> : <IconHeartPlus />}
                     </IonFabButton>
                 </IonFabList>

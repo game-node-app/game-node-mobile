@@ -32,36 +32,26 @@ const ProfileViewNavbar = ({ userId, ...groupProps }: Props) => {
             <ProfileViewNavbarLink
                 title={"Games"}
                 itemCount={collectionEntriesQuery.data?.pagination.totalItems}
-                href={`/library/${userId}`}
+                to={`/library/${userId}`}
             />
             <ProfileViewNavbarLink
                 title={"Reviews"}
                 itemCount={reviewsQuery.data?.pagination.totalItems}
-                href={`/profile/${userId}/reviews`}
+                to={`/profile/${userId}/reviews`}
             />
             <ProfileViewNavbarLink
                 title={"Collections"}
                 itemCount={libraryQuery.data?.collections.length}
-                href={`/library/${userId}`}
+                to={`/library/${userId}`}
             />
             <ProfileViewNavbarLink
                 title={"Achievements"}
-                href={`/achievements/${userId}`}
+                to={`/achievements/${userId}`}
                 itemCount={obtainedAchievementsQuery.data?.length}
             />
-            <ProfileNavbarFollowInfo
-                targetUserId={userId}
-                criteria={criteria.FOLLOWERS}
-            />
-            <ProfileNavbarFollowInfo
-                targetUserId={userId}
-                criteria={criteria.FOLLOWING}
-            />
-            <ProfileViewNavbarLink
-                title={"Stats"}
-                showItemCount={false}
-                href={`/profile/${userId}/stats`}
-            />
+            <ProfileNavbarFollowInfo targetUserId={userId} criteria={criteria.FOLLOWERS} />
+            <ProfileNavbarFollowInfo targetUserId={userId} criteria={criteria.FOLLOWING} />
+            <ProfileViewNavbarLink title={"Stats"} showItemCount={false} to={`/profile/${userId}/stats`} />
         </SimpleGrid>
     );
 };

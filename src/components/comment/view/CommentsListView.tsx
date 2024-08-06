@@ -1,31 +1,19 @@
 import React, { useMemo, useState } from "react";
-import {
-    useComments,
-    UseCommentsProps,
-} from "@/components/comment/hooks/useComments";
+import { useComments, UseCommentsProps } from "@/components/comment/hooks/useComments";
 import { Pagination, Paper, Stack } from "@mantine/core";
 import CommentsListItem from "@/components/comment/view/CommentsListItem";
 import CenteredErrorMessage from "@/components/general/CenteredErrorMessage";
 import CenteredLoading from "@/components/general/CenteredLoading";
 import GameViewPagination from "@/components/game/view/GameViewPagination";
 
-interface Props extends Omit<UseCommentsProps, "limit" | "offset"> {
-    onEditStart: (commentId: string) => void;
-    editedCommentId?: string;
-}
+export interface CommentsListViewProps extends Omit<UseCommentsProps, "limit" | "offset"> {}
 
 const COMMENTS_LIST_VIEW_DEFAULT_LIMIT = 10;
 
-const CommentsListView = ({
-    onEditStart,
-    editedCommentId,
-    ...hookProps
-}: Props) => {
+const CommentsListView = ({ ...hookProps }: CommentsListViewProps) => {
     const [offset, setOffset] = useState(0);
     const offsetAsPage =
-        offset >= COMMENTS_LIST_VIEW_DEFAULT_LIMIT
-            ? Math.ceil((offset + 1) / COMMENTS_LIST_VIEW_DEFAULT_LIMIT)
-            : 1;
+        offset >= COMMENTS_LIST_VIEW_DEFAULT_LIMIT ? Math.ceil((offset + 1) / COMMENTS_LIST_VIEW_DEFAULT_LIMIT) : 1;
     const commentsQuery = useComments({
         ...hookProps,
         offset,
@@ -39,29 +27,17 @@ const CommentsListView = ({
                 return aCreateDate.getTime() - bCreateDate.getTime();
             })
             .map((comment) => {
-                return (
-                    <CommentsListItem
-                        key={comment.id}
-                        comment={comment}
-                        onEditStart={onEditStart}
-                        editedCommentId={editedCommentId}
-                    />
-                );
+                return <CommentsListItem key={comment.id} comment={comment} />;
             });
-    }, [commentsQuery.data?.data, editedCommentId, onEditStart]);
+    }, [commentsQuery.data?.data]);
 
-    const hasNextPage =
-        commentsQuery.data != undefined &&
-        commentsQuery.data.pagination.hasNextPage;
+    const hasNextPage = commentsQuery.data != undefined && commentsQuery.data.pagination.hasNextPage;
 
-    const shouldShowPagination =
-        commentsQuery.data != undefined && (offsetAsPage !== 1 || hasNextPage);
+    const shouldShowPagination = commentsQuery.data != undefined && (offsetAsPage !== 1 || hasNextPage);
     return (
         <Stack className={"w-full h-full"}>
             {commentsQuery.isError && (
-                <CenteredErrorMessage
-                    message={"Error while fetching comments. Please try again."}
-                />
+                <CenteredErrorMessage message={"Error while fetching comments. Please try again."} />
             )}
             {commentsQuery.isLoading && <CenteredLoading />}
             {items}
@@ -70,8 +46,7 @@ const CommentsListView = ({
                     page={offsetAsPage}
                     paginationInfo={commentsQuery.data?.pagination}
                     onPaginationChange={(page) => {
-                        const pageAsOffset =
-                            COMMENTS_LIST_VIEW_DEFAULT_LIMIT * (page - 1);
+                        const pageAsOffset = COMMENTS_LIST_VIEW_DEFAULT_LIMIT * (page - 1);
                         setOffset(pageAsOffset);
                     }}
                 />

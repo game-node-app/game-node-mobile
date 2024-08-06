@@ -1,9 +1,5 @@
 import React, { useMemo } from "react";
-import {
-    CommentStatistics,
-    CreateReportRequestDto,
-    FindOneStatisticsDto,
-} from "@/wrapper/server";
+import { CommentStatistics, CreateReportRequestDto, FindOneStatisticsDto } from "@/wrapper/server";
 import { useItemStatistics } from "@/components/statistics/hooks/useItemStatistics";
 import { FindAllCommentsDto } from "@/wrapper/server";
 import { UserComment } from "@/components/comment/types";
@@ -19,10 +15,9 @@ import ReportCreateFormModal from "@/components/report/modal/ReportCreateFormMod
 
 interface Props {
     comment: UserComment;
-    onEditStart: (commentId: string) => void;
 }
 
-const CommentsListItemActions = ({ comment, onEditStart }: Props) => {
+const CommentsListItemActions = ({ comment }: Props) => {
     const ownUserId = useUserId();
     const statisticsType = useMemo(() => {
         if (comment.reviewId != undefined) {
@@ -49,16 +44,11 @@ const CommentsListItemActions = ({ comment, onEditStart }: Props) => {
         targetUserId: comment.profileUserId,
     });
 
-    const isOwnComment =
-        ownUserId != undefined && comment.profileUserId === ownUserId;
+    const isOwnComment = ownUserId != undefined && comment.profileUserId === ownUserId;
 
     return (
         <Group className={"w-full justify-end"}>
-            <CommentsRemoveModal
-                opened={removeModalOpened}
-                onClose={removeModalUtils.close}
-                comment={comment}
-            />
+            <CommentsRemoveModal opened={removeModalOpened} onClose={removeModalUtils.close} comment={comment} />
             <ReportCreateFormModal
                 opened={reportModalOpened}
                 onClose={reportModalUtils.close}
@@ -87,7 +77,7 @@ const CommentsListItemActions = ({ comment, onEditStart }: Props) => {
                     <>
                         <ItemDropdown.EditButton
                             onClick={() => {
-                                onEditStart(comment.id);
+                                // onEditStart(comment.id);
                             }}
                             disabled={!isOwnComment}
                         />

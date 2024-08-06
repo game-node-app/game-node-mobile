@@ -2,7 +2,7 @@ import React from "react";
 import { Activity } from "@/wrapper/server";
 import { useUserFollow } from "@/components/follow/hooks/useUserFollow";
 import useUserProfile from "@/components/profile/hooks/useUserProfile";
-import { Box, Group, Paper, Text, Title } from "@mantine/core";
+import { Box, Group, Paper, Text } from "@mantine/core";
 import useOnMobile from "@/components/general/hooks/useOnMobile";
 import TextLink from "@/components/general/TextLink";
 import { UserAvatarGroup } from "@/components/general/avatar/UserAvatarGroup";
@@ -25,11 +25,7 @@ const UserFollowActivityItem = ({ activity }: Props) => {
 
     return (
         <Paper className={"relative w-full mih-[160px] rounded-md"}>
-            <Group
-                className={
-                    "w-full h-full relative items-center flex-nowrap gap-4 my-5"
-                }
-            >
+            <Group className={"w-full h-full relative items-center flex-nowrap gap-4 my-5"}>
                 <Box className={"w-3/12 lg:w-2/12"}>
                     <UserAvatarGroup
                         userId={activity.profileUserId}

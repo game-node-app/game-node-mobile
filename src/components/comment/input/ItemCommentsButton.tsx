@@ -1,10 +1,5 @@
 import React, { useMemo } from "react";
-import { CreateCommentDto } from "@/wrapper/server";
-import sourceType = CreateCommentDto.sourceType;
-import {
-    useComments,
-    UseCommentsProps,
-} from "@/components/comment/hooks/useComments";
+import { useComments, UseCommentsProps } from "@/components/comment/hooks/useComments";
 import { IconMessages } from "@tabler/icons-react";
 import { ActionIcon, Text } from "@mantine/core";
 
@@ -22,10 +17,7 @@ const ItemCommentsButton = ({ onClick, ...hookProps }: Props) => {
     });
 
     const totalCommentsCount = useMemo(() => {
-        if (
-            commentsQuery.data == undefined ||
-            commentsQuery.data.pagination == undefined
-        ) {
+        if (commentsQuery.data == undefined || commentsQuery.data.pagination == undefined) {
             return 0;
         }
 
@@ -33,13 +25,7 @@ const ItemCommentsButton = ({ onClick, ...hookProps }: Props) => {
     }, [commentsQuery.data]);
 
     return (
-        <ActionIcon
-            onClick={onClick}
-            variant={"subtle"}
-            size={"xl"}
-            color={"white"}
-            loading={commentsQuery.isLoading}
-        >
+        <ActionIcon onClick={onClick} variant={"subtle"} size={"xl"} color={"white"} loading={commentsQuery.isLoading}>
             <IconMessages className={"me-0.5"} />
             <Text>{totalCommentsCount}</Text>
         </ActionIcon>

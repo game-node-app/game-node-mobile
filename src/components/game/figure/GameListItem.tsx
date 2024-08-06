@@ -11,29 +11,21 @@ import { Link } from "react-router-dom";
 import GameFigureWithQuickAdd from "@/components/game/figure/GameFigureWithQuickAdd";
 import { createGesture } from "@ionic/react";
 
-interface IGameListFigureProps {
+export interface IGameListFigureProps {
     game: TGameOrSearchGame;
     figureProps?: Partial<IGameFigureProps>;
-    /**
-     * If quick add functionality should be enabled. Checks will still be performed to see if
-     * it's possible to show the game add modal.
-     */
-    withQuickAdd?: boolean;
 }
 
-const GameListItem = ({ game, figureProps, withQuickAdd = true }: IGameListFigureProps) => {
+const GameListItem = ({ game, figureProps }: IGameListFigureProps) => {
     const name = game.name ?? "Unknown";
     const genres = getGameGenres(game);
     const genreNames = genres?.join(", ");
 
-    const Figure = withQuickAdd ? GameFigureWithQuickAdd : GameFigureImage;
-
     return (
-        <Group justify={"center"} align={"start"} w={"100%"} h={"100%"} wrap={"nowrap"}>
-            <Box className="h-auto w-2/5 lg:w-1/6">
-                <Figure
+        <Group justify={"start"} align={"start"} w={"100%"} h={"100%"} wrap={"nowrap"}>
+            <Box className="h-auto w-2/5">
+                <GameFigureImage
                     game={game}
-                    href={`/game/${game.id}`}
                     imageProps={{
                         styles: {
                             root: {
@@ -45,13 +37,11 @@ const GameListItem = ({ game, figureProps, withQuickAdd = true }: IGameListFigur
                     {...figureProps}
                 />
             </Box>
-            <Stack h={"100%"} className="w-2/4 ms-2 !grow" align={"start"} justify="start">
+            <Stack h={"100%"} className="w-2/4  !grow" align={"start"} justify="start">
                 <Stack gap={"xs"}>
-                    <Link to={`/game/${game.id}`}>
-                        <Title size="h4" className="font-bold">
-                            {name}
-                        </Title>
-                    </Link>
+                    <Title size="h4" className="font-bold">
+                        {name}
+                    </Title>
                     <Text size="sm" className="text-gray-500">
                         {getLocalizedFirstReleaseDate(game.firstReleaseDate, "en-US")}
                     </Text>

@@ -20,14 +20,14 @@ const GameInfoReviewScreen = ({ gameId }: IGameInfoReviewViewProps) => {
     return (
         <Stack w={"100%"} h={"100%"} align={"center"}>
             {ownReviewQuery.data && (
-                <Paper className={"max-w-[92vw]"}>
+                <Paper className={"max-w-[92vw] w-full"}>
                     <DetailsBox title={"Your review"}>
                         <ReviewListItem review={ownReviewQuery.data} />
                     </DetailsBox>
                 </Paper>
             )}
 
-            <Paper className={"max-w-[92vw]"}>
+            <Paper className={"max-w-[92vw] w-full"}>
                 <GameInfoReviewList gameId={gameId} />
             </Paper>
         </Stack>

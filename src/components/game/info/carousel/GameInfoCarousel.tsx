@@ -1,11 +1,11 @@
 import React from "react";
-import { Carousel } from "@mantine/carousel";
+import { Carousel, CarouselProps } from "@mantine/carousel";
 import { Game } from "@/wrapper/server";
 import GameGridItem from "@/components/game/figure/GameGridItem";
 import useOnMobile from "@/components/general/hooks/useOnMobile";
 import { Flex, Skeleton, Text } from "@mantine/core";
 
-interface IGameInfoCarouselProps {
+interface IGameInfoCarouselProps extends CarouselProps {
     isLoading: boolean;
     isError: boolean;
     games: Game[] | undefined;
@@ -17,7 +17,7 @@ const buildGamesFigures = (games: Game[] | undefined) => {
     return games.map((similarGame, index) => {
         if (index < 20) {
             return (
-                <Carousel.Slide key={similarGame.id}>
+                <Carousel.Slide key={similarGame.id} className={"w-full h-full"}>
                     <GameGridItem game={similarGame} withQuickAdd={false} />
                 </Carousel.Slide>
             );
@@ -47,7 +47,7 @@ const buildErrorView = () => {
     );
 };
 
-const GameInfoCarousel = ({ games, isLoading, isError }: IGameInfoCarouselProps) => {
+const GameInfoCarousel = ({ games, isLoading, isError, ...others }: IGameInfoCarouselProps) => {
     if (isError) {
         return buildErrorView();
     }
@@ -65,6 +65,7 @@ const GameInfoCarousel = ({ games, isLoading, isError }: IGameInfoCarouselProps)
             withControls={false}
             withIndicators={false}
             dragFree
+            {...others}
         >
             {isLoading ? buildSkeletons() : buildGamesFigures(games)}
         </Carousel>

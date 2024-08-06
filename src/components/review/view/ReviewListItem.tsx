@@ -102,6 +102,7 @@ const ReviewListItem = ({ review, onEditStart, withGameInfo }: IReviewListViewPr
                             </Box>
                         )}
                         <Group>
+                            <ReviewListItemComments review={review} />
                             <ItemLikesButton
                                 targetUserId={review.profileUserId}
                                 sourceId={review.id}

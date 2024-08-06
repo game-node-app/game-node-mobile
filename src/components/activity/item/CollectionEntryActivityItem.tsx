@@ -3,17 +3,16 @@ import { Activity } from "@/wrapper/server";
 import useOnMobile from "@/components/general/hooks/useOnMobile";
 import { useReview } from "@/components/review/hooks/useReview";
 import { useGame } from "@/components/game/hooks/useGame";
-import {
-    getSizedImageUrl,
-    ImageSize,
-} from "@/components/game/util/getSizedImageUrl";
+import { getSizedImageUrl, ImageSize } from "@/components/game/util/getSizedImageUrl";
 import { Box, Group, Overlay, Stack, Text, Title } from "@mantine/core";
 import ActivityItemLikes from "@/components/activity/input/ActivityItemLikes";
 import { useCollectionEntry } from "@/components/collection/collection-entry/hooks/useCollectionEntry";
 import { useCollection } from "@/components/collection/hooks/useCollection";
-import Link from "next/link";
 import { UserAvatarGroup } from "@/components/general/avatar/UserAvatarGroup";
 import ActivityCreateDate from "@/components/activity/item/ActivityCreateDate";
+import { Link } from "react-router-dom";
+import { getCommonRouteHref } from "@/util/getCommonRouteHref";
+import { useIonRouter } from "@ionic/react";
 
 interface Props {
     activity: Activity;
@@ -21,9 +20,10 @@ interface Props {
 
 const CollectionEntryActivityItem = ({ activity }: Props) => {
     const onMobile = useOnMobile();
-    const collectionEntryQuery = useCollectionEntry(
-        activity.collectionEntryId!,
-    );
+    const collectionEntryQuery = useCollectionEntry(activity.collectionEntryId!);
+    const {
+        routeInfo: { pathname },
+    } = useIonRouter();
     const collectionQuery = useCollection(activity.collectionId!);
     const gameId = collectionEntryQuery.data?.gameId;
     const gameQuery = useGame(gameId, {
@@ -50,11 +50,7 @@ const CollectionEntryActivityItem = ({ activity }: Props) => {
             className={"relative w-full mih-[160px] rounded-md"}
         >
             <Overlay backgroundOpacity={0.8} className={"z-0"}></Overlay>
-            <Group
-                className={
-                    "w-full h-full relative z-20 items-center flex-nowrap"
-                }
-            >
+            <Group className={"w-full h-full relative z-20 items-center flex-nowrap"}>
                 <Box className={"w-3/12 lg:w-2/12"}>
                     <UserAvatarGroup
                         userId={activity.profileUserId}
@@ -72,10 +68,8 @@ const CollectionEntryActivityItem = ({ activity }: Props) => {
                 </Box>
                 <Box className={"w-3/12"}>
                     <Stack gap={5}>
-                        <Link href={`/game/${gameQuery.data?.id}`}>
-                            <Title className={"text-sm lg:text-md"}>
-                                {gameQuery.data?.name}
-                            </Title>
+                        <Link to={getCommonRouteHref(pathname, `/game/${gameQuery.data?.id}`)}>
+                            <Title className={"text-sm lg:text-md"}>{gameQuery.data?.name}</Title>
                         </Link>
                         <Text
                             c={"dimmed"}
@@ -89,17 +83,9 @@ const CollectionEntryActivityItem = ({ activity }: Props) => {
                     </Stack>
                 </Box>
                 <Box className={"w-6/12 lg:w-3/12 ms-auto h-full"}>
-                    <Stack
-                        className={
-                            "w-full h-full items-end justify-between pe-2 lg:pe-3 py-4"
-                        }
-                    >
-                        <ActivityCreateDate
-                            createdAtDate={activity.createdAt}
-                        />
-                        <Link
-                            href={`/library/${activity.profileUserId}/collection/${activity.collectionId}`}
-                        >
+                    <Stack className={"w-full h-full items-end justify-between pe-2 lg:pe-3 py-4"}>
+                        <ActivityCreateDate createdAtDate={activity.createdAt} />
+                        <Link to={`/library/${activity.profileUserId}/collection/${activity.collectionId}`}>
                             <Title size={"h3"} lineClamp={onMobile ? 1 : 2}>
                                 {collectionQuery.data?.name}
                             </Title>

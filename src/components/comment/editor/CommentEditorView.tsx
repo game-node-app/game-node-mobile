@@ -1,28 +1,9 @@
-import React, {
-    MutableRefObject,
-    RefObject,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-} from "react";
-import {
-    ActionIcon,
-    Box,
-    Button,
-    Group,
-    LoadingOverlay,
-    Stack,
-    Text,
-} from "@mantine/core";
+import React, { MutableRefObject, RefObject, useEffect, useMemo, useRef, useState } from "react";
+import { ActionIcon, Box, Button, Group, LoadingOverlay, Stack, Text } from "@mantine/core";
 import CommentEditor from "@/components/comment/editor/CommentEditor";
 import { IconX } from "@tabler/icons-react";
 import { Editor } from "@tiptap/core";
-import {
-    useMutation,
-    UseMutationOptions,
-    useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, UseMutationOptions, useQueryClient } from "@tanstack/react-query";
 import { CommentService } from "@/wrapper/server";
 import { CreateCommentDto } from "@/wrapper/server";
 import { notifications } from "@mantine/notifications";
@@ -34,32 +15,21 @@ interface Props {
      * Ideally, should be cleared when 'onCancel' is called.
      */
     commentId?: string;
-    onCancel: () => void;
     sourceType: CreateCommentDto.sourceType;
     sourceId: string;
     editorContainerRef?: RefObject<HTMLDivElement>;
 }
 
-const CommentEditorView = ({
-    commentId,
-    sourceType,
-    sourceId,
-    onCancel,
-    editorContainerRef,
-}: Props) => {
+const CommentEditorView = ({ commentId, sourceType, sourceId, editorContainerRef }: Props) => {
     const queryClient = useQueryClient();
     const editorRef = useRef<Editor>();
     const commentQuery = useComment(commentId, sourceType);
-    const [previousContent, setPreviousContent] = useState<string | undefined>(
-        undefined,
-    );
-    const [shouldShowActionButtons, setShouldShowActionButtons] =
-        useState<boolean>(false);
+    const [previousContent, setPreviousContent] = useState<string | undefined>(undefined);
+    const [shouldShowActionButtons, setShouldShowActionButtons] = useState<boolean>(false);
 
     const clearEditor = () => {
         editorRef.current?.commands.clearContent();
         setShouldShowActionButtons(false);
-        onCancel();
     };
 
     const commentMutation = useMutation({
@@ -94,8 +64,7 @@ const CommentEditorView = ({
         },
     });
 
-    const isUpdateAction =
-        commentId != undefined && commentQuery.data != undefined;
+    const isUpdateAction = commentId != undefined && commentQuery.data != undefined;
 
     useEffect(() => {
         if (commentId == undefined && previousContent != undefined) {
@@ -111,17 +80,14 @@ const CommentEditorView = ({
     return (
         <Stack className={"w-full h-full relative"} ref={editorContainerRef}>
             <LoadingOverlay visible={commentQuery.isLoading} />
-            {isUpdateAction && (
-                <Text c={"dimmed"}>
-                    You are currently editing one of your previous comments.
-                </Text>
-            )}
+            {isUpdateAction && <Text c={"dimmed"}>You are currently editing one of your previous comments.</Text>}
             <CommentEditor
                 content={previousContent}
-                onUpdate={(props) => {
+                onUpdate={() => {
                     setShouldShowActionButtons(true);
                 }}
                 onCreate={(props) => {
+                    // eslint-disable-next-line react/prop-types
                     editorRef.current = props.editor;
                 }}
             />

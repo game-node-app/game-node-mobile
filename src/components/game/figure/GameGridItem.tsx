@@ -18,7 +18,7 @@ const GameGridItem = ({ game, figureProps, withQuickAdd = true }: IGameGridFigur
     const Figure = withQuickAdd ? GameFigureWithQuickAdd : GameFigureImage;
     // const Figure = GameFigureImage;
 
-    return <Figure {...figureProps} game={game} href={`/game/${game?.id}`} />;
+    return <Figure {...figureProps} game={game} />;
 };
 
 export default GameGridItem;

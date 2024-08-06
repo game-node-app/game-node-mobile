@@ -1,6 +1,6 @@
 import React, { ComponentPropsWithoutRef } from "react";
 import { Divider, Stack, Text, Title } from "@mantine/core";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 
 interface Props extends ComponentPropsWithoutRef<typeof Link> {
     title: string;
@@ -8,17 +8,9 @@ interface Props extends ComponentPropsWithoutRef<typeof Link> {
     showItemCount?: boolean;
 }
 
-const ProfileViewNavbarLink = ({
-    title,
-    itemCount = 0,
-    showItemCount = true,
-    ...linkProps
-}: Props) => {
+const ProfileViewNavbarLink = ({ title, itemCount = 0, showItemCount = true, ...linkProps }: Props) => {
     return (
-        <Link
-            className={"w-full h-full flex flex-col items-center gap-1.5"}
-            {...linkProps}
-        >
+        <Link className={"w-full h-full flex flex-col items-center gap-1.5"} {...linkProps}>
             <Text className={"text-lg lg:text-xl text-center"}>{title}</Text>
             {showItemCount && (
                 <>

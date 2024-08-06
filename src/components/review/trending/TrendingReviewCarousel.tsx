@@ -23,10 +23,9 @@ const TrendingReviewCarousel = () => {
     const onMobile = useOnMobile();
     const trendingReviews = useTrendingReviews({
         offset: 0,
-        limit: 6,
+        limit: 10,
     });
-    const isEmpty =
-        trendingReviews.isError || trendingReviews.data?.data.length === 0;
+    const isEmpty = trendingReviews.isError || trendingReviews.data?.data.length === 0;
 
     const buildSlides = () => {
         if (trendingReviews.isLoading) {
@@ -34,10 +33,7 @@ const TrendingReviewCarousel = () => {
         }
 
         return trendingReviews.data?.data?.map((reviewStatistics) => {
-            if (
-                reviewStatistics == undefined ||
-                reviewStatistics.reviewId == undefined
-            ) {
+            if (reviewStatistics == undefined || reviewStatistics.reviewId == undefined) {
                 return null;
             }
             return (

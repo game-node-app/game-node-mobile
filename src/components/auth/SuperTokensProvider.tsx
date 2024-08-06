@@ -4,13 +4,19 @@ import Session from "supertokens-auth-react/recipe/session";
 import Passwordless from "supertokens-auth-react/recipe/passwordless";
 import ThirdParty from "supertokens-auth-react/recipe/thirdparty";
 import { SuperTokensConfig } from "supertokens-auth-react/lib/build/types";
+import { Capacitor } from "@capacitor/core";
 
 export const frontendConfig = (): SuperTokensConfig => {
+    const location = window.location;
+    const websiteDomain = Capacitor.isNativePlatform()
+        ? `${location.protocol}//${location.host}`
+        : import.meta.env.VITE_PUBLIC_DOMAIN_WEBSITE;
+
     return {
         appInfo: {
             appName: "GameNode",
             apiDomain: import.meta.env.VITE_PUBLIC_DOMAIN_SERVER as string,
-            websiteDomain: import.meta.env.VITE_PUBLIC_DOMAIN_WEBSITE as string,
+            websiteDomain: websiteDomain,
             apiBasePath: "/v1/auth",
             websiteBasePath: "/auth",
         },

@@ -2,19 +2,12 @@ import React, { useState } from "react";
 
 import { Redirect, Route } from "react-router-dom";
 import * as reactRouterDom from "react-router-dom";
-import {
-    IonApp,
-    IonLabel,
-    IonRouterOutlet,
-    IonTabBar,
-    IonTabButton,
-    IonTabs,
-    setupIonicReact,
-} from "@ionic/react";
+import { IonApp, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs, setupIonicReact } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MantineProvider } from "@mantine/core";
 import { theme } from "./util/theme";
+import Session from "supertokens-web-js/recipe/session";
 
 /**
  * Should always be imported BEFORE tailwind.
@@ -52,13 +45,15 @@ import { getSuperTokensRoutesForReactRouterDom } from "supertokens-auth-react/ui
 import { ThirdPartyPreBuiltUI } from "supertokens-auth-react/recipe/thirdparty/prebuiltui";
 import { PasswordlessPreBuiltUI } from "supertokens-auth-react/recipe/passwordless/prebuiltui";
 import SuperTokensProvider from "./components/auth/SuperTokensProvider";
-import { IconHome, IconRouteAltLeft } from "@tabler/icons-react";
+import { IconHome, IconRouteAltLeft, IconUser } from "@tabler/icons-react";
 import { OpenAPI as ServerOpenAPI } from "@/wrapper/server";
 import { OpenAPI as SearchOpenAPI } from "@/wrapper/search";
 import ExplorePage from "@/pages/explore";
 import SearchResultsPage from "@/pages/search_results";
 import Tab1 from "./pages/Tab1";
 import GamePage from "@/pages/game";
+import HomePage from "./pages/home";
+import ProfilePage from "@/pages/profile";
 
 /**
  * Basic configuration for wrapper services
@@ -90,19 +85,32 @@ const App: React.FC = () => {
     return (
         <IonApp>
             <MantineProvider theme={theme} forceColorScheme={"dark"}>
-                <QueryClientProvider  client={queryClient}>
+                <QueryClientProvider client={queryClient}>
                     <SuperTokensProvider>
                         <IonReactRouter>
-                            <IonTabs >
+                            <IonTabs>
                                 <IonRouterOutlet>
                                     {/*This renders the login UI on the /auth route*/}
                                     {getSuperTokensRoutesForReactRouterDom(reactRouterDom, [
                                         ThirdPartyPreBuiltUI,
                                         PasswordlessPreBuiltUI,
                                     ])}
-                                    <Route exact path={"/home"}>
-                                        <Tab1 />
+                                    {/* ---- HOME ROUTES ---- */}
+                                    <Route exact path="/">
+                                        <Redirect to="/home" />
                                     </Route>
+                                    <Route exact path={"/home"}>
+                                        <HomePage />
+                                    </Route>
+                                    <Route
+                                        path={"/home/game/:id"}
+                                        render={(props) => {
+                                            // eslint-disable-next-line react/prop-types
+                                            const gameId = Number.parseInt(props.match.params.id);
+                                            return <GamePage gameId={gameId} />;
+                                        }}
+                                    />
+                                    {/* ---- EXPLORE ROUTES ---- */}
                                     <Route exact path={"/explore"}>
                                         <ExplorePage />
                                     </Route>
@@ -119,8 +127,9 @@ const App: React.FC = () => {
                                         <SearchResultsPage />
                                     </Route>
 
-                                    <Route exact path="/">
-                                        <Redirect to="/home" />
+                                    {/* ---- PROFILE ROUTES ---- */}
+                                    <Route exact path={"/profile"}>
+                                        <ProfilePage />
                                     </Route>
                                 </IonRouterOutlet>
                                 <IonTabBar slot="bottom">
@@ -131,6 +140,10 @@ const App: React.FC = () => {
                                     <IonTabButton tab="explore" href="/explore">
                                         <IconRouteAltLeft aria-hidden={"true"} />
                                         <IonLabel>Explore</IonLabel>
+                                    </IonTabButton>
+                                    <IonTabButton tab="profile" href="/profile">
+                                        <IconUser aria-hidden={"true"} />
+                                        <IonLabel>Profile</IonLabel>
                                     </IonTabButton>
                                 </IonTabBar>
                             </IonTabs>
