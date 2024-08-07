@@ -9,6 +9,7 @@ import ProfileNavbarFollowInfo from "@/components/profile/view/ProfileNavbarFoll
 import { FollowInfoRequestDto } from "@/wrapper/server";
 import criteria = FollowInfoRequestDto.criteria;
 import { useAllObtainedAchievements } from "@/components/achievement/hooks/useAllObtainedAchievements";
+import { getTabAwareHref } from "@/util/getTabAwareHref";
 
 interface Props extends GroupProps {
     userId: string;
@@ -32,26 +33,30 @@ const ProfileViewNavbar = ({ userId, ...groupProps }: Props) => {
             <ProfileViewNavbarLink
                 title={"Games"}
                 itemCount={collectionEntriesQuery.data?.pagination.totalItems}
-                to={`/library/${userId}`}
+                to={getTabAwareHref(`/library/${userId}`)}
             />
             <ProfileViewNavbarLink
                 title={"Reviews"}
                 itemCount={reviewsQuery.data?.pagination.totalItems}
-                to={`/profile/${userId}/reviews`}
+                to={getTabAwareHref(`/profile/${userId}/reviews`)}
             />
             <ProfileViewNavbarLink
                 title={"Collections"}
                 itemCount={libraryQuery.data?.collections.length}
-                to={`/library/${userId}`}
+                to={getTabAwareHref(`/library/${userId}`)}
             />
             <ProfileViewNavbarLink
                 title={"Achievements"}
-                to={`/achievements/${userId}`}
+                to={getTabAwareHref(`/achievements/${userId}`)}
                 itemCount={obtainedAchievementsQuery.data?.length}
             />
             <ProfileNavbarFollowInfo targetUserId={userId} criteria={criteria.FOLLOWERS} />
             <ProfileNavbarFollowInfo targetUserId={userId} criteria={criteria.FOLLOWING} />
-            <ProfileViewNavbarLink title={"Stats"} showItemCount={false} to={`/profile/${userId}/stats`} />
+            <ProfileViewNavbarLink
+                title={"Stats"}
+                showItemCount={false}
+                to={getTabAwareHref(`/profile/${userId}/stats`)}
+            />
         </SimpleGrid>
     );
 };

@@ -5,7 +5,7 @@ import useUserProfile from "@/components/profile/hooks/useUserProfile";
 import useOnMobile from "@/components/general/hooks/useOnMobile";
 import Break from "@/components/general/Break";
 import { Link } from "react-router-dom";
-import { getTabAwareHref } from "@/util/getCommonRouteHref";
+import { getTabAwareHref } from "@/util/getTabAwareHref";
 import { useIonRouter } from "@ionic/react";
 
 interface IProps {
@@ -23,7 +23,7 @@ export const UserAvatarGroup = ({ userId, avatarProps, groupProps, textProps, wi
     const profileQuery = useUserProfile(userId);
     const onMobile = useOnMobile();
     return (
-        <Link to={getTabAwareHref(pathname, `/profile/${profileQuery.data?.userId}`)} className={"w-full h-full"}>
+        <Link to={getTabAwareHref(`/profile/${profileQuery.data?.userId}`)} className={"w-full h-full"}>
             <Group
                 wrap={onMobile ? "nowrap" : "wrap"}
                 gap={onMobile ? undefined : 5}

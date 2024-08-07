@@ -1,17 +1,11 @@
 import React from "react";
 import { useProfileMetricsOverview } from "@/components/profile/hooks/useProfileMetricsOverview";
-import {
-    Group,
-    Popover,
-    SimpleGrid,
-    Stack,
-    Text,
-    Tooltip,
-} from "@mantine/core";
+import { Group, Popover, SimpleGrid, Stack, Text, Tooltip } from "@mantine/core";
 import { DetailsBox } from "@/components/general/DetailsBox";
 import { BarChart } from "@mantine/charts";
 import { ProfileMetricsOverviewDto } from "@/wrapper/server";
 import TextLink from "@/components/general/TextLink";
+import { getTabAwareHref } from "@/util/getTabAwareHref";
 
 interface Props {
     userId: string;
@@ -35,52 +29,31 @@ const buildBarChartData = (data: ProfileMetricsOverviewDto) => {
 const ProfileStatsSimpleOverview = ({ userId }: Props) => {
     const metricsOverviewQuery = useProfileMetricsOverview(userId);
 
-    const playtimeValue =
-        metricsOverviewQuery.data?.totalEstimatedPlaytime ?? 0;
+    const playtimeValue = metricsOverviewQuery.data?.totalEstimatedPlaytime ?? 0;
     const playtimeValueHours = Math.ceil(playtimeValue / 3600);
 
     return (
         <Group className={"w-full"}>
             <Group className={"w-full justify-between flex-nowrap"}>
                 <Stack className={"gap-1"}>
-                    <Text className={"text-md text-center"}>
-                        {metricsOverviewQuery.data?.totalGames}
-                    </Text>
-                    <Text className={"text-sm text-dimmed text-center"}>
-                        Total games
-                    </Text>
+                    <Text className={"text-md text-center"}>{metricsOverviewQuery.data?.totalGames}</Text>
+                    <Text className={"text-sm text-dimmed text-center"}>Total games</Text>
                 </Stack>
                 <Stack className={"gap-1"}>
-                    <Text className={"text-sm text-center"}>
-                        {metricsOverviewQuery.data?.totalFinishedGames}
-                    </Text>
-                    <Text className={"text-sm text-dimmed text-center"}>
-                        Finished games
-                    </Text>
+                    <Text className={"text-sm text-center"}>{metricsOverviewQuery.data?.totalFinishedGames}</Text>
+                    <Text className={"text-sm text-dimmed text-center"}>Finished games</Text>
                 </Stack>
                 <Stack className={"gap-1"}>
-                    <Text className={"text-sm text-center"}>
-                        {playtimeValueHours}
-                    </Text>
-                    <Popover
-                        width="target"
-                        position="left"
-                        withArrow
-                        shadow="md"
-                    >
+                    <Text className={"text-sm text-center"}>{playtimeValueHours}</Text>
+                    <Popover width="target" position="left" withArrow shadow="md">
                         <Popover.Target>
-                            <Text className={"text-sm text-dimmed text-center"}>
-                                Estimated playtime (in hours)*
-                            </Text>
+                            <Text className={"text-sm text-dimmed text-center"}>Estimated playtime (in hours)*</Text>
                         </Popover.Target>
                         <Popover.Dropdown>
                             <Text className={"break-keep text-sm"}>
-                                Based on available data for average storyline
-                                completion time.
+                                Based on available data for average storyline completion time.
                             </Text>
-                            <Text className={"break-keep text-sm"}>
-                                Actual playtime may be much greater.
-                            </Text>
+                            <Text className={"break-keep text-sm"}>Actual playtime may be much greater.</Text>
                         </Popover.Dropdown>
                     </Popover>
                 </Stack>
@@ -92,11 +65,8 @@ const ProfileStatsSimpleOverview = ({ userId }: Props) => {
                         data={[
                             {
                                 label: "Played vs Finished",
-                                totalGames:
-                                    metricsOverviewQuery.data.totalGames,
-                                totalFinishedGames:
-                                    metricsOverviewQuery.data
-                                        .totalFinishedGames,
+                                totalGames: metricsOverviewQuery.data.totalGames,
+                                totalFinishedGames: metricsOverviewQuery.data.totalFinishedGames,
                             },
                         ]}
                         dataKey={"label"}
@@ -122,7 +92,7 @@ const ProfileStatsSimpleOverview = ({ userId }: Props) => {
                     />
                 </Group>
             )}
-            <TextLink href={`/profile/${userId}/stats`} className={"mt-3"}>
+            <TextLink href={getTabAwareHref(`/profile/${userId}/stats`)} className={"mt-3"}>
                 Show more
             </TextLink>
         </Group>

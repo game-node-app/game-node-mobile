@@ -3,8 +3,9 @@
  * @param currentPathname
  * @param targetUrl
  */
-export function getTabAwareHref(currentPathname: string, targetUrl: string): string {
-    const paths = currentPathname.split("/");
+export function getTabAwareHref(targetUrl: string): string {
+    const pathname = window.location.pathname;
+    const paths = pathname.split("/");
     const tab = paths[1];
     return `/${tab}${targetUrl}`;
 }
