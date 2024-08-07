@@ -2,8 +2,8 @@ import React from "react";
 import { Carousel, CarouselProps } from "@mantine/carousel";
 import { Game } from "@/wrapper/server";
 import GameGridItem from "@/components/game/figure/GameGridItem";
-import useOnMobile from "@/components/general/hooks/useOnMobile";
 import { Flex, Skeleton, Text } from "@mantine/core";
+import CenteredLoading from "@/components/general/CenteredLoading";
 
 interface IGameInfoCarouselProps extends CarouselProps {
     isLoading: boolean;
@@ -14,11 +14,11 @@ interface IGameInfoCarouselProps extends CarouselProps {
 const buildGamesFigures = (games: Game[] | undefined) => {
     if (games == undefined || games.length === 0) return null;
 
-    return games.map((similarGame, index) => {
-        if (index < 20) {
+    return games.map((game, index) => {
+        if (index < 40) {
             return (
-                <Carousel.Slide key={similarGame.id} className={"w-full h-full"}>
-                    <GameGridItem game={similarGame} withQuickAdd={false} />
+                <Carousel.Slide key={game.id} className={"w-full h-full"}>
+                    <GameGridItem game={game} withQuickAdd={false} />
                 </Carousel.Slide>
             );
         }
@@ -30,8 +30,8 @@ const buildSkeletons = () => {
     const skeletons = [];
     for (let i = 0; i < 7; i++) {
         skeletons.push(
-            <Carousel.Slide key={i}>
-                <Skeleton height={250} />
+            <Carousel.Slide key={i} className="w-full h-full">
+                <Skeleton height={230} />
             </Carousel.Slide>,
         );
     }
@@ -67,7 +67,7 @@ const GameInfoCarousel = ({ games, isLoading, isError, ...others }: IGameInfoCar
             dragFree
             {...others}
         >
-            {isLoading ? buildSkeletons() : buildGamesFigures(games)}
+            {isLoading ? <CenteredLoading /> : buildGamesFigures(games)}
         </Carousel>
     );
 };

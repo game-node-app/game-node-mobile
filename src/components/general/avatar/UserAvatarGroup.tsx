@@ -1,4 +1,3 @@
-import { Profile } from "@/wrapper/server";
 import { AvatarProps, Group, GroupProps, Text, TextProps } from "@mantine/core";
 import { UserAvatar } from "@/components/general/avatar/UserAvatar";
 import React from "react";
@@ -6,6 +5,8 @@ import useUserProfile from "@/components/profile/hooks/useUserProfile";
 import useOnMobile from "@/components/general/hooks/useOnMobile";
 import Break from "@/components/general/Break";
 import { Link } from "react-router-dom";
+import { getTabAwareHref } from "@/util/getCommonRouteHref";
+import { useIonRouter } from "@ionic/react";
 
 interface IProps {
     userId: string;
@@ -16,10 +17,13 @@ interface IProps {
 }
 
 export const UserAvatarGroup = ({ userId, avatarProps, groupProps, textProps, withHorizontalBreak }: IProps) => {
+    const {
+        routeInfo: { pathname },
+    } = useIonRouter();
     const profileQuery = useUserProfile(userId);
     const onMobile = useOnMobile();
     return (
-        <Link to={`/profile/${profileQuery.data?.userId}`} className={"w-full h-full"}>
+        <Link to={getTabAwareHref(pathname, `/profile/${profileQuery.data?.userId}`)} className={"w-full h-full"}>
             <Group
                 wrap={onMobile ? "nowrap" : "wrap"}
                 gap={onMobile ? undefined : 5}

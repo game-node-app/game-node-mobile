@@ -22,6 +22,14 @@ const HomePage = () => {
             <IonContent>
                 <Container fluid className={"w-full my-4"}>
                     <Stack className={"w-full"}>
+                        {userId && (
+                            <RecommendationCarousel
+                                criteria={"finished"}
+                                stackProps={{
+                                    className: "",
+                                }}
+                            />
+                        )}
                         <TrendingReviewCarousel />
 
                         <DetailsBox
@@ -34,14 +42,18 @@ const HomePage = () => {
                         </DetailsBox>
                         {userId && (
                             <>
-                                <DetailsBox
-                                    title={"Based on what you've been playing"}
+                                <RecommendationCarousel
+                                    criteria={"theme"}
                                     stackProps={{
                                         className: "",
                                     }}
-                                >
-                                    <RecommendationCarousel criteria={"finished"} />
-                                </DetailsBox>
+                                />
+                                <RecommendationCarousel
+                                    criteria={"genre"}
+                                    stackProps={{
+                                        className: "",
+                                    }}
+                                />
                             </>
                         )}
                     </Stack>

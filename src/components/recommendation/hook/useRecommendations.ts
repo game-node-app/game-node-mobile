@@ -9,5 +9,6 @@ export function useRecommendations(criteria: RecommendationCriteria, limit = 10)
         queryFn: async () => {
             return RecommendationService.recommendationControllerGetRecommendations(criteria, limit);
         },
+        staleTime: Infinity
     });
 }

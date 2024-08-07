@@ -11,7 +11,7 @@ import { UserAvatarGroup } from "@/components/general/avatar/UserAvatarGroup";
 import ActivityCreateDate from "@/components/activity/item/ActivityCreateDate";
 import { Link } from "react-router-dom";
 import { useIonRouter } from "@ionic/react";
-import { getCommonRouteHref } from "@/util/getCommonRouteHref";
+import { getTabAwareHref } from "@/util/getCommonRouteHref";
 
 interface Props {
     activity: Activity;
@@ -63,10 +63,7 @@ const ReviewActivityItem = ({ activity }: Props) => {
                 <Box className={"w-3/12"}>
                     <Stack gap={5}>
                         <Link
-                            to={getCommonRouteHref(
-                                pathname,
-                                `/game/${gameQuery.data?.id}?reviewId=${activity.reviewId}`,
-                            )}
+                            to={getTabAwareHref(pathname, `/game/${gameQuery.data?.id}?reviewId=${activity.reviewId}`)}
                         >
                             <Title className={"text-sm lg:text-md"}>{gameQuery.data?.name}</Title>
                         </Link>

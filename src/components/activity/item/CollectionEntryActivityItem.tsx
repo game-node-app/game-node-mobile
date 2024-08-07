@@ -11,7 +11,7 @@ import { useCollection } from "@/components/collection/hooks/useCollection";
 import { UserAvatarGroup } from "@/components/general/avatar/UserAvatarGroup";
 import ActivityCreateDate from "@/components/activity/item/ActivityCreateDate";
 import { Link } from "react-router-dom";
-import { getCommonRouteHref } from "@/util/getCommonRouteHref";
+import { getTabAwareHref } from "@/util/getCommonRouteHref";
 import { useIonRouter } from "@ionic/react";
 
 interface Props {
@@ -68,7 +68,7 @@ const CollectionEntryActivityItem = ({ activity }: Props) => {
                 </Box>
                 <Box className={"w-3/12"}>
                     <Stack gap={5}>
-                        <Link to={getCommonRouteHref(pathname, `/game/${gameQuery.data?.id}`)}>
+                        <Link to={getTabAwareHref(pathname, `/game/${gameQuery.data?.id}`)}>
                             <Title className={"text-sm lg:text-md"}>{gameQuery.data?.name}</Title>
                         </Link>
                         <Text

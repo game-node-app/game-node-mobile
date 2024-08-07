@@ -8,7 +8,7 @@ import { useGame } from "@/components/game/hooks/useGame";
 import { getSizedImageUrl, ImageSize } from "@/components/game/util/getSizedImageUrl";
 import { Link } from "react-router-dom";
 import { useIonRouter } from "@ionic/react";
-import { getCommonRouteHref } from "@/util/getCommonRouteHref";
+import { getTabAwareHref } from "@/util/getCommonRouteHref";
 
 interface IProps {
     reviewId: string;
@@ -65,7 +65,7 @@ const ReviewCard = ({ reviewId }: IProps) => {
                     {strippedContent}
                 </Text>
             </div>
-            <Link to={getCommonRouteHref(pathname, `/game/${gameId}`)}>
+            <Link to={getTabAwareHref(pathname, `/game/${gameId}`)}>
                 <Button variant="white" color="dark" className={"z-10"}>
                     Visit
                 </Button>

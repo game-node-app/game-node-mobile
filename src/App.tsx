@@ -7,7 +7,6 @@ import { IonReactRouter } from "@ionic/react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MantineProvider } from "@mantine/core";
 import { theme } from "./util/theme";
-import Session from "supertokens-web-js/recipe/session";
 
 /**
  * Should always be imported BEFORE tailwind.
@@ -50,10 +49,10 @@ import { OpenAPI as ServerOpenAPI } from "@/wrapper/server";
 import { OpenAPI as SearchOpenAPI } from "@/wrapper/search";
 import ExplorePage from "@/pages/explore";
 import SearchResultsPage from "@/pages/search_results";
-import Tab1 from "./pages/Tab1";
 import GamePage from "@/pages/game";
 import HomePage from "./pages/home";
 import ProfilePage from "@/pages/profile";
+import { getCommonRoutes } from "./pages/routes/getCommonRoutes";
 
 /**
  * Basic configuration for wrapper services
@@ -102,35 +101,22 @@ const App: React.FC = () => {
                                     <Route exact path={"/home"}>
                                         <HomePage />
                                     </Route>
-                                    <Route
-                                        path={"/home/game/:id"}
-                                        render={(props) => {
-                                            // eslint-disable-next-line react/prop-types
-                                            const gameId = Number.parseInt(props.match.params.id);
-                                            return <GamePage gameId={gameId} />;
-                                        }}
-                                    />
+                                    {getCommonRoutes("/home")}
+
                                     {/* ---- EXPLORE ROUTES ---- */}
                                     <Route exact path={"/explore"}>
                                         <ExplorePage />
                                     </Route>
-                                    <Route
-                                        path={"/explore/game/:id"}
-                                        render={(props) => {
-                                            // eslint-disable-next-line react/prop-types
-                                            const gameId = Number.parseInt(props.match.params.id);
-                                            return <GamePage gameId={gameId} />;
-                                        }}
-                                    />
-
                                     <Route exact path={`/explore/search_results`}>
                                         <SearchResultsPage />
                                     </Route>
+                                    {getCommonRoutes("/explore")}
 
                                     {/* ---- PROFILE ROUTES ---- */}
                                     <Route exact path={"/profile"}>
                                         <ProfilePage />
                                     </Route>
+                                    {getCommonRoutes("/profile")}
                                 </IonRouterOutlet>
                                 <IonTabBar slot="bottom">
                                     <IonTabButton tab="home" href="/home">
