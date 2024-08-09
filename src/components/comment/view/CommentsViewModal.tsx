@@ -14,9 +14,9 @@ type Props = BaseModalProps & CommentsListViewProps;
  * @param others
  * @constructor
  */
-const CommentsViewModal = ({ onClose, opened, ...others }: Props) => {
+const CommentsViewModal = ({ onClose, opened, sourceId, sourceType, ...others }: Props) => {
     return (
-        <IonModal isOpen={opened} onDidDismiss={onClose} initialBreakpoint={0.75} breakpoints={[0.5, 0.75, 1]}>
+        <IonModal isOpen={opened} onDidDismiss={onClose}>
             <IonHeader>
                 <IonToolbar>
                     <IonButtons slot="end">
@@ -27,8 +27,8 @@ const CommentsViewModal = ({ onClose, opened, ...others }: Props) => {
             <IonContent>
                 <Container fluid className={"my-4"}>
                     <Stack className={"w-full gap-6"}>
-                        <CommentsListView {...others} />
-                        <CommentEditorView sourceType={others.sourceType} sourceId={others.sourceId} />
+                        <CommentsListView sourceId={sourceId} sourceType={sourceType} {...others} />
+                        <CommentEditorView key="comment-create-editor" sourceId={sourceId} sourceType={sourceType} />
                     </Stack>
                 </Container>
             </IonContent>

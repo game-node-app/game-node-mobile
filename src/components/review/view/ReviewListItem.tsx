@@ -1,8 +1,8 @@
 import React, { useMemo, useState } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import { DEFAULT_REVIEW_EDITOR_EXTENSIONS } from "@/components/game/info/review/editor/GameInfoReviewEditor";
-import { Box, Flex, Group, Stack, Transition } from "@mantine/core";
-import { FindAllCommentsDto, FindOneStatisticsDto, Review } from "@/wrapper/server";
+import { Box, Flex, Group, ScrollArea, Stack, Transition } from "@mantine/core";
+import { FindOneStatisticsDto, Review } from "@/wrapper/server";
 import useOnMobile from "@/components/general/hooks/useOnMobile";
 import useUserId from "@/components/auth/hooks/useUserId";
 import ReviewListItemDropdownButton from "@/components/review/view/ReviewListItemDropdownButton";
@@ -12,8 +12,6 @@ import TextLink from "@/components/general/TextLink";
 import GameRating from "@/components/general/input/GameRating";
 import ReviewListItemComments from "@/components/review/view/ReviewListItemComments";
 import ItemLikesButton from "@/components/statistics/input/ItemLikesButton";
-import ItemCommentsButton from "@/components/comment/input/ItemCommentsButton";
-import ItemDropdown from "@/components/general/input/dropdown/ItemDropdown";
 
 interface IReviewListViewProps {
     review: Review;
@@ -24,24 +22,14 @@ interface IReviewListViewProps {
 const ReviewListItem = ({ review, onEditStart, withGameInfo }: IReviewListViewProps) => {
     const onMobile = useOnMobile();
     const [isReadMore, setIsReadMore] = useState<boolean>(false);
-    const [isCommentsOpen, setIsCommentsOpen] = useState(false);
-    const contentToUse = useMemo(() => {
-        if (review != undefined && review.content != undefined) {
-            if (review.content.length < 280 || isReadMore) {
-                return review.content;
-            }
-            return review.content.slice(0, 280) + "...";
-        }
-        return undefined;
-    }, [isReadMore, review]);
 
     const nonEditableEditor = useEditor(
         {
             extensions: DEFAULT_REVIEW_EDITOR_EXTENSIONS,
-            content: contentToUse,
+            content: review.content,
             editable: false,
         },
-        [contentToUse],
+        [review.content],
     );
 
     const userId = useUserId();
@@ -87,11 +75,13 @@ const ReviewListItem = ({ review, onEditStart, withGameInfo }: IReviewListViewPr
                     <GameRating value={review.rating} className={"mt-0 lg:mt-4"} />
                 </Flex>
                 <Stack className={"w-full"}>
-                    <EditorContent
-                        editor={nonEditableEditor}
-                        className={"w-full"}
-                        onClick={() => setIsReadMore(!isReadMore)}
-                    />
+                    <ScrollArea.Autosize mah={250}>
+                        <EditorContent
+                            editor={nonEditableEditor}
+                            className={"w-full"}
+                            onClick={() => setIsReadMore(!isReadMore)}
+                        />
+                    </ScrollArea.Autosize>
 
                     <Group justify={withGameInfo ? "space-between" : "end"}>
                         {withGameInfo && gameQuery.data != undefined && (

@@ -5,6 +5,7 @@ import { BaseModalProps } from "@/util/types/modal-props";
 import { useUserLibrary } from "@/components/library/hooks/useUserLibrary";
 import useUserId from "@/components/auth/hooks/useUserId";
 import { IonButton, IonButtons, IonContent, IonHeader, IonModal, IonTitle, IonToolbar } from "@ionic/react";
+import { useOwnCollectionEntryForGameId } from "../../hooks/useOwnCollectionEntryForGameId";
 
 interface IGameAddModalProps extends BaseModalProps {
     id: number;
@@ -12,8 +13,10 @@ interface IGameAddModalProps extends BaseModalProps {
 
 const CollectionEntryAddOrUpdateModal = ({ opened, onClose, id }: IGameAddModalProps) => {
     const userId = useUserId();
-    useUserLibrary(userId);
+    const collectionEntryQuery = useOwnCollectionEntryForGameId(id);
     const [isExpanded, setIsExpanded] = useState(false);
+
+    const isInLibrary = collectionEntryQuery.data != undefined;
 
     return (
         <IonModal
@@ -27,7 +30,7 @@ const CollectionEntryAddOrUpdateModal = ({ opened, onClose, id }: IGameAddModalP
         >
             <IonHeader>
                 <IonToolbar>
-                    <IonTitle>Add to your library</IonTitle>
+                    <IonTitle>{isInLibrary ? "Edit in your library" : "Add to your library"}</IonTitle>
                     <IonButtons slot="end">
                         <IonButton onClick={() => onClose()}>Cancel</IonButton>
                     </IonButtons>

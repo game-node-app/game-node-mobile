@@ -1,16 +1,10 @@
 import React, { useCallback, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { GameRepositoryService } from "@/wrapper/server";
-import {
-    Group,
-    GroupProps,
-    Image,
-    ImageProps,
-    Skeleton,
-    Tooltip,
-} from "@mantine/core";
+import { Group, GroupProps, Image, ImageProps, Skeleton, Tooltip } from "@mantine/core";
 import { getServerStoredIcon } from "@/util/getServerStoredImages";
 import useOnMobile from "@/components/general/hooks/useOnMobile";
+import ExternalLink from "@/components/general/ExternalLink";
 
 interface Props extends GroupProps {
     gameId: number;
@@ -22,9 +16,7 @@ const GameInfoExternalStores = ({ gameId, iconsProps, ...others }: Props) => {
     const externalStoresQuery = useQuery({
         queryKey: ["game", "external-stores", gameId],
         queryFn: async () => {
-            return GameRepositoryService.gameRepositoryControllerGetExternalStoresForGameId(
-                gameId,
-            );
+            return GameRepositoryService.gameRepositoryControllerGetExternalStoresForGameId(gameId);
         },
         retry: false,
     });
@@ -41,41 +33,27 @@ const GameInfoExternalStores = ({ gameId, iconsProps, ...others }: Props) => {
             .map((externalStore) => {
                 if (externalStore.icon == undefined) return null;
                 return (
-                    <a
-                        key={externalStore.id}
-                        href={externalStore.url}
-                        target={"_blank"}
-                    >
+                    <ExternalLink key={externalStore.id} href={externalStore.url}>
                         <Tooltip label={externalStore.storeName}>
                             <Image
                                 w={42}
-                                alt={
-                                    externalStore.storeName || "External store"
-                                }
+                                alt={externalStore.storeName || "External store"}
                                 src={getServerStoredIcon(externalStore.icon)}
                                 {...iconsProps}
                             />
                         </Tooltip>
-                    </a>
+                    </ExternalLink>
                 );
             })
             .filter((element) => element != undefined);
         return storeElements;
     }, [externalStoresQuery.data, iconsProps]);
 
-    const isEmpty =
-        !externalStoresQuery.isLoading && externalStoreItems == undefined;
+    const isEmpty = !externalStoresQuery.isLoading && externalStoreItems == undefined;
 
     return (
-        <Group
-            wrap={"wrap"}
-            w={"100%"}
-            justify={onMobile ? "center" : "start"}
-            {...others}
-        >
-            {externalStoresQuery.isLoading
-                ? buildIconsSkeletons()
-                : externalStoreItems}
+        <Group wrap={"wrap"} w={"100%"} justify={onMobile ? "center" : "start"} {...others}>
+            {externalStoresQuery.isLoading ? buildIconsSkeletons() : externalStoreItems}
             {isEmpty && "Not available"}
         </Group>
     );

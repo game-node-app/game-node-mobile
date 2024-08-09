@@ -2,6 +2,7 @@ import { IonFab, IonFabButton, IonFabList } from "@ionic/react";
 import React from "react";
 import { ActionIcon, ThemeIcon } from "@mantine/core";
 import {
+    IconDots,
     IconEdit,
     IconHeartFilled,
     IconHeartPlus,
@@ -21,6 +22,8 @@ import CollectionEntryAddOrUpdateModal from "@/components/collection/collection-
 import { useDisclosure } from "@mantine/hooks";
 import CollectionEntryRemoveModal from "@/components/collection/collection-entry/form/modal/CollectionEntryRemoveModal";
 import GameInfoReviewCreateUpdateModal from "@/components/game/info/review/editor/GameInfoReviewCreateUpdateModal";
+import { CollectionsEntriesService } from "@/wrapper/server";
+import { useMutation } from "@tanstack/react-query";
 
 interface Props {
     gameId: number;
@@ -43,8 +46,20 @@ const GameInfoViewFab = ({ gameId }: Props) => {
     const [removeModalOpened, removeModalUtils] = useDisclosure();
     const [reviewModalOpened, reviewModalUtils] = useDisclosure();
 
+    const collectionEntryFavoriteMutation = useMutation({
+        mutationFn: (gameId: number) => {
+            return CollectionsEntriesService.collectionsEntriesControllerChangeFavoriteStatus(gameId, {
+                isFavorite: !gameInFavorites,
+            });
+        },
+
+        onSuccess: () => {
+            collectionEntryQuery.invalidate();
+        },
+    });
+
     return (
-        <IonFab slot="fixed" horizontal="end" vertical="bottom" className={"me-2"}>
+        <IonFab slot="fixed" horizontal="end" vertical="bottom" className={"me-2 mb-2"}>
             <CollectionEntryAddOrUpdateModal id={gameId} onClose={addModalUtils.close} opened={addModalOpened} />
             <CollectionEntryRemoveModal opened={removeModalOpened} onClose={removeModalUtils.close} gameId={gameId} />
             <GameInfoReviewCreateUpdateModal
@@ -59,7 +74,7 @@ const GameInfoViewFab = ({ gameId }: Props) => {
                     }
                 }}
             >
-                <IconPlus />
+                {gameInLibrary ? <IconEdit /> : <IconPlus />}
             </IonFabButton>
             {gameInLibrary && (
                 <IonFabList side="top">
@@ -67,13 +82,18 @@ const GameInfoViewFab = ({ gameId }: Props) => {
                         <IconTrashFilled />
                     </IonFabButton>
                     <IonFabButton color={"primary"} onClick={addModalUtils.open}>
-                        <IconEdit />
+                        <IconDots />
                     </IonFabButton>
                     <IonFabButton color={"primary"} onClick={reviewModalUtils.open}>
                         {hasReview ? <IconStarsFilled /> : <IconStars />}
                     </IonFabButton>
 
-                    <IonFabButton color={"primary"}>
+                    <IonFabButton
+                        color={"primary"}
+                        onClick={() => {
+                            collectionEntryFavoriteMutation.mutate(gameId);
+                        }}
+                    >
                         {gameInFavorites ? <IconHeartFilled /> : <IconHeartPlus />}
                     </IonFabButton>
                 </IonFabList>

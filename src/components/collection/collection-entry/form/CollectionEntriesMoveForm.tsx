@@ -1,23 +1,8 @@
 import React, { useMemo } from "react";
 import { useCollectionEntriesForCollectionId } from "@/components/collection/collection-entry/hooks/useCollectionEntriesForCollectionId";
 import { z } from "zod";
-import {
-    CancelablePromise,
-    CollectionsEntriesService,
-    Game,
-    GamePlatform,
-} from "@/wrapper/server";
-import {
-    Button,
-    Combobox,
-    ComboboxItem,
-    MultiSelect,
-    Stack,
-    Text,
-    TextInput,
-    Title,
-    useCombobox,
-} from "@mantine/core";
+import { CancelablePromise, CollectionsEntriesService, Game, GamePlatform } from "@/wrapper/server";
+import { Button, Combobox, ComboboxItem, MultiSelect, Stack, Text, TextInput, Title, useCombobox } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useUserId from "@/components/auth/hooks/useUserId";
@@ -26,23 +11,16 @@ import { BaseModalChildrenProps } from "@/util/types/modal-props";
 import { useMutation } from "@tanstack/react-query";
 import { notifications } from "@mantine/notifications";
 import { useGames } from "@/components/game/hooks/useGames";
-import { useRouter } from "next/router";
 
 const CollectionEntriesMoveFormSchema = z.object({
-    gameIds: z
-        .array(z.number())
-        .min(1, "At least one game must be selected.")
-        .default([]),
+    gameIds: z.array(z.number()).min(1, "At least one game must be selected.").default([]),
     targetCollectionIds: z.array(z.string(), {
         required_error: "At least one collection must be selected",
-        invalid_type_error:
-            "Target collections returned as string. Please contact support.",
+        invalid_type_error: "Target collections returned as string. Please contact support.",
     }),
 });
 
-type CollectionEntriesMoveFormValues = z.infer<
-    typeof CollectionEntriesMoveFormSchema
->;
+type CollectionEntriesMoveFormValues = z.infer<typeof CollectionEntriesMoveFormSchema>;
 interface ISelectionOptionProps {
     game: Game;
     ownedPlatforms: GamePlatform[];
@@ -67,16 +45,11 @@ interface ICollectionEntriesMoveFormProps extends BaseModalChildrenProps {
  * Similar to CollectionEntryAddOrUpdateForm, except that this one offers multiple games as input.
  * @constructor
  */
-const CollectionEntriesMoveForm = ({
-    collectionId,
-    onClose,
-}: ICollectionEntriesMoveFormProps) => {
-    const router = useRouter();
-    const { register, handleSubmit, setValue, watch, formState, setError } =
-        useForm<CollectionEntriesMoveFormValues>({
-            mode: "onSubmit",
-            resolver: zodResolver(CollectionEntriesMoveFormSchema),
-        });
+const CollectionEntriesMoveForm = ({ collectionId, onClose }: ICollectionEntriesMoveFormProps) => {
+    const { register, handleSubmit, setValue, watch, formState, setError } = useForm<CollectionEntriesMoveFormValues>({
+        mode: "onSubmit",
+        resolver: zodResolver(CollectionEntriesMoveFormSchema),
+    });
     const userId = useUserId();
     const libraryQuery = useUserLibrary(userId);
     const collectionsEntriesQuery = useCollectionEntriesForCollectionId({
@@ -85,9 +58,7 @@ const CollectionEntriesMoveForm = ({
             createdAt: "DESC",
         },
     });
-    const gameIds = collectionsEntriesQuery.data?.data.map(
-        (entry) => entry.gameId,
-    );
+    const gameIds = collectionsEntriesQuery.data?.data.map((entry) => entry.gameId);
     const gamesQuery = useGames({
         gameIds: gameIds!,
         relations: {
@@ -128,36 +99,22 @@ const CollectionEntriesMoveForm = ({
         mutationFn: (data: CollectionEntriesMoveFormValues) => {
             const gameIds = data.gameIds;
             const targetCollectionsIds = data.targetCollectionIds;
-            const relevantCollectionEntries =
-                collectionsEntriesQuery.data?.data.filter((entry) => {
-                    return (
-                        entry.gameId != undefined &&
-                        gameIds.includes(entry.gameId)
-                    );
-                });
-            if (
-                relevantCollectionEntries == undefined ||
-                relevantCollectionEntries.length === 0
-            ) {
-                throw new Error(
-                    "Relevant collection entry filtering is failing. Please contact support.",
-                );
+            const relevantCollectionEntries = collectionsEntriesQuery.data?.data.filter((entry) => {
+                return entry.gameId != undefined && gameIds.includes(entry.gameId);
+            });
+            if (relevantCollectionEntries == undefined || relevantCollectionEntries.length === 0) {
+                throw new Error("Relevant collection entry filtering is failing. Please contact support.");
             }
 
             const promises: Promise<CancelablePromise<any>>[] = [];
             for (const entry of relevantCollectionEntries) {
-                const ownedPlatformsIds = entry.ownedPlatforms.map(
-                    (platform) => platform.id,
-                );
-                const replacePromise =
-                    CollectionsEntriesService.collectionsEntriesControllerCreateOrUpdate(
-                        {
-                            isFavorite: entry.isFavorite,
-                            platformIds: ownedPlatformsIds as unknown as any,
-                            collectionIds: targetCollectionsIds,
-                            gameId: entry.gameId,
-                        },
-                    );
+                const ownedPlatformsIds = entry.ownedPlatforms.map((platform) => platform.id);
+                const replacePromise = CollectionsEntriesService.collectionsEntriesControllerCreateOrUpdate({
+                    isFavorite: entry.isFavorite,
+                    platformIds: ownedPlatformsIds as unknown as any,
+                    collectionIds: targetCollectionsIds,
+                    gameId: entry.gameId,
+                });
                 promises.push(replacePromise);
             }
             return Promise.all(promises);
@@ -189,16 +146,9 @@ const CollectionEntriesMoveForm = ({
 
     const finishedGamesCollectionSelected = useMemo(() => {
         const userCollections = libraryQuery.data?.collections;
-        if (
-            userCollections != undefined &&
-            targetCollectionIds != undefined &&
-            targetCollectionIds.length > 0
-        ) {
+        if (userCollections != undefined && targetCollectionIds != undefined && targetCollectionIds.length > 0) {
             for (const collection of userCollections) {
-                if (
-                    collection.isFinished &&
-                    targetCollectionIds.includes(`${collection.id}`)
-                ) {
+                if (collection.isFinished && targetCollectionIds.includes(`${collection.id}`)) {
                     return true;
                 }
             }
@@ -208,30 +158,21 @@ const CollectionEntriesMoveForm = ({
     }, [libraryQuery.data?.collections, targetCollectionIds]);
 
     return (
-        <form
-            className={"w-full h-full"}
-            onSubmit={handleSubmit((data) => collectionsMutation.mutate(data))}
-        >
+        <form className={"w-full h-full"} onSubmit={handleSubmit((data) => collectionsMutation.mutate(data))}>
             <Stack w={"100%"} h={"100%"} p={0} align={"center"}>
                 <MultiSelect
                     w={"100%"}
                     data={gamesSelectOptions}
                     label={"Games to move"}
-                    description={
-                        "Select which games you want to move. You can search by typing a game's name."
-                    }
+                    description={"Select which games you want to move. You can search by typing a game's name."}
                     searchable
                     {...register("gameIds")}
                     onChange={(values) => {
-                        const valuesNumbers = values.map((v) =>
-                            Number.parseInt(v),
-                        );
+                        const valuesNumbers = values.map((v) => Number.parseInt(v));
                         setValue("gameIds", valuesNumbers);
                     }}
                     error={formState.errors.gameIds?.message}
-                    placeholder={
-                        gamesQuery.isLoading ? "Loading..." : undefined
-                    }
+                    placeholder={gamesQuery.isLoading ? "Loading..." : undefined}
                 />
                 <MultiSelect
                     mt={"1rem"}
@@ -247,14 +188,12 @@ const CollectionEntriesMoveForm = ({
                     onChange={(values) => {
                         setValue("targetCollectionIds", values);
                     }}
-                    placeholder={
-                        gamesQuery.isLoading ? "Loading..." : undefined
-                    }
+                    placeholder={gamesQuery.isLoading ? "Loading..." : undefined}
                 />
                 {finishedGamesCollectionSelected && (
                     <Text c={"yellow"} fz={"sm"}>
-                        These games will be marked as "Finished" because a
-                        "Finished Games" collection has been selected.
+                        These games will be marked as "Finished" because a "Finished Games" collection has been
+                        selected.
                     </Text>
                 )}
                 <Button type={"submit"} loading={collectionsMutation.isPending}>

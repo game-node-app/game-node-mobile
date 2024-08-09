@@ -10,15 +10,7 @@ interface Props extends RatingProps {}
  * @constructor
  */
 const GameRating = (props: Props) => {
-    return (
-        <Rating
-            fractions={2}
-            size={"md"}
-            readOnly
-            color={"#F15025"}
-            {...props}
-        />
-    );
+    return <Rating fractions={2} size={"md"} readOnly color={"#F15025"} {...props} />;
 };
 
 export default GameRating;

@@ -1,19 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
-import {
-    ActionIcon,
-    Button,
-    Group,
-    Stack,
-    Tooltip,
-    Text,
-    Modal,
-} from "@mantine/core";
-import {
-    IconHeartFilled,
-    IconHeartPlus,
-    IconShare,
-    IconX,
-} from "@tabler/icons-react";
+import { ActionIcon, Button, Group, Stack, Tooltip, Text, Modal } from "@mantine/core";
+import { IconHeartFilled, IconHeartPlus, IconShare, IconX } from "@tabler/icons-react";
 import CollectionEntryAddOrUpdateModal from "@/components/collection/collection-entry/form/modal/CollectionEntryAddOrUpdateModal";
 import { useDisclosure } from "@mantine/hooks";
 import { CollectionsEntriesService, Game } from "@/wrapper/server";
@@ -41,11 +28,9 @@ const GameInfoActions = ({ game, wrapperProps }: IGameViewActionsProps) => {
     const userId = useUserId();
     const collectionEntryQuery = useOwnCollectionEntryForGameId(game?.id);
 
-    const gameInLibrary =
-        !collectionEntryQuery.isError && collectionEntryQuery.data != undefined;
+    const gameInLibrary = !collectionEntryQuery.isError && collectionEntryQuery.data != undefined;
 
-    const gameInFavorites =
-        gameInLibrary && collectionEntryQuery.data!.isFavorite;
+    const gameInFavorites = gameInLibrary && collectionEntryQuery.data!.isFavorite;
 
     const reviewQuery = useReviewForUserIdAndGameId(userId, game?.id);
 
@@ -53,10 +38,9 @@ const GameInfoActions = ({ game, wrapperProps }: IGameViewActionsProps) => {
 
     const invisibleFavoriteGame = useMemo(() => {
         if (collectionEntryQuery.data != undefined) {
-            const gameOnlyInPrivateCollections =
-                collectionEntryQuery.data.collections.every(
-                    (collection) => !collection.isPublic,
-                );
+            const gameOnlyInPrivateCollections = collectionEntryQuery.data.collections.every(
+                (collection) => !collection.isPublic,
+            );
             return gameInFavorites && gameOnlyInPrivateCollections;
         }
 
@@ -65,10 +49,9 @@ const GameInfoActions = ({ game, wrapperProps }: IGameViewActionsProps) => {
 
     const collectionEntryFavoriteMutation = useMutation({
         mutationFn: (gameId: number) => {
-            return CollectionsEntriesService.collectionsEntriesControllerChangeFavoriteStatus(
-                gameId,
-                { isFavorite: !gameInFavorites },
-            );
+            return CollectionsEntriesService.collectionsEntriesControllerChangeFavoriteStatus(gameId, {
+                isFavorite: !gameInFavorites,
+            });
         },
 
         onSuccess: () => {
@@ -93,21 +76,11 @@ const GameInfoActions = ({ game, wrapperProps }: IGameViewActionsProps) => {
                     onClose={removeModalUtils.close}
                     gameId={game.id}
                 />
-                <Modal
-                    opened={shareModalOpened}
-                    onClose={shareModalUtils.close}
-                    title={"Share"}
-                >
-                    <GameInfoShare
-                        gameId={game.id}
-                        onClose={shareModalUtils.close}
-                    />
+                <Modal opened={shareModalOpened} onClose={shareModalUtils.close} title={"Share"}>
+                    <GameInfoShare gameId={game.id} onClose={shareModalUtils.close} />
                 </Modal>
 
-                <Button
-                    onClick={addUpdateModalUtils.open}
-                    loading={collectionEntryQuery.isLoading}
-                >
+                <Button onClick={addUpdateModalUtils.open} loading={collectionEntryQuery.isLoading}>
                     {gameInLibrary ? "Update" : "Add to library"}
                 </Button>
 
@@ -120,32 +93,20 @@ const GameInfoActions = ({ game, wrapperProps }: IGameViewActionsProps) => {
                             collectionEntryFavoriteMutation.mutate(game.id);
                         }}
                     >
-                        {gameInFavorites ? (
-                            <IconHeartFilled size={"1.05rem"} />
-                        ) : (
-                            <IconHeartPlus size={"1.05rem"} />
-                        )}
+                        {gameInFavorites ? <IconHeartFilled size={"1.05rem"} /> : <IconHeartPlus size={"1.05rem"} />}
                     </ActionIcon>
                 </Tooltip>
 
                 {gameInLibrary && (
                     <Tooltip label={"Remove from your library"}>
-                        <ActionIcon
-                            variant="default"
-                            size="lg"
-                            onClick={removeModalUtils.open}
-                        >
+                        <ActionIcon variant="default" size="lg" onClick={removeModalUtils.open}>
                             <IconX color="red" />
                         </ActionIcon>
                     </Tooltip>
                 )}
                 {hasReview && (
                     <Tooltip label={"Share this game"}>
-                        <ActionIcon
-                            size="lg"
-                            variant="default"
-                            onClick={() => shareModalUtils.toggle()}
-                        >
+                        <ActionIcon size="lg" variant="default" onClick={() => shareModalUtils.toggle()}>
                             <IconShare size={"1.05rem"} />
                         </ActionIcon>
                     </Tooltip>
@@ -153,8 +114,8 @@ const GameInfoActions = ({ game, wrapperProps }: IGameViewActionsProps) => {
             </Group>
             {invisibleFavoriteGame && (
                 <Text c={"dimmed"} fz={"sm"} className={"text-center"}>
-                    This favorite game will not be shown in your public profile
-                    because it's only included in private collections.
+                    This favorite game will not be shown in your public profile because it's only included in private
+                    collections.
                 </Text>
             )}
         </Stack>

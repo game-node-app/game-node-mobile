@@ -1,40 +1,14 @@
 import React, { useCallback, useMemo } from "react";
-import {
-    ActionIcon,
-    Box,
-    Center,
-    Container,
-    Divider,
-    Group,
-    SimpleGrid,
-    Skeleton,
-    Stack,
-    Text,
-    Title,
-    Tooltip,
-} from "@mantine/core";
-import { useCollectionEntriesForCollectionId } from "@/components/collection/collection-entry/hooks/useCollectionEntriesForCollectionId";
-import { Collection } from "@/wrapper/server";
+import { Container, Divider, Group, Skeleton, Stack, Text, Title } from "@mantine/core";
 import { useCollection } from "@/components/collection/hooks/useCollection";
-import {
-    IconDots,
-    IconReplace,
-    IconTrash,
-    IconTrashOff,
-} from "@tabler/icons-react";
-import CollectionEntriesView from "@/components/collection/collection-entry/view/CollectionEntriesView";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import CollectionCreateOrUpdateModal from "@/components/collection/form/modal/CollectionCreateOrUpdateModal";
-import { useDisclosure } from "@mantine/hooks";
-import CollectionEntriesMoveModal from "@/components/collection/collection-entry/form/modal/CollectionEntriesMoveModal";
-import useUserId from "@/components/auth/hooks/useUserId";
 import { useGames } from "@/components/game/hooks/useGames";
-import CollectionRemoveModal from "@/components/collection/form/modal/CollectionRemoveModal";
-import Head from "next/head";
-import useUserProfile from "@/components/profile/hooks/useUserProfile";
-import CollectionViewActions from "@/components/collection/form/CollectionViewActions";
+import useUserId from "@/components/auth/hooks/useUserId";
+import GameView from "@/components/game/view/GameView";
+import { useInfiniteCollectionEntriesForCollectionId } from "../collection-entry/hooks/useInfiniteCollectionEntriesForCollectionId";
+import CenteredErrorMessage from "@/components/general/CenteredErrorMessage";
 
 interface ICollectionViewProps {
     libraryUserId: string;
@@ -47,17 +21,14 @@ const CollectionViewFormSchema = z.object({
 
 type CollectionViewFormValues = z.infer<typeof CollectionViewFormSchema>;
 
-const DEFAULT_LIMIT = 10;
+const DEFAULT_LIMIT = 12;
 
 const DEFAULT_REQUEST_PARAMS = {
     limit: DEFAULT_LIMIT,
     offset: 0,
 };
 
-const CollectionView = ({
-    collectionId,
-    libraryUserId,
-}: ICollectionViewProps) => {
+const CollectionView = ({ collectionId, libraryUserId }: ICollectionViewProps) => {
     const { register, watch, setValue } = useForm<CollectionViewFormValues>({
         mode: "onSubmit",
         resolver: zodResolver(CollectionViewFormSchema),
@@ -82,7 +53,7 @@ const CollectionView = ({
     const collectionQuery = useCollection(collectionId);
     const collection = collectionQuery.data;
     const isOwnCollection = libraryUserId === ownUserId;
-    const collectionEntriesQuery = useCollectionEntriesForCollectionId({
+    const collectionEntriesQuery = useInfiniteCollectionEntriesForCollectionId({
         collectionId,
         offset: requestParams.offset,
         limit: requestParams.limit,
@@ -91,7 +62,9 @@ const CollectionView = ({
         },
     });
     const gamesIds = useMemo(() => {
-        return collectionEntriesQuery.data?.data.map((entry) => entry.gameId);
+        const ids = collectionEntriesQuery.data?.pages.flatMap((page) => page?.data.map((entry) => entry.gameId));
+
+        return ids?.filter((id) => id != undefined);
     }, [collectionEntriesQuery.data]);
     const gamesQuery = useGames({
         gameIds: gamesIds,
@@ -101,64 +74,44 @@ const CollectionView = ({
     });
     const games = gamesQuery.data;
 
-    const profileQuery = useUserProfile(ownUserId);
-    const profile = profileQuery.data;
-
-    const isLoading =
-        collectionQuery.isLoading ||
-        collectionEntriesQuery.isLoading ||
-        gamesQuery.isLoading;
-    const isError =
-        collectionQuery.isError ||
-        collectionEntriesQuery.isError ||
-        gamesQuery.isError;
+    const isLoading = collectionQuery.isLoading || collectionEntriesQuery.isLoading || gamesQuery.isLoading;
+    const isError = collectionQuery.isError || collectionEntriesQuery.isError || gamesQuery.isError;
+    const isFetching = collectionEntriesQuery.isFetching || gamesQuery.isFetching;
 
     return (
-        <Container fluid p={0} h={"100%"}>
-            {collection && profile && (
-                <Head>
-                    <title>
-                        {`${profile.username} - ${collection.name} - GameNode`}
-                    </title>
-                </Head>
-            )}
-            <Stack w={"100%"} h={"100%"} gap={0} align={"center"}>
-                <Group className="w-[calc(100%-2rem)] mt-8 flex-nowrap justify-between">
-                    <Stack w={{ base: "70%", lg: "30%" }}>
-                        {isLoading && (
-                            <>
-                                <Skeleton className={"w-32 h-9"} />
-                                <Skeleton className={"w-48 h-6"} />
-                            </>
-                        )}
-                        <Title size={"h3"} className={"w-full break-words"}>
-                            {collection?.name}
-                        </Title>
-                        <Text c={"dimmed"} w={"100%"} className={"break-words"}>
-                            {collectionQuery.data?.description}
-                        </Text>
-                    </Stack>
-                    {!isError && !isLoading && isOwnCollection && (
-                        <CollectionViewActions collectionId={collectionId} />
+        <Stack w={"100%"} h={"100%"} gap={0} align={"center"}>
+            <Group className="w-full flex-nowrap justify-between">
+                <Stack w="100%">
+                    {collectionQuery.isLoading && (
+                        <>
+                            <Skeleton className={"w-32 h-9"} />
+                            <Skeleton className={"w-48 h-6"} />
+                        </>
                     )}
-                </Group>
-                <Divider
-                    className={"w-[calc(100%-2rem)]"}
-                    my={"sm"}
-                    variant={"dashed"}
-                />
-                <CollectionEntriesView
-                    isLoading={isLoading}
-                    isError={isError}
-                    games={games}
-                    paginationInfo={collectionEntriesQuery.data?.pagination}
-                    page={formPage}
-                    onPaginationChange={(page) => {
-                        setValue("page", page);
+                    <Title size={"h3"} className={"w-full break-words"}>
+                        {collection?.name}
+                    </Title>
+                    <Text c={"dimmed"} w={"100%"} className={"break-words"}>
+                        {collectionQuery.data?.description}
+                    </Text>
+                </Stack>
+            </Group>
+            <Divider className={"w-[calc(100%-2rem)]"} my={"sm"} variant={"dashed"} />
+            <GameView layout={"grid"}>
+                <GameView.Content
+                    items={games}
+                    isLoading={false}
+                    isFetching={isFetching}
+                    hasNextPage={collectionEntriesQuery.hasNextPage}
+                    onLoadMore={() => {
+                        if (!isLoading && !isFetching) {
+                            collectionEntriesQuery.fetchNextPage();
+                        }
                     }}
                 />
-            </Stack>
-        </Container>
+                {isError && <CenteredErrorMessage message="Failed to fetch collection entries. Please try again." />}
+            </GameView>
+        </Stack>
     );
 };
 

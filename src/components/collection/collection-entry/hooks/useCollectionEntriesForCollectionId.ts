@@ -1,8 +1,4 @@
-import {
-    keepPreviousData,
-    useQuery,
-    useQueryClient,
-} from "@tanstack/react-query";
+import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CollectionEntriesPaginatedResponseDto } from "@/wrapper/server";
 import { getCollectionEntriesByCollectionId } from "@/components/collection/collection-entry/util/getCollectionEntriesByCollectionId";
 import { ExtendedUseQueryResult } from "@/util/types/ExtendedUseQueryResult";
@@ -11,7 +7,7 @@ interface UseCollectionEntriesForCollectionIdProps {
     collectionId: string;
     limit?: number;
     offset?: number;
-    orderBy?: Record<string, any>;
+    orderBy?: Record<string, unknown>;
 }
 
 /**
@@ -31,13 +27,10 @@ export function useCollectionEntriesForCollectionId({
     CollectionEntriesPaginatedResponseDto | undefined
 > {
     const queryClient = useQueryClient();
-    const queryKey = [
-        "collection-entries",
-        collectionId,
-        offset,
-        limit,
-        orderBy,
-    ];
+    const queryKey = ["collection-entries", collectionId, offset, limit, orderBy];
+    /**
+     * This will also invalidate 'useInfiniteCollectionEntriesForCollectionId'
+     */
     const invalidate = () => {
         queryClient.invalidateQueries({
             queryKey: [queryKey[0]],
@@ -50,12 +43,7 @@ export function useCollectionEntriesForCollectionId({
                 if (!collectionId) {
                     return undefined;
                 }
-                return await getCollectionEntriesByCollectionId(
-                    collectionId,
-                    offset,
-                    limit,
-                    orderBy,
-                );
+                return await getCollectionEntriesByCollectionId(collectionId, offset, limit, orderBy);
             },
             enabled: !!collectionId,
         }),

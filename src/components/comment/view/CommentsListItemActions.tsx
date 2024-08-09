@@ -15,9 +15,10 @@ import ReportCreateFormModal from "@/components/report/modal/ReportCreateFormMod
 
 interface Props {
     comment: UserComment;
+    onEditStart: (commentId: string) => void
 }
 
-const CommentsListItemActions = ({ comment }: Props) => {
+const CommentsListItemActions = ({ comment, onEditStart }: Props) => {
     const ownUserId = useUserId();
     const statisticsType = useMemo(() => {
         if (comment.reviewId != undefined) {
@@ -77,7 +78,7 @@ const CommentsListItemActions = ({ comment }: Props) => {
                     <>
                         <ItemDropdown.EditButton
                             onClick={() => {
-                                // onEditStart(comment.id);
+                                onEditStart(comment.id);
                             }}
                             disabled={!isOwnComment}
                         />

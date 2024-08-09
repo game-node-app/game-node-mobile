@@ -85,11 +85,7 @@ const GameInfoDetailsTags = ({ gameId }: IProps) => {
         return tags
             .filter((tag) => tag != undefined)
             .map((tag) => {
-                return (
-                    <Link key={`tag-${tag.category}-${tag.id}`} to={`/explore?${tag.category}=${tag.id}`}>
-                        <Badge>{tag.name}</Badge>
-                    </Link>
-                );
+                return <Badge key={`tag-${tag.category}-${tag.id}`}>{tag.name}</Badge>;
             });
     }, [game]);
 

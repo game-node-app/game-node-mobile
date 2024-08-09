@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Form, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button, Stack, TextInput, Text, Switch } from "@mantine/core";
-import { useRouter } from "next/router";
 import { useSessionContext } from "supertokens-auth-react/recipe/session";
 import { useUserLibrary } from "@/components/library/hooks/useUserLibrary";
 import { BaseModalChildrenProps } from "@/util/types/modal-props";
@@ -36,10 +35,7 @@ interface ICollectionCreateOrUpdateFormProps extends BaseModalChildrenProps {
     collectionId?: string;
 }
 
-const CollectionCreateOrUpdateForm = ({
-    onClose,
-    collectionId,
-}: ICollectionCreateOrUpdateFormProps) => {
+const CollectionCreateOrUpdateForm = ({ onClose, collectionId }: ICollectionCreateOrUpdateFormProps) => {
     const session = useSessionContext();
     const userId = session.loading ? undefined : session.userId;
     const userLibraryQuery = useUserLibrary(userId);
@@ -47,24 +43,18 @@ const CollectionCreateOrUpdateForm = ({
     const collectionQuery = useCollection(collectionId);
     const existingCollection = collectionQuery.data;
 
-    const { setValue, watch, handleSubmit, register, formState } =
-        useForm<CreateCollectionFormValues>({
-            resolver: zodResolver(CreateCollectionFormSchema),
-            mode: "onChange",
-            defaultValues: {
-                isPublic: true,
-            },
-        });
-
-    const router = useRouter();
+    const { setValue, watch, handleSubmit, register, formState } = useForm<CreateCollectionFormValues>({
+        resolver: zodResolver(CreateCollectionFormSchema),
+        mode: "onChange",
+        defaultValues: {
+            isPublic: true,
+        },
+    });
 
     const collectionMutation = useMutation({
         mutationFn: async (data: CreateCollectionFormValues) => {
             if (existingCollection != undefined) {
-                await CollectionsService.collectionsControllerUpdate(
-                    existingCollection.id,
-                    data,
-                );
+                await CollectionsService.collectionsControllerUpdate(existingCollection.id, data);
                 return;
             }
             await CollectionsService.collectionsControllerCreate(data);
@@ -78,20 +68,14 @@ const CollectionCreateOrUpdateForm = ({
             userLibraryQuery.invalidate();
             collectionQuery.invalidate();
         },
-        onError: (error: ApiError) => {
-            if (error.status === 401) {
-                router.push("/auth");
-            }
-        },
     });
 
     useEffect(() => {
-        const possibleKeys = Object.keys(
-            CreateCollectionFormSchema.innerType().shape,
-        );
+        const possibleKeys = Object.keys(CreateCollectionFormSchema.innerType().shape);
         if (existingCollection != undefined) {
             for (const [key, value] of Object.entries(existingCollection)) {
                 if (possibleKeys.includes(key)) {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     setValue(key as any, value);
                 }
             }
@@ -99,16 +83,9 @@ const CollectionCreateOrUpdateForm = ({
     }, [existingCollection, setValue]);
 
     return (
-        <form
-            className="w-full h-full"
-            onSubmit={handleSubmit((data) => collectionMutation.mutate(data))}
-        >
+        <form className="w-full h-full" onSubmit={handleSubmit((data) => collectionMutation.mutate(data))}>
             <Stack gap="lg">
-                {collectionMutation.isError && (
-                    <CenteredErrorMessage
-                        message={collectionMutation.error.message}
-                    />
-                )}
+                {collectionMutation.isError && <CenteredErrorMessage message={collectionMutation.error.message} />}
                 <TextInput
                     withAsterisk
                     label={"Collection name"}
@@ -127,18 +104,14 @@ const CollectionCreateOrUpdateForm = ({
                 <Switch
                     error={formState.errors.isPublic?.message}
                     label={"Public collection"}
-                    description={
-                        "If this collections is visible to other users"
-                    }
+                    description={"If this collections is visible to other users"}
                     defaultChecked={existingCollection?.isPublic ?? true}
                     {...register("isPublic")}
                 />
                 <Switch
                     error={formState.errors.isFeatured?.message}
                     label={"Featured collection"}
-                    description={
-                        "If this collections should be featured in your profile and library"
-                    }
+                    description={"If this collections should be featured in your profile and library"}
                     defaultChecked={existingCollection?.isFeatured}
                     {...register("isFeatured")}
                 />
@@ -153,10 +126,7 @@ const CollectionCreateOrUpdateForm = ({
                 />
                 <Button
                     type="submit"
-                    loading={
-                        collectionMutation.isPending ||
-                        collectionQuery.isLoading
-                    }
+                    loading={collectionMutation.isPending || collectionQuery.isLoading}
                     disabled={collectionQuery.isLoading}
                 >
                     {existingCollection ? "Update" : "Create"}

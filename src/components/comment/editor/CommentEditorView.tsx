@@ -8,6 +8,7 @@ import { CommentService } from "@/wrapper/server";
 import { CreateCommentDto } from "@/wrapper/server";
 import { notifications } from "@mantine/notifications";
 import { useComment } from "@/components/comment/hooks/useComment";
+import CenteredLoading from "@/components/general/CenteredLoading";
 
 interface Props {
     /**
@@ -18,18 +19,21 @@ interface Props {
     sourceType: CreateCommentDto.sourceType;
     sourceId: string;
     editorContainerRef?: RefObject<HTMLDivElement>;
+    /**
+     * Triggered when the user clicks the cancel or finishes submitting with success.
+     */
+    onEditEnd?: () => void;
 }
 
-const CommentEditorView = ({ commentId, sourceType, sourceId, editorContainerRef }: Props) => {
+const CommentEditorView = ({ commentId, sourceType, sourceId, editorContainerRef, onEditEnd }: Props) => {
     const queryClient = useQueryClient();
     const editorRef = useRef<Editor>();
     const commentQuery = useComment(commentId, sourceType);
-    const [previousContent, setPreviousContent] = useState<string | undefined>(undefined);
-    const [shouldShowActionButtons, setShouldShowActionButtons] = useState<boolean>(false);
+    // const [shouldShowActionButtons, setShouldShowActionButtons] = useState<boolean>(false);
 
     const clearEditor = () => {
         editorRef.current?.commands.clearContent();
-        setShouldShowActionButtons(false);
+        // setShouldShowActionButtons(false);
     };
 
     const commentMutation = useMutation({
@@ -52,7 +56,7 @@ const CommentEditorView = ({ commentId, sourceType, sourceId, editorContainerRef
         },
         onSettled: () => {
             queryClient.invalidateQueries({
-                queryKey: ["comments", sourceType, sourceId],
+                queryKey: ["comments"],
             });
         },
         onSuccess: () => {
@@ -61,58 +65,53 @@ const CommentEditorView = ({ commentId, sourceType, sourceId, editorContainerRef
                 message: "Successfully submitted your comment!",
             });
             clearEditor();
+            if (onEditEnd) onEditEnd();
+        },
+        onError: (err) => {
+            notifications.show({
+                color: "red",
+                message: err.message,
+            });
         },
     });
 
     const isUpdateAction = commentId != undefined && commentQuery.data != undefined;
 
-    useEffect(() => {
-        if (commentId == undefined && previousContent != undefined) {
-            setPreviousContent(undefined);
-        }
-
-        if (commentId != undefined && commentQuery.data != undefined) {
-            setPreviousContent(commentQuery.data.content);
-            setShouldShowActionButtons(true);
-        }
-    }, [commentId, commentQuery.data, previousContent]);
-
     return (
         <Stack className={"w-full h-full relative"} ref={editorContainerRef}>
-            <LoadingOverlay visible={commentQuery.isLoading} />
-            {isUpdateAction && <Text c={"dimmed"}>You are currently editing one of your previous comments.</Text>}
-            <CommentEditor
-                content={previousContent}
-                onUpdate={() => {
-                    setShouldShowActionButtons(true);
-                }}
-                onCreate={(props) => {
-                    // eslint-disable-next-line react/prop-types
-                    editorRef.current = props.editor;
-                }}
-            />
-            {shouldShowActionButtons && (
-                <Group className={"w-full justify-end"}>
+            {commentQuery.isLoading && <CenteredLoading />}
+            {!commentQuery.isLoading && (
+                <CommentEditor
+                    content={commentQuery.data?.content}
+                    onCreate={(props) => {
+                        // eslint-disable-next-line react/prop-types
+                        editorRef.current = props.editor;
+                    }}
+                />
+            )}
+            <Group className={"w-full justify-end"}>
+                {isUpdateAction && (
                     <ActionIcon
                         size={"lg"}
                         variant={"default"}
                         onClick={() => {
                             clearEditor();
+                            if (onEditEnd) onEditEnd();
                         }}
                     >
                         <IconX />
                     </ActionIcon>
-                    <Button
-                        type={"button"}
-                        loading={commentMutation.isPending}
-                        onClick={() => {
-                            commentMutation.mutate();
-                        }}
-                    >
-                        {isUpdateAction ? "Update" : "Submit"}
-                    </Button>
-                </Group>
-            )}
+                )}
+                <Button
+                    type={"button"}
+                    loading={commentMutation.isPending}
+                    onClick={() => {
+                        commentMutation.mutate();
+                    }}
+                >
+                    {isUpdateAction ? "Update" : "Submit"}
+                </Button>
+            </Group>
         </Stack>
     );
 };

@@ -44,7 +44,7 @@ import { getSuperTokensRoutesForReactRouterDom } from "supertokens-auth-react/ui
 import { ThirdPartyPreBuiltUI } from "supertokens-auth-react/recipe/thirdparty/prebuiltui";
 import { PasswordlessPreBuiltUI } from "supertokens-auth-react/recipe/passwordless/prebuiltui";
 import SuperTokensProvider from "./components/auth/SuperTokensProvider";
-import { IconHome, IconRouteAltLeft, IconUser } from "@tabler/icons-react";
+import { IconHome, IconLibrary, IconRouteAltLeft, IconUser } from "@tabler/icons-react";
 import { OpenAPI as ServerOpenAPI } from "@/wrapper/server";
 import { OpenAPI as SearchOpenAPI } from "@/wrapper/search";
 import ExplorePage from "@/pages/explore";
@@ -53,6 +53,8 @@ import GamePage from "@/pages/game";
 import HomePage from "./pages/home";
 import ProfilePage from "@/pages/profile";
 import { getCommonRoutes } from "./pages/routes/getCommonRoutes";
+import LibraryPage from "./pages/library";
+import NotificationsManager from "./components/general/NotificationsManager";
 
 /**
  * Basic configuration for wrapper services
@@ -86,6 +88,7 @@ const App: React.FC = () => {
             <MantineProvider theme={theme} forceColorScheme={"dark"}>
                 <QueryClientProvider client={queryClient}>
                     <SuperTokensProvider>
+                        <NotificationsManager />
                         <IonReactRouter>
                             <IonTabs>
                                 <IonRouterOutlet>
@@ -117,6 +120,11 @@ const App: React.FC = () => {
                                         <ProfilePage />
                                     </Route>
                                     {getCommonRoutes("/profile")}
+                                    {/* ---- LIBRARY ROUTES ---- */}
+                                    <Route exact path="/library">
+                                        <LibraryPage />
+                                    </Route>
+                                    {getCommonRoutes("/library")}
                                 </IonRouterOutlet>
                                 <IonTabBar slot="bottom">
                                     <IonTabButton tab="home" href="/home">
@@ -130,6 +138,10 @@ const App: React.FC = () => {
                                     <IonTabButton tab="profile" href="/profile">
                                         <IconUser aria-hidden={"true"} />
                                         <IonLabel>Profile</IonLabel>
+                                    </IonTabButton>
+                                    <IonTabButton tab="library" href="/library">
+                                        <IconLibrary aria-hidden={"true"} />
+                                        <IonLabel>Library</IonLabel>
                                     </IonTabButton>
                                 </IonTabBar>
                             </IonTabs>

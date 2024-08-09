@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useMemo } from "react";
-import { Box, Button, Divider, Group, SimpleGrid, SimpleGridProps, Skeleton, Stack, Text } from "@mantine/core";
+import { Box, Button, Center, Divider, Group, SimpleGrid, SimpleGridProps, Skeleton, Stack, Text } from "@mantine/core";
 import { GameViewContext } from "@/components/game/view/GameView";
 import GameGridItem from "@/components/game/figure/GameGridItem";
 import GameListItem from "@/components/game/figure/GameListItem";
@@ -65,7 +65,7 @@ const GameViewContent = ({
         let baseSkeletonCount = 0;
         if (layout === "grid" && items?.length) {
             const totalItems = items.length;
-            const itemsInLastGrid = Math.trunc(totalItems / GRID_COLUMNS_COUNT) - GRID_COLUMNS_COUNT;
+            const itemsInLastGrid = Math.floor(totalItems / GRID_COLUMNS_COUNT) - GRID_COLUMNS_COUNT;
             baseSkeletonCount = countTo(itemsInLastGrid, GRID_COLUMNS_COUNT);
         }
 
@@ -74,10 +74,16 @@ const GameViewContent = ({
         });
     }, [items?.length, layout]);
 
+    const isEmpty = !isLoading && !isFetching && (items == undefined || items.length === 0);
+
     if (layout === "list") {
         return (
             <Stack className={"w-full h-full"}>
-                <Text className={"text-sm text-dimmed"}>Tip: swipe on a game to see extra options</Text>
+                {isEmpty && (
+                    <Center>
+                        <Text>No items to show.</Text>
+                    </Center>
+                )}
                 <IonList className={"w-full"} lines={"inset"}>
                     {isFetching && buildLoadingSkeletons()}
                     {buildListItems()}
@@ -88,9 +94,11 @@ const GameViewContent = ({
 
     return (
         <Stack className={"w-full h-full gap-2"}>
-            <Text className={"text-sm text-dimmed"}>
-                Tip: press and hold on a game to quickly add it to your library
-            </Text>
+            {isEmpty && (
+                <Center>
+                    <Text>No items to show.</Text>
+                </Center>
+            )}
             {isLoading && <CenteredLoading />}
             <SimpleGrid id={"game-view-content"} cols={GRID_COLUMNS_COUNT} w={"100%"} h={"100%"} {...others}>
                 {buildGridColumns()}

@@ -1,14 +1,14 @@
 import React from "react";
-import { Center, SimpleGrid, Stack } from "@mantine/core";
-import { Game, GameRepositoryFindOneDto } from "@/wrapper/server";
+import { SimpleGrid, Stack } from "@mantine/core";
+import { Game } from "@/wrapper/server";
 import { getLocalizedFirstReleaseDate } from "@/components/game/util/getLocalizedFirstReleaseDate";
 import { DetailsBox } from "@/components/general/DetailsBox";
 import GameInfoPlatforms from "@/components/game/info/GameInfoPlatforms";
 import GameInfoDetailsDeveloperInfo from "@/components/game/info/GameInfoDetailsDeveloperInfo";
 import GameInfoDetailsTags from "@/components/game/info/GameInfoDetailsTags";
-import GameInfoScore from "@/components/game/info/GameInfoScore";
 import GameInfoPlaytime from "@/components/game/info/playtime/GameInfoPlaytime";
 import GameInfoExternalStores from "@/components/game/info/GameInfoExternalStores";
+import GameInfoScore from "./GameInfoScore";
 
 interface IGameInfoDetailsProps {
     game: Game | undefined;
@@ -36,7 +36,7 @@ const GameInfoDetails = ({ game }: IGameInfoDetailsProps) => {
                 <DetailsBox withBorder withDimmedTitle title={"Summary"}>
                     {game.summary ?? "Not available"}
                 </DetailsBox>
-                {/*<GameInfoScore gameId={game.id} />*/}
+                <GameInfoScore gameId={game.id} />
                 <GameInfoPlaytime gameId={game.id} />
             </SimpleGrid>
         </Stack>

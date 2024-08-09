@@ -1,14 +1,6 @@
-import {
-    keepPreviousData,
-    useQuery,
-    useQueryClient,
-} from "@tanstack/react-query";
+import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ExtendedUseQueryResult } from "@/util/types/ExtendedUseQueryResult";
-import {
-    CommentService,
-    FindAllCommentsDto,
-    FindCommentsPaginatedResponseDto,
-} from "@/wrapper/server";
+import { CommentService, FindAllCommentsDto, FindCommentsPaginatedResponseDto } from "@/wrapper/server";
 
 const DEFAULT_USE_COMMENTS_ORDER_BY = {
     createdAt: "DESC",
@@ -49,7 +41,7 @@ export function useComments({
                 });
             },
             enabled,
-            retry: 1,
+            retry: 2,
             placeholderData: keepPreviousData,
         }),
         queryKey,

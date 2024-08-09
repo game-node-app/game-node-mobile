@@ -15,12 +15,10 @@ interface Props {
 }
 
 const ProfileFavoriteGames = ({ userId, limit = 10 }: Props) => {
+    console.log("ProfileFavoriteGames", userId);
     const onMobile = useOnMobile();
-    const favoriteCollectionEntriesQuery =
-        useFavoriteCollectionEntriesForUserId(userId, 0, limit);
-    const gamesIds = favoriteCollectionEntriesQuery.data?.data.map(
-        (entry) => entry.gameId,
-    );
+    const favoriteCollectionEntriesQuery = useFavoriteCollectionEntriesForUserId(userId, 0, limit);
+    const gamesIds = favoriteCollectionEntriesQuery.data?.data.map((entry) => entry.gameId);
     const gamesQuery = useGames({
         gameIds: gamesIds || [],
         relations: {
@@ -28,11 +26,9 @@ const ProfileFavoriteGames = ({ userId, limit = 10 }: Props) => {
         },
     });
 
-    const isLoading =
-        favoriteCollectionEntriesQuery.isLoading || gamesQuery.isLoading;
+    const isLoading = favoriteCollectionEntriesQuery.isLoading || gamesQuery.isLoading;
 
-    const isError =
-        favoriteCollectionEntriesQuery.isError || gamesQuery.isError;
+    const isError = favoriteCollectionEntriesQuery.isError || gamesQuery.isError;
 
     const isEmpty =
         favoriteCollectionEntriesQuery.data == undefined ||
@@ -43,17 +39,9 @@ const ProfileFavoriteGames = ({ userId, limit = 10 }: Props) => {
     if (isLoading) {
         return <CenteredLoading />;
     } else if (isEmpty) {
-        return (
-            <CenteredErrorMessage
-                message={"This user has no public favorite games."}
-            />
-        );
+        return <CenteredErrorMessage message={"This user has no public favorite games."} />;
     } else if (isError) {
-        return (
-            <CenteredErrorMessage
-                message={"We couldn't fetch this data. Please try again."}
-            />
-        );
+        return <CenteredErrorMessage message={"We couldn't fetch this data. Please try again."} />;
     }
     return (
         <SimpleGrid cols={onMobile ? 3 : 5} w={"100%"}>

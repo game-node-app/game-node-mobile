@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
 import { useReviewsScore } from "@/components/review/hooks/useReviewsScore";
-import CenteredLoading from "@/components/general/CenteredLoading";
 import { DetailsBox } from "@/components/general/DetailsBox";
 import {
     Box,

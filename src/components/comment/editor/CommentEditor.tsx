@@ -22,6 +22,8 @@ const CommentEditor = ({ ...editorOptions }: Props) => {
         [editorOptions.content],
     );
 
+    console.log(editorOptions.content);
+
     return (
         <RichTextEditor editor={editor} className={"w-full h-full"}>
             {editor && (

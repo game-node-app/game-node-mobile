@@ -22,6 +22,7 @@ const CollectionEntryRemoveModal = ({ gameId, onClose, opened }: ICollectionEntr
         onSuccess: () => {
             collectionEntriesQuery.invalidate();
             queryClient.invalidateQueries({ queryKey: ["review", gameId] });
+            onClose();
         },
     });
 
@@ -36,7 +37,7 @@ const CollectionEntryRemoveModal = ({ gameId, onClose, opened }: ICollectionEntr
                 </IonToolbar>
             </IonHeader>
 
-            <IonContent className="ion-padding">
+            <IonContent>
                 <SessionAuth>
                     <Container fluid className={"min-h-screen my-4"}>
                         <Stack justify={"center"} w={"100%"} ta={"center"}>
@@ -51,16 +52,15 @@ const CollectionEntryRemoveModal = ({ gameId, onClose, opened }: ICollectionEntr
                             <Text>Are you sure?</Text>
                             <Group wrap={"nowrap"} justify={"center"}>
                                 <Button onClick={onClose} color={"blue"}>
-                                    No
+                                    Go back
                                 </Button>
                                 <Button
                                     onClick={() => {
                                         collectionEntryRemoveMutation.mutate(collectionEntriesQuery.data!.id);
-                                        onClose();
                                     }}
                                     color={"red"}
                                 >
-                                    Yes
+                                    Confirm
                                 </Button>
                             </Group>
                         </Stack>

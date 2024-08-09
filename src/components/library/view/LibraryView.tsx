@@ -1,13 +1,12 @@
 import React, { PropsWithChildren } from "react";
-import LibraryViewSidebar from "@/components/library/view/sidebar/LibraryViewSidebar";
 import useOnMobile from "@/components/general/hooks/useOnMobile";
-import { Container, Flex, Grid, SelectProps } from "@mantine/core";
+import { Flex, Grid, Stack } from "@mantine/core";
 import LibraryViewCollectionsSelect from "@/components/library/view/sidebar/LibraryViewCollectionsSelect";
-import { useRouter } from "next/router";
 
 interface ILibraryViewProps extends PropsWithChildren {
     userId: string | undefined;
     collectionId: string | undefined;
+    onChange: (collectionId: string | undefined) => void;
 }
 
 /**
@@ -18,45 +17,27 @@ interface ILibraryViewProps extends PropsWithChildren {
  * @param collectionSelectProps
  * @constructor
  */
-const LibraryView = ({ children, userId, collectionId }: ILibraryViewProps) => {
-    const onMobile = useOnMobile();
-    const router = useRouter();
-
+const LibraryView = ({ children, userId, collectionId, onChange }: ILibraryViewProps) => {
     return (
-        <Container fluid pl={onMobile ? undefined : 0} w={"100%"} h={"100%"}>
-            {onMobile && (
-                <Flex w={"100%"} justify={"center"}>
-                    <LibraryViewCollectionsSelect
-                        userId={userId}
-                        value={collectionId}
-                        onChange={(value) => {
-                            if (
-                                collectionId != undefined &&
-                                value == undefined
-                            ) {
-                                router.push(`/library/${userId}`);
-                                return;
-                            }
-                            router.push(
-                                `/library/${userId}/collection/${value}`,
-                            );
-                        }}
-                    />
-                </Flex>
-            )}
-            <Grid columns={12} w={"100%"} h={"100%"}>
-                <Grid.Col
-                    span={{ base: 0, lg: 3 }}
-                    display={onMobile ? "none" : undefined}
-                >
-                    <LibraryViewSidebar userId={userId} />
-                </Grid.Col>
-
-                <Grid.Col span={{ base: 12, lg: 9 }} h={"100%"}>
-                    {children}
-                </Grid.Col>
-            </Grid>
-        </Container>
+        <Stack w={"100%"} h={"100%"}>
+            <Flex w={"100%"} justify={"center"}>
+                <LibraryViewCollectionsSelect
+                    userId={userId}
+                    value={collectionId}
+                    onChange={(value) => {
+                        if (value) {
+                            onChange(value);
+                        }
+                    }}
+                    onClear={() => {
+                        onChange(undefined);
+                    }}
+                />
+            </Flex>
+            <Stack w={"100%"} h={"100%"}>
+                {children}
+            </Stack>
+        </Stack>
     );
 };
 

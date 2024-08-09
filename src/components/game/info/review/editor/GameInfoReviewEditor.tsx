@@ -41,32 +41,30 @@ const GameInfoReviewEditor = ({ gameId, onBlur }: IGameInfoReviewEditorProps) =>
     if (!editor) return null;
 
     return (
-        <Box p={0} mx={0} w={"100%"} h={"100%"}>
-            <RichTextEditor w={"100%"} h={"100%"} mx={0} editor={editor}>
-                <RichTextEditor.Toolbar sticky w={"100%"}>
-                    <RichTextEditor.ControlsGroup>
-                        <RichTextEditor.Bold />
-                        <RichTextEditor.Italic />
-                        <RichTextEditor.Strikethrough />
-                    </RichTextEditor.ControlsGroup>
+        <RichTextEditor w={"100%"} h={"100%"} mx={0} editor={editor}>
+            <RichTextEditor.Toolbar sticky w={"100%"}>
+                <RichTextEditor.ControlsGroup>
+                    <RichTextEditor.Bold />
+                    <RichTextEditor.Italic />
+                    <RichTextEditor.Strikethrough />
+                </RichTextEditor.ControlsGroup>
 
-                    <RichTextEditor.ControlsGroup>
-                        <RichTextEditor.H1 />
-                        <RichTextEditor.H2 />
-                        <RichTextEditor.H3 />
-                        <RichTextEditor.H4 />
-                    </RichTextEditor.ControlsGroup>
+                <RichTextEditor.ControlsGroup>
+                    <RichTextEditor.H1 />
+                    <RichTextEditor.H2 />
+                    <RichTextEditor.H3 />
+                    <RichTextEditor.H4 />
+                </RichTextEditor.ControlsGroup>
 
-                    <RichTextEditor.ControlsGroup>
-                        <RichTextEditor.Blockquote />
-                        <RichTextEditor.Hr />
-                        <RichTextEditor.BulletList />
-                        <RichTextEditor.OrderedList />
-                    </RichTextEditor.ControlsGroup>
-                </RichTextEditor.Toolbar>
-                <RichTextEditor.Content w={"100%"} h={"100%"} mih={"35vh"} />
-            </RichTextEditor>
-        </Box>
+                <RichTextEditor.ControlsGroup>
+                    <RichTextEditor.Blockquote />
+                    <RichTextEditor.Hr />
+                    <RichTextEditor.BulletList />
+                    <RichTextEditor.OrderedList />
+                </RichTextEditor.ControlsGroup>
+            </RichTextEditor.Toolbar>
+            <RichTextEditor.Content w={"100%"} h={"100%"} mih={"35vh"} />
+        </RichTextEditor>
     );
 };
 

@@ -5,6 +5,8 @@ import { BaseModalProps } from "@/util/types/modal-props";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useUserId from "@/components/auth/hooks/useUserId";
 import { SessionAuth } from "supertokens-auth-react/recipe/session";
+import ActionConfirm from "@/components/general/ActionConfirm";
+import { notifications } from "@mantine/notifications";
 
 interface Props extends BaseModalProps {
     reviewId: string;
@@ -22,33 +24,22 @@ const ReviewListItemRemoveModal = ({ reviewId, opened, onClose }: Props) => {
                 queryClient.invalidateQueries({ queryKey: ["review"] }).then();
             }
         },
+        onSuccess: () => {
+            notifications.show({
+                color: "green",
+                message: "Your review has been removed.",
+            });
+        },
     });
     return (
-        <Modal opened={opened} onClose={onClose} title={"Remove review"}>
-            <SessionAuth>
-                <Modal.Body>
-                    <Stack align={"center"}>
-                        <Text fz={"lg"}>
-                            Are you sure you want to remove this review?
-                        </Text>
-                        <Group wrap={"nowrap"} justify={"center"}>
-                            <Button onClick={onClose} color={"blue"}>
-                                Go back
-                            </Button>
-                            <Button
-                                onClick={() => {
-                                    reviewRemoveMutation.mutate();
-                                    onClose();
-                                }}
-                                color={"red"}
-                            >
-                                Confirm
-                            </Button>
-                        </Group>
-                    </Stack>
-                </Modal.Body>
-            </SessionAuth>
-        </Modal>
+        <ActionConfirm
+            onClose={onClose}
+            opened={opened}
+            onConfirm={() => {
+                reviewRemoveMutation.mutate();
+            }}
+            title="Are you sure you want to remove this review?"
+        />
     );
 };
 

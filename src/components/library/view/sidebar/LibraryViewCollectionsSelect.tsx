@@ -1,28 +1,21 @@
 import React, { useMemo } from "react";
-import { useCollection } from "@/components/collection/hooks/useCollection";
-import {
-    ComboboxData,
-    ComboboxItem,
-    ComboboxItemGroup,
-    Select,
-    SelectProps,
-} from "@mantine/core";
-import { Library } from "@/wrapper/server";
+import { ComboboxItemGroup, Select, SelectProps } from "@mantine/core";
 import { useUserLibrary } from "@/components/library/hooks/useUserLibrary";
 
 interface Props extends SelectProps {
     userId: string | undefined;
 }
 
+/**
+ *
+ * Make sure to pass 'value' when using 'controlled' (the default) in this select.
+ * @returns
+ */
 const LibraryViewCollectionsSelect = ({ userId, ...others }: Props) => {
     const libraryQuery = useUserLibrary(userId);
     const collectionOptions = useMemo<ComboboxItemGroup[] | undefined>(() => {
-        const collections = libraryQuery.data?.collections.filter(
-            (collection) => !collection.isFeatured,
-        );
-        const featuredCollections = libraryQuery.data?.collections.filter(
-            (collection) => collection.isFeatured,
-        );
+        const collections = libraryQuery.data?.collections.filter((collection) => !collection.isFeatured);
+        const featuredCollections = libraryQuery.data?.collections.filter((collection) => collection.isFeatured);
         const options: ComboboxItemGroup[] = [];
         if (featuredCollections && featuredCollections.length > 0) {
             options.push({
@@ -57,6 +50,7 @@ const LibraryViewCollectionsSelect = ({ userId, ...others }: Props) => {
             clearable
             data={collectionOptions}
             limit={10}
+            description="You can search for a collection by typing its name"
             {...others}
         />
     );

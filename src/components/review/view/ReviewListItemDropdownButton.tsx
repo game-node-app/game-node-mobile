@@ -5,25 +5,27 @@ import ReviewListItemRemoveModal from "@/components/review/view/ReviewListItemRe
 import useUserId from "@/components/auth/hooks/useUserId";
 import ItemDropdown from "@/components/general/input/dropdown/ItemDropdown";
 import ReportCreateFormModal from "@/components/report/modal/ReportCreateFormModal";
+import GameInfoReviewCreateUpdateModal from "@/components/game/info/review/editor/GameInfoReviewCreateUpdateModal";
 
 interface IReviewListItemDropdownProps {
     review: Review;
-    onEditStart?: () => void;
 }
 
-const ReviewListItemDropdownButton = ({
-    review,
-    onEditStart,
-}: IReviewListItemDropdownProps) => {
+const ReviewListItemDropdownButton = ({ review }: IReviewListItemDropdownProps) => {
     const ownUserId = useUserId();
-    const isOwnReview =
-        ownUserId != undefined && ownUserId === review.profileUserId;
+    const isOwnReview = ownUserId != undefined && ownUserId === review.profileUserId;
 
     const [reviewRemoveModalOpened, reviewRemoveModalUtils] = useDisclosure();
     const [reportFormModalOpened, reportFormModalUtils] = useDisclosure();
+    const [reviewEditModalOpened, reviewEditModalUtils] = useDisclosure();
 
     return (
         <>
+            <GameInfoReviewCreateUpdateModal
+                opened={reviewEditModalOpened}
+                onClose={reviewEditModalUtils.close}
+                gameId={review.gameId}
+            />
             <ReviewListItemRemoveModal
                 reviewId={review.id}
                 onClose={reviewRemoveModalUtils.close}
@@ -40,11 +42,9 @@ const ReviewListItemDropdownButton = ({
                     <>
                         <ItemDropdown.EditButton
                             onClick={() => {
-                                if (onEditStart) {
-                                    onEditStart();
-                                }
+                                reviewEditModalUtils.open();
                             }}
-                            disabled={!onEditStart}
+                            disabled={reviewEditModalOpened}
                         />
                         <ItemDropdown.RemoveButton
                             onClick={() => {
