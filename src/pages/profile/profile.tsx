@@ -62,8 +62,7 @@ const ProfilePage = ({ userId }: Props) => {
                         {userIdToUse && (
                             <ProfileUserInfoWithBanner userId={userIdToUse}>
                                 <ProfileViewNavbar userId={userIdToUse} />
-                                <Divider className={"w-full mt-6 mb-2"} label={"Favorite games"} />
-                                <Box className={"w-full mb-4"}>
+                                <Box className={"w-full mb-4 mt-4"}>
                                     <ProfileFavoriteGames userId={userIdToUse} />
                                 </Box>
                                 <Divider className={"w-full mt-6 mb-2"} label={"Stats"} />

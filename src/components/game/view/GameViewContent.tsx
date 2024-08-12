@@ -62,14 +62,17 @@ const GameViewContent = ({
     }, [items]);
 
     const buildLoadingSkeletons = useCallback(() => {
-        let baseSkeletonCount = 0;
-        if (layout === "grid" && items?.length) {
-            const totalItems = items.length;
-            const itemsInLastGrid = Math.floor(totalItems / GRID_COLUMNS_COUNT) - GRID_COLUMNS_COUNT;
-            baseSkeletonCount = countTo(itemsInLastGrid, GRID_COLUMNS_COUNT);
-        }
+        // let baseSkeletonCount = 0;
+        // if (layout === "grid" && items?.length) {
+        //     const totalItems = items.length;
+        //     const itemsInLastGrid = Math.floor(totalItems / GRID_COLUMNS_COUNT) - GRID_COLUMNS_COUNT;
+        //     baseSkeletonCount = countTo(itemsInLastGrid, GRID_COLUMNS_COUNT);
+        //     console.log("totalItems", totalItems);
+        //     console.log("itemsInLastGrid", itemsInLastGrid);
+        //     console.log("baseSkeletonCount", baseSkeletonCount);
+        // }
 
-        return new Array(baseSkeletonCount + 6).fill(0).map((_, i) => {
+        return new Array(6).fill(0).map((_, i) => {
             return <Skeleton key={`${layout}-skeleton-${i}`} className={"w-full min-h-[140px] mb-3"} />;
         });
     }, [items?.length, layout]);

@@ -11,23 +11,13 @@ interface Props extends BaseModalProps {
     criteria: FollowInfoRequestDto.criteria;
 }
 
-const FollowInfoListModal = ({
-    opened,
-    onClose,
-    targetUserId,
-    criteria,
-}: Props) => {
+const FollowInfoListModal = ({ opened, onClose, targetUserId, criteria }: Props) => {
     const title = criteria === "followers" ? `Followers` : `Following`;
     return (
         <Modal opened={opened} onClose={onClose} title={title}>
-            <Modal.Body p={0}>
-                <ScrollArea h={400}>
-                    <FollowInfoList
-                        criteria={criteria}
-                        targetUserId={targetUserId}
-                    />
-                </ScrollArea>
-            </Modal.Body>
+            <ScrollArea h={400}>
+                <FollowInfoList criteria={criteria} targetUserId={targetUserId} />
+            </ScrollArea>
         </Modal>
     );
 };

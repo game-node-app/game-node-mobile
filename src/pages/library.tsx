@@ -18,8 +18,9 @@ import {
     useIonRouter,
 } from "@ionic/react";
 import { Container } from "@mantine/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SessionAuth } from "supertokens-auth-react/recipe/session";
+import { useSearchParameters } from "@/components/general/hooks/useSearchParameters";
 
 interface Props {
     userId?: string;
@@ -34,10 +35,19 @@ const LibraryPage = ({ userId }: Props) => {
         routeInfo: { pathname },
     } = useIonRouter();
 
+    const params = useSearchParameters();
+
     const isInTab = pathname.split("/").length === 2;
 
     const profileQuery = useUserProfile(userIdToUse);
     const [selectedCollectionId, setSelectedCollectionId] = useState<string | undefined>(undefined);
+
+    useEffect(() => {
+        const paramsCollectionId = params.get("collectionId");
+        if (paramsCollectionId) {
+            setSelectedCollectionId(paramsCollectionId);
+        }
+    }, []);
 
     return (
         <IonPage>

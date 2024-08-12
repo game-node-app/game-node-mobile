@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { FollowInfoRequestDto, PaginationInfo } from "@/wrapper/server";
 import { Divider, Group, Skeleton, Stack, Text } from "@mantine/core";
 import { useInfiniteFollowInfo } from "@/components/follow/hooks/useInfiniteFollowInfo";
-import UserFollowGroup from "@/components/follow/input/UserFollowGroup";
+import UserAvatarWithFollowActions from "@/components/follow/input/UserAvatarWithFollowActions";
 import { useIntersection } from "@mantine/hooks";
 import { TBasePaginationRequest } from "@/util/types/pagination";
 
@@ -17,21 +17,20 @@ const FollowInfoList = ({ criteria, targetUserId }: Props) => {
         root: document.getElementById(`${criteria}-intersection-root`),
     });
 
-    const { data, fetchNextPage, isLoading, isFetching, isError } =
-        useInfiniteFollowInfo({
-            criteria,
-            targetUserId,
-            orderBy: {
-                createdAt: "DESC",
-            },
-        });
+    const { data, fetchNextPage, isLoading, isFetching, isError } = useInfiniteFollowInfo({
+        criteria,
+        targetUserId,
+        orderBy: {
+            createdAt: "DESC",
+        },
+    });
     const items = useMemo(() => {
         if (data == undefined) return null;
         const userIds = data.pages.flatMap((response) => {
             return response.data;
         });
         return userIds.map((userId) => {
-            return <UserFollowGroup key={userId} userId={userId} mb={"sm"} />;
+            return <UserAvatarWithFollowActions key={userId} userId={userId} mb={"sm"} />;
         });
     }, [data]);
 
@@ -52,33 +51,18 @@ const FollowInfoList = ({ criteria, targetUserId }: Props) => {
         const minimumIntersectionTime = 3000;
         const lastElement = data?.pages[data?.pages.length - 1];
         const hasNextPage = lastElement?.pagination.hasNextPage ?? false;
-        const canFetchNextPage =
-            lastElement && hasNextPage && !isLoading && !isFetching && !isError;
+        const canFetchNextPage = lastElement && hasNextPage && !isLoading && !isFetching && !isError;
 
-        if (
-            canFetchNextPage &&
-            entry?.isIntersecting &&
-            entry.time > minimumIntersectionTime
-        ) {
+        if (canFetchNextPage && entry?.isIntersecting && entry.time > minimumIntersectionTime) {
             fetchNextPage().then();
         }
-    }, [
-        entry,
-        isLoading,
-        isFetching,
-        isError,
-        fetchNextPage,
-        isEmpty,
-        data?.pages,
-    ]);
+    }, [entry, isLoading, isFetching, isError, fetchNextPage, isEmpty, data?.pages]);
 
     return (
         <Stack w={"100%"} id={`${criteria}-intersection-root`}>
             {isEmpty && (
                 <Text className={"text-center"} c={"red"}>
-                    {criteria === "following"
-                        ? "User is not following anyone."
-                        : "User has no followers."}
+                    {criteria === "following" ? "User is not following anyone." : "User has no followers."}
                 </Text>
             )}
             {items}

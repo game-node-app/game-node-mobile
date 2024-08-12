@@ -1,9 +1,9 @@
-import type { CapacitorConfig } from '@capacitor/cli';
+import type { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'game-node-mobile',
-  webDir: 'dist'
+    appId: "app.gamenode",
+    appName: "GameNode",
+    webDir: "dist",
 };
 
 export default config;

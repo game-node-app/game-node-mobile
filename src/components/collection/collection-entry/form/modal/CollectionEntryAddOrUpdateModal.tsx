@@ -13,7 +13,7 @@ interface IGameAddModalProps extends BaseModalProps {
 
 const CollectionEntryAddOrUpdateModal = ({ opened, onClose, id }: IGameAddModalProps) => {
     const userId = useUserId();
-    const collectionEntryQuery = useOwnCollectionEntryForGameId(id);
+    const collectionEntryQuery = useOwnCollectionEntryForGameId(id, opened);
     const [isExpanded, setIsExpanded] = useState(false);
 
     const isInLibrary = collectionEntryQuery.data != undefined;

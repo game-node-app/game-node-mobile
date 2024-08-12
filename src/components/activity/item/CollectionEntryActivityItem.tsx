@@ -85,7 +85,11 @@ const CollectionEntryActivityItem = ({ activity }: Props) => {
                 <Box className={"w-6/12 lg:w-3/12 ms-auto h-full"}>
                     <Stack className={"w-full h-full items-end justify-between pe-2 lg:pe-3 py-4"}>
                         <ActivityCreateDate createdAtDate={activity.createdAt} />
-                        <Link to={`/library/${activity.profileUserId}/collection/${activity.collectionId}`}>
+                        <Link
+                            to={getTabAwareHref(
+                                `/library/${activity.profileUserId}?collectionId=${activity.collectionId}`,
+                            )}
+                        >
                             <Title size={"h3"} lineClamp={onMobile ? 1 : 2}>
                                 {collectionQuery.data?.name}
                             </Title>

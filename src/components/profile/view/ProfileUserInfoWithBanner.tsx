@@ -5,6 +5,7 @@ import {
     AspectRatio,
     Box,
     Button,
+    Container,
     Divider,
     Group,
     Modal,
@@ -23,6 +24,16 @@ import { IconEdit } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import ProfileEditForm from "@/components/profile/edit/ProfileEditForm";
 import useOnMobile from "@/components/general/hooks/useOnMobile";
+import {
+    IonBackButton,
+    IonButton,
+    IonButtons,
+    IonContent,
+    IonHeader,
+    IonModal,
+    IonTitle,
+    IonToolbar,
+} from "@ionic/react";
 
 interface ProfileUserInfoWithBannerProps extends PropsWithChildren {
     userId: string;
@@ -40,10 +51,7 @@ interface ProfileUserInfoWithBannerProps extends PropsWithChildren {
  * and BELOW it for mobile.
  */
 
-const ProfileUserInfoWithBanner = ({
-    userId,
-    children,
-}: ProfileUserInfoWithBannerProps) => {
+const ProfileUserInfoWithBanner = ({ userId, children }: ProfileUserInfoWithBannerProps) => {
     const onMobile = useOnMobile();
     const ownUserId = useUserId();
     const profileQuery = useUserProfile(userId);
@@ -52,57 +60,43 @@ const ProfileUserInfoWithBanner = ({
 
     return (
         <Stack className={"w-full h-full gap-0"}>
-            <Modal
-                opened={editModalOpened}
-                onClose={editModalUtils.close}
-                title={"Edit profile"}
-                fullScreen={onMobile}
-            >
-                <ProfileEditForm userId={userId} />
-            </Modal>
+            <IonModal isOpen={editModalOpened} onDidDismiss={editModalUtils.close}>
+                <IonHeader>
+                    <IonToolbar>
+                        <IonTitle>Edit profile</IonTitle>
+                        <IonButtons slot="end">
+                            <IonButton onClick={editModalUtils.close}>Cancel</IonButton>
+                        </IonButtons>
+                    </IonToolbar>
+                </IonHeader>
+                <IonContent>
+                    <Container fluid className="my-4">
+                        <ProfileEditForm userId={userId} />
+                    </Container>
+                </IonContent>
+            </IonModal>
             <ProfileBanner userId={userId} />
 
-            <Group
-                className={
-                    "w-full justify-start items-start flex-wrap lg:flex-nowrap"
-                }
-            >
-                <Stack
-                    className={
-                        "w-full lg:w-1/4 lg:min-w-52 bg-[#161616] gap-0 relative"
-                    }
-                >
+            <Group className={"w-full justify-start items-start flex-wrap lg:flex-nowrap"}>
+                <Stack className={"w-full lg:w-1/4 lg:min-w-52 bg-[#161616] gap-0 relative"}>
                     <Stack className={"w-full items-center relative -top-20"}>
                         <Box className={"relative w-fit h-fit"}>
                             <UserAvatar
-                                className={
-                                    "relative border-[#161616] border-[7px]"
-                                }
+                                className={"relative border-[#161616] border-[7px]"}
                                 userId={userId}
                                 size={"10rem"}
                             />
                         </Box>
 
-                        <Text className={"text-center"}>
-                            {profileQuery.data?.username}
-                        </Text>
+                        <Text className={"text-center"}>{profileQuery.data?.username}</Text>
                     </Stack>
 
                     <Stack className={"w-full h-full relative -top-14"}>
-                        <ProfileUserInfo
-                            userId={userId}
-                            onEditClick={editModalUtils.open}
-                        />
+                        <ProfileUserInfo userId={userId} onEditClick={editModalUtils.open} />
                     </Stack>
                 </Stack>
 
-                <Stack
-                    className={
-                        "lg:items-start w-full lg:w-3/4 p-1 lg:p-3 lg:mt-4"
-                    }
-                >
-                    {children}
-                </Stack>
+                <Stack className={"lg:items-start w-full lg:w-3/4 p-1 lg:p-3 lg:mt-4"}>{children}</Stack>
             </Group>
         </Stack>
     );

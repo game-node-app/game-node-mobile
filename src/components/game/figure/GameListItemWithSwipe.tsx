@@ -6,6 +6,7 @@ import { useOwnCollectionEntryForGameId } from "@/components/collection/collecti
 import { useDisclosure } from "@mantine/hooks";
 import CollectionEntryAddOrUpdateModal from "@/components/collection/collection-entry/form/modal/CollectionEntryAddOrUpdateModal";
 import CollectionEntryRemoveModal from "@/components/collection/collection-entry/form/modal/CollectionEntryRemoveModal";
+import { getTabAwareHref } from "@/util/getTabAwareHref";
 
 interface Props extends IGameListFigureProps {}
 
@@ -22,7 +23,7 @@ const GameListItemWithSwipe = ({ game, ...others }: Props) => {
                 onClose={addUpdateModalUtils.close}
             />
             <CollectionEntryRemoveModal gameId={game.id!} opened={removeModalOpened} onClose={removeModalUtils.close} />
-            <IonItem>
+            <IonItem routerLink={getTabAwareHref(`/game/${game.id}`)}>
                 <GameListItem game={game} {...others}></GameListItem>
             </IonItem>
             <IonItemOptions>

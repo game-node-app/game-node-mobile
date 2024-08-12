@@ -2,7 +2,16 @@ import React, { useState } from "react";
 
 import { Redirect, Route } from "react-router-dom";
 import * as reactRouterDom from "react-router-dom";
-import { IonApp, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs, setupIonicReact } from "@ionic/react";
+import {
+    IonApp,
+    IonLabel,
+    IonPage,
+    IonRouterOutlet,
+    IonTabBar,
+    IonTabButton,
+    IonTabs,
+    setupIonicReact,
+} from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MantineProvider } from "@mantine/core";
@@ -40,7 +49,7 @@ import "@ionic/react/css/palettes/dark.always.css";
 
 /* Theme variables */
 import "./theme/variables.css";
-import { getSuperTokensRoutesForReactRouterDom } from "supertokens-auth-react/ui";
+import { AuthPage, getSuperTokensRoutesForReactRouterDom } from "supertokens-auth-react/ui";
 import { ThirdPartyPreBuiltUI } from "supertokens-auth-react/recipe/thirdparty/prebuiltui";
 import { PasswordlessPreBuiltUI } from "supertokens-auth-react/recipe/passwordless/prebuiltui";
 import SuperTokensProvider from "./components/auth/SuperTokensProvider";
@@ -49,9 +58,8 @@ import { OpenAPI as ServerOpenAPI } from "@/wrapper/server";
 import { OpenAPI as SearchOpenAPI } from "@/wrapper/search";
 import ExplorePage from "@/pages/explore";
 import SearchResultsPage from "@/pages/search_results";
-import GamePage from "@/pages/game";
 import HomePage from "./pages/home";
-import ProfilePage from "@/pages/profile";
+import ProfilePage from "@/pages/profile/profile";
 import { getCommonRoutes } from "./pages/routes/getCommonRoutes";
 import LibraryPage from "./pages/library";
 import NotificationsManager from "./components/general/NotificationsManager";
@@ -72,11 +80,6 @@ const App: React.FC = () => {
                 defaultOptions: {
                     queries: {
                         refetchOnWindowFocus: false,
-                        refetchInterval: false,
-                        refetchOnMount: false,
-                        refetchIntervalInBackground: false,
-                        refetchOnReconnect: false,
-                        staleTime: Infinity,
                         retry: 2,
                     },
                 },
@@ -92,11 +95,6 @@ const App: React.FC = () => {
                         <IonReactRouter>
                             <IonTabs>
                                 <IonRouterOutlet>
-                                    {/*This renders the login UI on the /auth route*/}
-                                    {getSuperTokensRoutesForReactRouterDom(reactRouterDom, [
-                                        ThirdPartyPreBuiltUI,
-                                        PasswordlessPreBuiltUI,
-                                    ])}
                                     {/* ---- HOME ROUTES ---- */}
                                     <Route exact path="/">
                                         <Redirect to="/home" />
@@ -135,13 +133,14 @@ const App: React.FC = () => {
                                         <IconRouteAltLeft aria-hidden={"true"} />
                                         <IonLabel>Explore</IonLabel>
                                     </IonTabButton>
-                                    <IonTabButton tab="profile" href="/profile">
-                                        <IconUser aria-hidden={"true"} />
-                                        <IonLabel>Profile</IonLabel>
-                                    </IonTabButton>
+
                                     <IonTabButton tab="library" href="/library">
                                         <IconLibrary aria-hidden={"true"} />
                                         <IonLabel>Library</IonLabel>
+                                    </IonTabButton>
+                                    <IonTabButton tab="profile" href="/profile">
+                                        <IconUser aria-hidden={"true"} />
+                                        <IonLabel>Profile</IonLabel>
                                     </IonTabButton>
                                 </IonTabBar>
                             </IonTabs>

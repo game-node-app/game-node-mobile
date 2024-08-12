@@ -7,16 +7,14 @@ import { useInfiniteFollowInfo } from "@/components/follow/hooks/useInfiniteFoll
 import criteria = FollowInfoRequestDto.criteria;
 import { ActionIcon, Button, Group, Tooltip } from "@mantine/core";
 import { IconX } from "@tabler/icons-react";
+import { redirectToAuth } from "supertokens-auth-react";
 
 interface Props {
     targetUserId: string;
     withUnfollowButton?: boolean;
 }
 
-const UserFollowActions = ({
-    targetUserId,
-    withUnfollowButton = true,
-}: Props) => {
+const UserFollowActions = ({ targetUserId, withUnfollowButton = true }: Props) => {
     const ownUserId = useUserId();
     /*
     Checks if current logged-in user is following target user
@@ -24,8 +22,7 @@ const UserFollowActions = ({
     const ownToTargetFollowStatus = useFollowStatus(ownUserId, targetUserId);
     const isFollowing = ownToTargetFollowStatus.data?.isFollowing ?? false;
 
-    const shouldShowFollowButton =
-        ownUserId != undefined && ownUserId !== targetUserId;
+    const shouldEnableFollowButton = ownUserId != undefined && ownUserId !== targetUserId && !isFollowing;
 
     const followMutation = useMutation({
         mutationFn: async (action: "register" | "remove") => {
@@ -53,9 +50,13 @@ const UserFollowActions = ({
     return (
         <Group className={"flex-nowrap w-fit"}>
             <Button
-                disabled={isFollowing}
+                disabled={!shouldEnableFollowButton}
                 loading={followMutation.isPending}
                 onClick={() => {
+                    if (ownUserId == undefined) {
+                        redirectToAuth();
+                        return;
+                    }
                     followMutation.mutate("register");
                 }}
             >

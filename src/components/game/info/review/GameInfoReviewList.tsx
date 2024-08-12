@@ -26,6 +26,8 @@ export const DEFAULT_GAME_REVIEW_LIST_VIEW_DTO: FindStatisticsTrendingReviewsDto
 };
 
 const GameInfoReviewList = ({ gameId }: IGameInfoReviewListProps) => {
+    const ownUserId = useUserId();
+
     const trendingReviewsDto = useMemo((): FindStatisticsTrendingReviewsDto => {
         return {
             ...DEFAULT_GAME_REVIEW_LIST_VIEW_DTO,
@@ -58,14 +60,16 @@ const GameInfoReviewList = ({ gameId }: IGameInfoReviewListProps) => {
 
                 return (
                     <Carousel.Slide key={i}>
-                        {slicedItems.map((review) => {
-                            return <ReviewListItem key={review.id} review={review} />;
-                        })}
+                        {slicedItems
+                            .filter((review) => review.profileUserId !== ownUserId)
+                            .map((review) => {
+                                return <ReviewListItem key={review.id} review={review} />;
+                            })}
                     </Carousel.Slide>
                 );
             });
         }
-    }, [reviewsQuery.data]);
+    }, [ownUserId, reviewsQuery.data]);
 
     if (isLoading) {
         return <CenteredLoading />;

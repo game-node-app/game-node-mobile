@@ -52,11 +52,6 @@ const ProfileViewNavbar = ({ userId, ...groupProps }: Props) => {
             />
             <ProfileNavbarFollowInfo targetUserId={userId} criteria={criteria.FOLLOWERS} />
             <ProfileNavbarFollowInfo targetUserId={userId} criteria={criteria.FOLLOWING} />
-            <ProfileViewNavbarLink
-                title={"Statistics"}
-                showItemCount={false}
-                to={getTabAwareHref(`/profile/${userId}/stats`)}
-            />
         </SimpleGrid>
     );
 };

@@ -5,8 +5,6 @@ import { Container, Stack, Text } from "@mantine/core";
 import TrendingReviewCarousel from "@/components/review/trending/TrendingReviewCarousel";
 import { DetailsBox } from "@/components/general/DetailsBox";
 import RecentActivityList from "@/components/activity/RecentActivityList";
-import { useQuery } from "@tanstack/react-query";
-import { RecommendationService } from "@/wrapper/server";
 import RecommendationCarousel from "@/components/recommendation/carousel/RecommendationCarousel";
 import useUserId from "@/components/auth/hooks/useUserId";
 
@@ -21,7 +19,7 @@ const HomePage = () => {
             </IonHeader>
             <IonContent>
                 <Container fluid className={"w-full my-4"}>
-                    <Stack className={"w-full"}>
+                    <Stack className={"w-full gap-8"}>
                         {userId && (
                             <RecommendationCarousel
                                 criteria={"finished"}
@@ -32,14 +30,6 @@ const HomePage = () => {
                         )}
                         <TrendingReviewCarousel />
 
-                        <DetailsBox
-                            title={"Recent Activity"}
-                            stackProps={{
-                                className: "",
-                            }}
-                        >
-                            <RecentActivityList limit={5} />
-                        </DetailsBox>
                         {userId && (
                             <>
                                 <RecommendationCarousel
@@ -56,6 +46,15 @@ const HomePage = () => {
                                 />
                             </>
                         )}
+
+                        <DetailsBox
+                            title={"Recent activity from our users"}
+                            stackProps={{
+                                className: "",
+                            }}
+                        >
+                            <RecentActivityList limit={10} />
+                        </DetailsBox>
                     </Stack>
                 </Container>
             </IonContent>

@@ -16,8 +16,7 @@ const ProfileNavbarFollowInfo = ({ targetUserId, criteria }: Props) => {
         criteria,
         targetUserId,
     });
-    const totalItems =
-        followInfoQuery.data?.pages[0]?.pagination.totalItems || 0;
+    const totalItems = followInfoQuery.data?.pages[0]?.pagination.totalItems || 0;
 
     return (
         <>
@@ -29,7 +28,7 @@ const ProfileNavbarFollowInfo = ({ targetUserId, criteria }: Props) => {
             />
             <ProfileViewNavbarLink
                 title={criteria === "followers" ? "Followers" : "Following"}
-                href={"#"}
+                to={"#"}
                 onClick={(evt) => {
                     evt.preventDefault();
                     modalUtils.open();

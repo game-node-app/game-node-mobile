@@ -1,9 +1,12 @@
 import React from "react";
 import { Route } from "react-router";
 import GamePage from "../game";
-import ProfilePage from "../profile";
+import ProfilePage from "../profile/profile";
 import ProfileStatsPage from "../profile_stats";
 import LibraryPage from "../library";
+import { AchievementsPage } from "@/pages/achievements";
+import ProfileReviewListPage from "@/pages/profile/review_list";
+import SupertokensAuthPage from "../auth";
 
 /**
  * Retrieves a list of common routes that should be available in all tabs.
@@ -45,11 +48,32 @@ export function getCommonRoutes(prefix: string): React.ReactNode[] {
             }}
         />,
         <Route
+            key={`${prefix}-profile-reviews`}
+            path={`${prefix}/profile/:userId/reviews`}
+            render={(props) => {
+                const userId = props.match.params.userId;
+
+                return <ProfileReviewListPage userId={userId} />;
+            }}
+        />,
+        <Route
+            key={`${prefix}-achievements`}
+            path={`${prefix}/achievements/:userId`}
+            render={(props) => {
+                const userId = props.match.params.userId;
+                return <AchievementsPage userId={userId} />;
+            }}
+        />,
+
+        <Route
             key={`${prefix}-library`}
             path={`${prefix}/library/:userId`}
             render={(props) => {
                 return <LibraryPage userId={props.match.params.userId} />;
             }}
         />,
+        <Route key={`${prefix}-auth`} path={`${prefix}/auth`}>
+            <SupertokensAuthPage />
+        </Route>,
     ];
 }

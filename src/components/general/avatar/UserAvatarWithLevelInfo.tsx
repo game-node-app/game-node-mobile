@@ -17,9 +17,6 @@ interface Props {
 }
 
 const UserAvatarWithLevelInfo = ({ userId, showJoinDate = true, enableLink = true, avatarProps }: Props) => {
-    const {
-        routeInfo: { pathname },
-    } = useIonRouter();
     const profileQuery = useUserProfile(userId);
 
     return (
