@@ -7,6 +7,8 @@ import type { Review } from './Review';
 export type ReviewComment = {
     review: Review;
     reviewId: string;
+    childOf: ReviewComment | null;
+    childOfId: string | null;
     id: string;
     /**
      * HTML content of the user's comment.

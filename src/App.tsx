@@ -1,17 +1,7 @@
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 
 import { Redirect, Route } from "react-router-dom";
-import * as reactRouterDom from "react-router-dom";
-import {
-    IonApp,
-    IonLabel,
-    IonPage,
-    IonRouterOutlet,
-    IonTabBar,
-    IonTabButton,
-    IonTabs,
-    setupIonicReact,
-} from "@ionic/react";
+import { IonApp, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs, setupIonicReact } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MantineProvider } from "@mantine/core";
@@ -49,20 +39,18 @@ import "@ionic/react/css/palettes/dark.always.css";
 
 /* Theme variables */
 import "./theme/variables.css";
-import { AuthPage, getSuperTokensRoutesForReactRouterDom } from "supertokens-auth-react/ui";
-import { ThirdPartyPreBuiltUI } from "supertokens-auth-react/recipe/thirdparty/prebuiltui";
-import { PasswordlessPreBuiltUI } from "supertokens-auth-react/recipe/passwordless/prebuiltui";
 import SuperTokensProvider from "./components/auth/SuperTokensProvider";
 import { IconHome, IconLibrary, IconRouteAltLeft, IconUser } from "@tabler/icons-react";
 import { OpenAPI as ServerOpenAPI } from "@/wrapper/server";
 import { OpenAPI as SearchOpenAPI } from "@/wrapper/search";
-import ExplorePage from "@/pages/explore";
-import SearchResultsPage from "@/pages/search_results";
-import HomePage from "./pages/home";
-import ProfilePage from "@/pages/profile/profile";
-import { getCommonRoutes } from "./pages/routes/getCommonRoutes";
-import LibraryPage from "./pages/library";
 import NotificationsManager from "./components/general/NotificationsManager";
+import CenteredLoading from "@/components/general/CenteredLoading";
+import { getCommonRoutes } from "@/pages/routes/getCommonRoutes";
+import HomePage from "./pages/home";
+import ExplorePage from "./pages/explore";
+import SearchResultsPage from "./pages/search_results";
+import ProfilePage from "./pages/profile/profile";
+import LibraryPage from "./pages/library";
 
 /**
  * Basic configuration for wrapper services
@@ -95,34 +83,36 @@ const App: React.FC = () => {
                         <IonReactRouter>
                             <IonTabs>
                                 <IonRouterOutlet>
-                                    {/* ---- HOME ROUTES ---- */}
-                                    <Route exact path="/">
-                                        <Redirect to="/home" />
-                                    </Route>
-                                    <Route exact path={"/home"}>
-                                        <HomePage />
-                                    </Route>
-                                    {getCommonRoutes("/home")}
+                                    <Suspense fallback={<CenteredLoading message={"Loading page..."} />}>
+                                        {/* ---- HOME ROUTES ---- */}
+                                        <Route exact path="/">
+                                            <Redirect to="/home" />
+                                        </Route>
+                                        <Route exact path={"/home"}>
+                                            <HomePage />
+                                        </Route>
+                                        {getCommonRoutes("/home")}
 
-                                    {/* ---- EXPLORE ROUTES ---- */}
-                                    <Route exact path={"/explore"}>
-                                        <ExplorePage />
-                                    </Route>
-                                    <Route exact path={`/explore/search_results`}>
-                                        <SearchResultsPage />
-                                    </Route>
-                                    {getCommonRoutes("/explore")}
+                                        {/* ---- EXPLORE ROUTES ---- */}
+                                        <Route exact path={"/explore"}>
+                                            <ExplorePage />
+                                        </Route>
+                                        <Route exact path={`/explore/search_results`}>
+                                            <SearchResultsPage />
+                                        </Route>
+                                        {getCommonRoutes("/explore")}
 
-                                    {/* ---- PROFILE ROUTES ---- */}
-                                    <Route exact path={"/profile"}>
-                                        <ProfilePage />
-                                    </Route>
-                                    {getCommonRoutes("/profile")}
-                                    {/* ---- LIBRARY ROUTES ---- */}
-                                    <Route exact path="/library">
-                                        <LibraryPage />
-                                    </Route>
-                                    {getCommonRoutes("/library")}
+                                        {/* ---- PROFILE ROUTES ---- */}
+                                        <Route exact path={"/profile"}>
+                                            <ProfilePage />
+                                        </Route>
+                                        {getCommonRoutes("/profile")}
+                                        {/* ---- LIBRARY ROUTES ---- */}
+                                        <Route exact path="/library">
+                                            <LibraryPage />
+                                        </Route>
+                                        {getCommonRoutes("/library")}
+                                    </Suspense>
                                 </IonRouterOutlet>
                                 <IonTabBar slot="bottom">
                                     <IonTabButton tab="home" href="/home">

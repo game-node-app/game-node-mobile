@@ -1,12 +1,12 @@
 import React from "react";
 import { Route } from "react-router";
-import GamePage from "../game";
-import ProfilePage from "../profile/profile";
-import ProfileStatsPage from "../profile_stats";
-import LibraryPage from "../library";
-import { AchievementsPage } from "@/pages/achievements";
+import GamePage from "@/pages/game";
+import ProfilePage from "@/pages/profile/profile";
+import ProfileStatsPage from "@/pages/profile/stats";
 import ProfileReviewListPage from "@/pages/profile/review_list";
-import SupertokensAuthPage from "../auth";
+import AchievementsPage from "@/pages/achievements";
+import LibraryPage from "@/pages/library";
+import SupertokensAuthPage from "@/pages/auth";
 
 /**
  * Retrieves a list of common routes that should be available in all tabs.
@@ -26,6 +26,7 @@ export function getCommonRoutes(prefix: string): React.ReactNode[] {
             render={(props) => {
                 // eslint-disable-next-line react/prop-types
                 const gameId = Number.parseInt(props.match.params.id);
+
                 return <GamePage gameId={gameId} />;
             }}
         />,

@@ -67,6 +67,7 @@ export namespace Notification {
         COMMENT = 'comment',
         WATCH = 'watch',
         ALERT = 'alert',
+        MENTION = 'mention',
     }
 }
 

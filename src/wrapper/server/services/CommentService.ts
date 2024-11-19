@@ -47,6 +47,36 @@ export class CommentService {
         });
     }
     /**
+     * @param sourceType
+     * @param id
+     * @param search
+     * @param offset
+     * @param limit
+     * @returns ReviewComment
+     * @throws ApiError
+     */
+    public static commentControllerFindAllChildrenById(
+        sourceType: string,
+        id: string,
+        search?: string,
+        offset?: number,
+        limit: number = 20,
+    ): CancelablePromise<Array<ReviewComment>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/v1/comment/{sourceType}/{id}/children',
+            path: {
+                'sourceType': sourceType,
+                'id': id,
+            },
+            query: {
+                'search': search,
+                'offset': offset,
+                'limit': limit,
+            },
+        });
+    }
+    /**
      * @param requestBody
      * @returns any
      * @throws ApiError

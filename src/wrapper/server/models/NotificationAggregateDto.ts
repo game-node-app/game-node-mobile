@@ -16,6 +16,7 @@ export namespace NotificationAggregateDto {
         COMMENT = 'comment',
         WATCH = 'watch',
         ALERT = 'alert',
+        MENTION = 'mention',
     }
     export enum sourceType {
         GAME = 'game',

@@ -2,11 +2,13 @@ import SuperTokensReact, { SuperTokensWrapper } from "supertokens-auth-react";
 import React from "react";
 import Session from "supertokens-auth-react/recipe/session";
 import Passwordless from "supertokens-auth-react/recipe/passwordless";
-import ThirdParty from "supertokens-auth-react/recipe/thirdparty";
 import { SuperTokensConfig } from "supertokens-auth-react/lib/build/types";
 import { Capacitor } from "@capacitor/core";
 import { getTabAwareHref } from "@/util/getTabAwareHref";
 
+/**
+ * @see https://github.com/RobSchilderr/nextjs-native-starter/blob/main/apps/next-app/config/frontendConfig.ts
+ */
 export const frontendConfig = (): SuperTokensConfig => {
     const PARSED_WEBSITE_DOMAIN = Capacitor.isNativePlatform()
         ? `${window.location.protocol}//${window.location.host}`
@@ -42,15 +44,6 @@ export const frontendConfig = (): SuperTokensConfig => {
         recipeList: [
             Passwordless.init({
                 contactMethod: "EMAIL",
-            }),
-            ThirdParty.init({
-                signInAndUpFeature: {
-                    providers: [
-                        // TODO: Enable once it's approved
-                        // ThirdPartyPasswordlessReact.Google.init(),
-                        ThirdParty.Discord.init(),
-                    ],
-                },
             }),
             Session.init({
                 tokenTransferMethod: "header",

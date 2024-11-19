@@ -16,10 +16,9 @@ import ItemLikesButton from "@/components/statistics/input/ItemLikesButton";
 interface IReviewListViewProps {
     review: Review;
     withGameInfo?: boolean;
-    onEditStart?: () => void;
 }
 
-const ReviewListItem = ({ review, onEditStart, withGameInfo }: IReviewListViewProps) => {
+const ReviewListItem = ({ review, withGameInfo }: IReviewListViewProps) => {
     const onMobile = useOnMobile();
     const [isReadMore, setIsReadMore] = useState<boolean>(false);
 
@@ -99,7 +98,7 @@ const ReviewListItem = ({ review, onEditStart, withGameInfo }: IReviewListViewPr
                                 sourceType={FindOneStatisticsDto.sourceType.REVIEW}
                             />
 
-                            <ReviewListItemDropdownButton review={review} onEditStart={onEditStart} />
+                            <ReviewListItemDropdownButton review={review} />
                         </Group>
                     </Group>
                 </Stack>

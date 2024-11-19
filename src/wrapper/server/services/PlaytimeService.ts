@@ -6,18 +6,18 @@ import type { GamePlaytime } from '../models/GamePlaytime';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-export class SyncHltbService {
+export class PlaytimeService {
     /**
      * @param gameId
      * @returns GamePlaytime
      * @throws ApiError
      */
-    public static hltbControllerFindPlaytimeForGameId(
+    public static playtimeControllerFindOneByGameId(
         gameId: number,
     ): CancelablePromise<GamePlaytime> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/v1/sync/hltb/{gameId}',
+            url: '/v1/playtime/{gameId}',
             path: {
                 'gameId': gameId,
             },

@@ -1,17 +1,7 @@
 import React from "react";
 
 import AchievementsScreen from "@/components/achievement/AchievementsScreen";
-import useUserId from "@/components/auth/hooks/useUserId";
-import {
-    IonBackButton,
-    IonButtons,
-    IonContent,
-    IonHeader,
-    IonPage,
-    IonTitle,
-    IonToolbar,
-    useIonRouter,
-} from "@ionic/react";
+import { IonBackButton, IonButtons, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from "@ionic/react";
 import { Center } from "@mantine/core";
 import useUserProfile from "@/components/profile/hooks/useUserProfile";
 import { SessionAuth } from "supertokens-auth-react/recipe/session";
@@ -19,7 +9,8 @@ import { SessionAuth } from "supertokens-auth-react/recipe/session";
 interface Props {
     userId: string;
 }
-export const AchievementsPage = ({ userId }: Props) => {
+
+const AchievementsPage = ({ userId }: Props) => {
     const profileQuery = useUserProfile(userId);
     return (
         <IonPage>
@@ -41,3 +32,5 @@ export const AchievementsPage = ({ userId }: Props) => {
         </IonPage>
     );
 };
+
+export default AchievementsPage;

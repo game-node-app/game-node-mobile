@@ -1,7 +1,7 @@
 import { IonContent, IonHeader, IonPage, IonToolbar } from "@ionic/react";
 import React from "react";
 import TabHeader from "@/components/general/TabHeader";
-import { Container, Stack, Text } from "@mantine/core";
+import { Container, Stack } from "@mantine/core";
 import TrendingReviewCarousel from "@/components/review/trending/TrendingReviewCarousel";
 import { DetailsBox } from "@/components/general/DetailsBox";
 import RecentActivityList from "@/components/activity/RecentActivityList";

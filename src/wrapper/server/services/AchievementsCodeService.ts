@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { CreateAchievementCodeRequestDto } from '../models/CreateAchievementCodeRequestDto';
+import type { CreateAchievementCodeResponseDto } from '../models/CreateAchievementCodeResponseDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
@@ -25,12 +26,12 @@ export class AchievementsCodeService {
     }
     /**
      * @param requestBody
-     * @returns string
+     * @returns CreateAchievementCodeResponseDto
      * @throws ApiError
      */
     public static achievementsCodeControllerGenerate(
         requestBody: CreateAchievementCodeRequestDto,
-    ): CancelablePromise<string> {
+    ): CancelablePromise<CreateAchievementCodeResponseDto> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/v1/achievements/code/generate',

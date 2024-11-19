@@ -2,10 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type CreateReviewDto = {
-    gameId: number;
-    content?: string;
-    rating: number;
-    mentionedUserIds?: Array<string>;
+export type CreateAchievementCodeResponseDto = {
+    code: string;
+    expiresAt: string;
 };
 

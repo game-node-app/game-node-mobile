@@ -10,6 +10,7 @@ export type CreateCommentDto = {
     sourceId: string;
     sourceType: CreateCommentDto.sourceType;
     content: string;
+    childOf?: string;
 };
 export namespace CreateCommentDto {
     export enum sourceType {

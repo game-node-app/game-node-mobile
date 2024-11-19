@@ -2,9 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type FindCollectionEntriesDto = {
-    offset?: number;
-    limit?: number;
-    orderBy?: Record<string, any>;
+export type FindCollectionEntriesForCollectionIdOrderBy = {
+    addedDate?: Record<string, any>;
+    releaseDate?: Record<string, any>;
 };
 

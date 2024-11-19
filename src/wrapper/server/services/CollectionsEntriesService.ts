@@ -6,7 +6,7 @@ import type { CollectionEntriesPaginatedResponseDto } from '../models/Collection
 import type { CollectionEntry } from '../models/CollectionEntry';
 import type { CreateFavoriteStatusCollectionEntryDto } from '../models/CreateFavoriteStatusCollectionEntryDto';
 import type { CreateUpdateCollectionEntryDto } from '../models/CreateUpdateCollectionEntryDto';
-import type { FindCollectionEntriesDto } from '../models/FindCollectionEntriesDto';
+import type { FindCollectionEntriesForCollectionIdDto } from '../models/FindCollectionEntriesForCollectionIdDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
@@ -170,7 +170,7 @@ export class CollectionsEntriesService {
      */
     public static collectionsEntriesControllerFindAllByCollectionId(
         id: string,
-        requestBody: FindCollectionEntriesDto,
+        requestBody: FindCollectionEntriesForCollectionIdDto,
     ): CancelablePromise<CollectionEntriesPaginatedResponseDto> {
         return __request(OpenAPI, {
             method: 'POST',

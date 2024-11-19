@@ -70,6 +70,16 @@ export class ProfileService {
         });
     }
     /**
+     * @returns Profile
+     * @throws ApiError
+     */
+    public static profileControllerFindAll(): CancelablePromise<Array<Profile>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/v1/profile/all',
+        });
+    }
+    /**
      * Used to access other users' profiles
      * @param id
      * @returns Profile
