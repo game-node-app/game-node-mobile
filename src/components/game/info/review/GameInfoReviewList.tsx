@@ -23,6 +23,7 @@ const INTERNAL_DEFAULT_LIMIT = 7;
 export const DEFAULT_GAME_REVIEW_LIST_VIEW_DTO: FindStatisticsTrendingReviewsDto = {
     offset: 0,
     limit: DEFAULT_LIMIT,
+    period: FindStatisticsTrendingReviewsDto.period.ALL,
 };
 
 const GameInfoReviewList = ({ gameId }: IGameInfoReviewListProps) => {
@@ -59,7 +60,7 @@ const GameInfoReviewList = ({ gameId }: IGameInfoReviewListProps) => {
                 }
 
                 return (
-                    <Carousel.Slide key={i}>
+                    <Carousel.Slide key={i} className={"w-full mb-14"}>
                         {slicedItems
                             .filter((review) => review.profileUserId !== ownUserId)
                             .map((review) => {
@@ -85,7 +86,14 @@ const GameInfoReviewList = ({ gameId }: IGameInfoReviewListProps) => {
                         <Text>No reviews yet. Be the first one! ;)</Text>
                     </Flex>
                 )}
-                <Carousel slideSize="100%" align="start" slideGap={"xs"} withControls={false} withIndicators>
+                <Carousel
+                    draggable={true}
+                    withControls={false}
+                    slideSize="100%"
+                    align="start"
+                    slideGap={"xs"}
+                    withIndicators={true}
+                >
                     {/* ...slides */}
                     {buildItemSlides()}
                 </Carousel>

@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import { DEFAULT_REVIEW_EDITOR_EXTENSIONS } from "@/components/game/info/review/editor/GameInfoReviewEditor";
-import { Box, Flex, Group, ScrollArea, Stack, Transition } from "@mantine/core";
+import { Box, Flex, Group, ScrollArea, Spoiler, Stack, Transition } from "@mantine/core";
 import { FindOneStatisticsDto, Review } from "@/wrapper/server";
 import useOnMobile from "@/components/general/hooks/useOnMobile";
 import useUserId from "@/components/auth/hooks/useUserId";
@@ -31,10 +31,10 @@ const ReviewListItem = ({ review, withGameInfo }: IReviewListViewProps) => {
         [review.content],
     );
 
-    const userId = useUserId();
     const profileUserId = review.profileUserId;
     const gameIdToUse = withGameInfo ? review.gameId : undefined;
-    const isOwnReview = userId != undefined && userId === profileUserId;
+
+    const isScoreOnlyReview = review.content == null;
 
     // Will only be enabled if gameId is not undefined.
     const gameQuery = useGame(gameIdToUse, {});
@@ -45,15 +45,15 @@ const ReviewListItem = ({ review, withGameInfo }: IReviewListViewProps) => {
                 <Flex
                     direction={{
                         base: "row",
-                        lg: "column",
+                        lg: isScoreOnlyReview ? "row" : "column",
                     }}
                     w={{
                         base: "100%",
-                        lg: "10%",
+                        lg: isScoreOnlyReview ? "25%" : "10%",
                     }}
                     justify={{
                         base: "space-between",
-                        lg: "center",
+                        lg: isScoreOnlyReview ? "space-between" : "center",
                     }}
                     align={{
                         base: "center",
@@ -71,16 +71,24 @@ const ReviewListItem = ({ review, withGameInfo }: IReviewListViewProps) => {
                         withHorizontalBreak={!onMobile}
                     />
 
-                    <GameRating value={review.rating} className={"mt-0 lg:mt-4"} />
+                    <GameRating
+                        value={review.rating}
+                        className={isScoreOnlyReview ? "mt-0 lg:ms-8 lg:mb-4" : "mt-0 lg:mt-4"}
+                        size={isScoreOnlyReview ? "lg" : "md"}
+                    />
                 </Flex>
-                <Stack className={"w-full"}>
-                    <ScrollArea.Autosize mah={250}>
-                        <EditorContent
-                            editor={nonEditableEditor}
-                            className={"w-full"}
-                            onClick={() => setIsReadMore(!isReadMore)}
-                        />
-                    </ScrollArea.Autosize>
+                <Stack className={`w-full lg:justify-end ${isScoreOnlyReview ? "lg:mt-auto" : ""}`}>
+                    {isScoreOnlyReview ? null : (
+                        <Spoiler
+                            hideLabel={"Show less"}
+                            showLabel={"Show more"}
+                            expanded={isReadMore}
+                            onExpandedChange={setIsReadMore}
+                            maxHeight={300}
+                        >
+                            <EditorContent editor={nonEditableEditor} className={"w-full"} />
+                        </Spoiler>
+                    )}
 
                     <Group justify={withGameInfo ? "space-between" : "end"}>
                         {withGameInfo && gameQuery.data != undefined && (

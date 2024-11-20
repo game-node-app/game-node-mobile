@@ -75,7 +75,7 @@ const GameViewContent = ({
         return new Array(6).fill(0).map((_, i) => {
             return <Skeleton key={`${layout}-skeleton-${i}`} className={"w-full min-h-[140px] mb-3"} />;
         });
-    }, [items?.length, layout]);
+    }, [layout]);
 
     const isEmpty = !isLoading && !isFetching && (items == undefined || items.length === 0);
 

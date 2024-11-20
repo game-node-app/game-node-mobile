@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Flex, Paper } from "@mantine/core";
 import { DetailsBox } from "@/components/general/DetailsBox";
 import GameInfoCarousel from "@/components/game/info/carousel/GameInfoCarousel";
@@ -14,38 +14,18 @@ const GameExtraInfoView = ({ id }: IGameExtraInfoViewProps) => {
     return (
         <Paper w={"100%"} h={"100%"} suppressHydrationWarning>
             <Flex w={"100%"} h={"100%"} wrap={"wrap"}>
-                <GameRelatedGamesCarousel
-                    title={"Expansion of"}
-                    gameId={id}
-                    relationProperty={"expansionOf"}
-                />
+                <GameRelatedGamesCarousel title={"Expansion of"} gameId={id} relationProperty={"expansionOf"} />
                 <Break />
-                <GameRelatedGamesCarousel
-                    title={"Expansions"}
-                    gameId={id}
-                    relationProperty={"expansions"}
-                />
+                <GameRelatedGamesCarousel title={"Expansions"} gameId={id} relationProperty={"expansions"} />
                 <Break />
 
-                <GameRelatedGamesCarousel
-                    title={"DLC of"}
-                    gameId={id}
-                    relationProperty={"dlcOf"}
-                />
+                <GameRelatedGamesCarousel title={"DLC of"} gameId={id} relationProperty={"dlcOf"} />
                 <Break />
 
-                <GameRelatedGamesCarousel
-                    title={"DLCs"}
-                    gameId={id}
-                    relationProperty={"dlcs"}
-                />
+                <GameRelatedGamesCarousel title={"DLCs"} gameId={id} relationProperty={"dlcs"} />
                 <Break />
 
-                <GameRelatedGamesCarousel
-                    title={"Similar games"}
-                    gameId={id}
-                    relationProperty={"similarGames"}
-                />
+                <GameRelatedGamesCarousel title={"Similar games"} gameId={id} relationProperty={"similarGames"} />
             </Flex>
         </Paper>
     );

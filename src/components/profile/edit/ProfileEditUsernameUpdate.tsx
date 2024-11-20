@@ -1,39 +1,18 @@
-import React, {
-    FormEvent,
-    FormEventHandler,
-    useCallback,
-    useMemo,
-} from "react";
+import React, { FormEvent, useMemo } from "react";
 import useUserId from "@/components/auth/hooks/useUserId";
 import useUserProfile from "@/components/profile/hooks/useUserProfile";
-import {
-    Button,
-    Flex,
-    Group,
-    List,
-    rem,
-    Stack,
-    Text,
-    TextInput,
-    ThemeIcon,
-    Title,
-} from "@mantine/core";
+import { Button, Flex, Group, List, Stack, Text, TextInput, ThemeIcon } from "@mantine/core";
 import { useMutation } from "@tanstack/react-query";
-import { CancelablePromise, ProfileService } from "@/wrapper/server";
+import { ProfileService } from "@/wrapper/server";
 import { BaseModalChildrenProps } from "@/util/types/modal-props";
 import { notifications } from "@mantine/notifications";
-import { IconCircle } from "@tabler/icons-react";
 
 interface Props extends BaseModalChildrenProps {
     withSkipButton?: boolean;
     onSkip?: () => void;
 }
 
-const ProfileEditUsernameUpdate = ({
-    onClose,
-    onSkip,
-    withSkipButton = false,
-}: Props) => {
+const ProfileEditUsernameUpdate = ({ onClose, onSkip, withSkipButton = false }: Props) => {
     const userId = useUserId();
     const profile = useUserProfile(userId);
     const profileMutation = useMutation({
@@ -73,8 +52,7 @@ const ProfileEditUsernameUpdate = ({
         <form className={"w-full h-full"} onSubmit={handleSubmit}>
             {(!canUpdate || profileMutation.isError) && (
                 <Text c={"red"} className={"text-center mb-6"}>
-                    You have updated your username in the last 30 days. Please
-                    try again later.
+                    You have updated your username in the last 30 days. Please try again later.
                 </Text>
             )}
 
@@ -88,26 +66,16 @@ const ProfileEditUsernameUpdate = ({
                         minLength={5}
                         defaultValue={profile.data?.username}
                     />
-                    <List
-                        icon={<ThemeIcon size={8} radius={"xl"}></ThemeIcon>}
-                        type={"unordered"}
-                    >
+                    <List icon={<ThemeIcon size={8} radius={"xl"}></ThemeIcon>} type={"unordered"}>
                         <List.Item>Must be unique</List.Item>
                         <List.Item>Must have at least 5 characters</List.Item>
-                        <List.Item>
-                            You can only change it again after 30 days
-                        </List.Item>
+                        <List.Item>You can only change it again after 30 days</List.Item>
                     </List>
                 </Stack>
                 <Stack className={"w-full lg:w-11/12 items-end mt-8"}>
                     <Group>
                         {withSkipButton && (
-                            <Button
-                                color={"teal"}
-                                className={"w-28"}
-                                type={"button"}
-                                onClick={onSkip}
-                            >
+                            <Button color={"teal"} className={"w-28"} type={"button"} onClick={onSkip}>
                                 Skip
                             </Button>
                         )}

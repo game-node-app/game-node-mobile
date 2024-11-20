@@ -39,7 +39,7 @@ const GameListItem = ({ game, figureProps }: IGameListFigureProps) => {
             </Box>
             <Stack h={"100%"} className="w-2/4  !grow" align={"start"} justify="start">
                 <Stack gap={"xs"}>
-                    <Title size="h4" className="font-bold">
+                    <Title size="h5" className="font-bold">
                         {name}
                     </Title>
                     <Text size="sm" className="text-gray-500">

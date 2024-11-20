@@ -6,7 +6,7 @@ interface IGameViewProps extends PropsWithChildren {
     layout: GameViewLayoutOption;
 }
 
-interface IGameViewContext extends Pick<IGameViewProps, "layout"> {}
+type IGameViewContext = Pick<IGameViewProps, "layout">;
 
 export const GameViewContext = createContext<IGameViewContext>({
     layout: "grid",

@@ -1,14 +1,6 @@
 import React from "react";
 import useUserProfile from "@/components/profile/hooks/useUserProfile";
-import {
-    ActionIcon,
-    Box,
-    Flex,
-    Group,
-    Modal,
-    Stack,
-    Text,
-} from "@mantine/core";
+import { ActionIcon, Box, Container, Flex, Group, Modal, Stack, Text } from "@mantine/core";
 import ProfileBanner from "@/components/profile/view/ProfileBanner";
 import { UserAvatar } from "@/components/general/avatar/UserAvatar";
 import { IconCameraPlus, IconEdit } from "@tabler/icons-react";
@@ -18,6 +10,7 @@ import ProfileEditUsernameUpdate from "@/components/profile/edit/ProfileEditUser
 import ProfileEditFeaturedAchievement from "@/components/profile/edit/ProfileEditFeaturedAchievement";
 import { DetailsBox } from "@/components/general/DetailsBox";
 import ProfileEditBioForm from "@/components/profile/edit/ProfileEditBioForm";
+import { IonButton, IonButtons, IonContent, IonHeader, IonModal, IonTitle, IonToolbar } from "@ionic/react";
 
 interface Props {
     userId: string;
@@ -31,25 +24,42 @@ const ProfileEditForm = ({ userId }: Props) => {
 
     return (
         <Stack className={"w-full h-full "}>
-            <Modal
-                opened={editAvatarModalOpened}
-                onClose={editAvatarModalUtils.close}
-                size={"xl"}
+            <IonModal isOpen={editAvatarModalOpened} onDidDismiss={editAvatarModalUtils.close}>
+                <IonHeader>
+                    <IonToolbar>
+                        <IonTitle>Update your avatar</IonTitle>
+                        <IonButtons slot="end">
+                            <IonButton onClick={editAvatarModalUtils.close}>Cancel</IonButton>
+                        </IonButtons>
+                    </IonToolbar>
+                </IonHeader>
+                <IonContent>
+                    <Container fluid className="my-4">
+                        <ProfileEditAvatarUploader onClose={editAvatarModalUtils.close} />
+                    </Container>
+                </IonContent>
+            </IonModal>
+            <IonModal
+                isOpen={editUsernameModalOpen}
+                onDidDismiss={editUsernameModalUtils.close}
+                initialBreakpoint={0.75}
+                breakpoints={[0.5, 0.75]}
             >
-                <ProfileEditAvatarUploader
-                    onClose={editAvatarModalUtils.close}
-                />
-            </Modal>
-            <Modal
-                opened={editUsernameModalOpen}
-                onClose={editUsernameModalUtils.close}
-                size={"xl"}
-                title={"Update username"}
-            >
-                <ProfileEditUsernameUpdate
-                    onClose={editUsernameModalUtils.close}
-                />
-            </Modal>
+                <IonHeader>
+                    <IonToolbar>
+                        <IonTitle>Update username</IonTitle>
+                        <IonButtons slot="end">
+                            <IonButton onClick={editUsernameModalUtils.close}>Cancel</IonButton>
+                        </IonButtons>
+                    </IonToolbar>
+                </IonHeader>
+                <IonContent>
+                    <Container fluid className="my-4">
+                        <ProfileEditUsernameUpdate onClose={editUsernameModalUtils.close} />
+                    </Container>
+                </IonContent>
+            </IonModal>
+
             <Stack className={"w-full gap-0 items-center"}>
                 <ProfileBanner userId={userId} showEditButton={true} />
                 <Stack className={"w-full items-center relative -top-20"}>
@@ -73,14 +83,8 @@ const ProfileEditForm = ({ userId }: Props) => {
                     </Box>
 
                     <Group className={"items-center"}>
-                        <Text className={""}>
-                            {profileQuery.data?.username}
-                        </Text>
-                        <ActionIcon
-                            size={"md"}
-                            variant="default"
-                            onClick={editUsernameModalUtils.open}
-                        >
+                        <Text className={""}>{profileQuery.data?.username}</Text>
+                        <ActionIcon size={"md"} variant="default" onClick={editUsernameModalUtils.open}>
                             <IconEdit />
                         </ActionIcon>
                     </Group>
@@ -90,10 +94,7 @@ const ProfileEditForm = ({ userId }: Props) => {
                 <DetailsBox title={"Bio"}>
                     <ProfileEditBioForm />
                 </DetailsBox>
-                <DetailsBox
-                    title={"Featured achievement"}
-                    description={"Click to edit"}
-                >
+                <DetailsBox title={"Featured achievement"} description={"Click to edit"}>
                     <Flex className={"w-full justify-center"}>
                         <ProfileEditFeaturedAchievement />
                     </Flex>

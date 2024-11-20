@@ -1,6 +1,7 @@
 import { createTheme, DEFAULT_THEME, mergeMantineTheme } from "@mantine/core";
 
 const themeOverride = createTheme({
+    fontFamily: "Inter",
     colors: {
         brand: [
             "#ffede5",

@@ -10,7 +10,7 @@ interface Props extends BaseModalProps {
 
 const GameInfoReviewCreateUpdateModal = ({ gameId, opened, onClose }: Props) => {
     return (
-        <IonModal isOpen={opened} onDidDismiss={onClose} initialBreakpoint={0.75} breakpoints={[0.75, 1]}>
+        <IonModal isOpen={opened} onDidDismiss={onClose} initialBreakpoint={0.9} breakpoints={[0.75, 0.9, 1]}>
             <IonHeader>
                 <IonToolbar>
                     <IonTitle>Your review</IonTitle>

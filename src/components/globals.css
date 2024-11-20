@@ -4,6 +4,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: Inter;
+    src: url("/font/Inter-Variable.ttf");
+}
+
+:root {
+   --ion-font-family: Inter;
+}
+
 /*
 * Thanks to @layer rule, tailwind base get lower "priority"
 * than mantine css rules even if they have same specificity.

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { Container, Divider, Group, Skeleton, Stack, Text, Title } from "@mantine/core";
 import { useCollection } from "@/components/collection/hooks/useCollection";
 import { z } from "zod";
@@ -9,6 +9,7 @@ import useUserId from "@/components/auth/hooks/useUserId";
 import GameView from "@/components/game/view/GameView";
 import { useInfiniteCollectionEntriesForCollectionId } from "../collection-entry/hooks/useInfiniteCollectionEntriesForCollectionId";
 import CenteredErrorMessage from "@/components/general/CenteredErrorMessage";
+import { GameViewLayoutOption } from "@/components/game/view/GameViewLayoutSwitcher";
 
 interface ICollectionViewProps {
     libraryUserId: string;
@@ -36,6 +37,8 @@ const CollectionView = ({ collectionId, libraryUserId }: ICollectionViewProps) =
             page: 1,
         },
     });
+
+    const [layout, setLayout] = useState<GameViewLayoutOption>("grid");
 
     const ownUserId = useUserId();
 
@@ -66,12 +69,14 @@ const CollectionView = ({ collectionId, libraryUserId }: ICollectionViewProps) =
 
         return ids?.filter((id) => id != undefined);
     }, [collectionEntriesQuery.data]);
+
     const gamesQuery = useGames({
         gameIds: gamesIds,
         relations: {
             cover: true,
         },
     });
+
     const games = gamesQuery.data;
 
     const isLoading = collectionQuery.isLoading || collectionEntriesQuery.isLoading || gamesQuery.isLoading;
@@ -97,20 +102,25 @@ const CollectionView = ({ collectionId, libraryUserId }: ICollectionViewProps) =
                 </Stack>
             </Group>
             <Divider className={"w-[calc(100%-2rem)]"} my={"sm"} variant={"dashed"} />
-            <GameView layout={"grid"}>
-                <GameView.Content
-                    items={games}
-                    isLoading={false}
-                    isFetching={isFetching}
-                    hasNextPage={collectionEntriesQuery.hasNextPage}
-                    onLoadMore={() => {
-                        if (!isLoading && !isFetching) {
-                            collectionEntriesQuery.fetchNextPage();
-                        }
-                    }}
-                />
-                {isError && <CenteredErrorMessage message="Failed to fetch collection entries. Please try again." />}
-            </GameView>
+            <Stack>
+                <GameView layout={layout}>
+                    <GameView.LayoutSwitcher setLayout={setLayout} />
+                    <GameView.Content
+                        items={games}
+                        isLoading={false}
+                        isFetching={isFetching}
+                        hasNextPage={collectionEntriesQuery.hasNextPage}
+                        onLoadMore={() => {
+                            if (!isLoading && !isFetching) {
+                                collectionEntriesQuery.fetchNextPage();
+                            }
+                        }}
+                    />
+                    {isError && (
+                        <CenteredErrorMessage message="Failed to fetch collection entries. Please try again." />
+                    )}
+                </GameView>
+            </Stack>
         </Stack>
     );
 };

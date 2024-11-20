@@ -7,6 +7,7 @@ import ProfileReviewListPage from "@/pages/profile/review_list";
 import AchievementsPage from "@/pages/achievements";
 import LibraryPage from "@/pages/library";
 import SupertokensAuthPage from "@/pages/auth";
+import ImporterPage from "@/pages/importer";
 
 /**
  * Retrieves a list of common routes that should be available in all tabs.
@@ -75,6 +76,9 @@ export function getCommonRoutes(prefix: string): React.ReactNode[] {
         />,
         <Route key={`${prefix}-auth`} path={`${prefix}/auth`}>
             <SupertokensAuthPage />
+        </Route>,
+        <Route key={`${prefix}-importer`} path={`${prefix}/importer`}>
+            <ImporterPage />
         </Route>,
     ];
 }
