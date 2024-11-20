@@ -41,20 +41,19 @@ const ProfilePage = ({ userId }: Props) => {
     return (
         <IonPage>
             <SessionAuth requireAuth={userId == undefined}>
-                <IonHeader>
-                    <IonToolbar>
-                        {isInTab && isOwnProfile ? (
-                            <TabHeader />
-                        ) : (
-                            <>
-                                <IonButtons slot={"start"}>
-                                    <IonBackButton />
-                                </IonButtons>
-                                <IonTitle>{profileQuery.data?.username}&apos;s profile</IonTitle>
-                            </>
-                        )}
-                    </IonToolbar>
-                </IonHeader>
+                {isInTab && isOwnProfile ? (
+                    <TabHeader title={"Profile"} />
+                ) : (
+                    <IonHeader>
+                        <IonToolbar>
+                            <IonButtons slot={"start"}>
+                                <IonBackButton />
+                            </IonButtons>
+                            <IonTitle>{profileQuery.data?.username}&apos;s profile</IonTitle>
+                        </IonToolbar>
+                    </IonHeader>
+                )}
+
                 <IonContent>
                     <Container fluid className="my-4">
                         {profileQuery.isLoading && <CenteredLoading />}

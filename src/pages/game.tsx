@@ -22,7 +22,7 @@ const GamePage = ({ gameId }: Props) => {
                     <IonButtons slot={"start"}>
                         <IonBackButton />
                     </IonButtons>
-                    <IonTitle>{gameQuery.data ? gameQuery.data.name : "Game Info"}</IonTitle>
+                    <IonTitle>{gameQuery.data?.name}</IonTitle>
                 </IonToolbar>
             </IonHeader>
             <IonContent>

@@ -47,25 +47,24 @@ const LibraryPage = ({ userId }: Props) => {
         if (paramsCollectionId) {
             setSelectedCollectionId(paramsCollectionId);
         }
-    }, []);
+    }, [params]);
 
     return (
         <IonPage>
             <SessionAuth requireAuth={userId == undefined}>
-                <IonHeader>
-                    <IonToolbar>
-                        {isInTab && isOwnLibrary ? (
-                            <TabHeader />
-                        ) : (
-                            <>
-                                <IonButtons slot={"start"}>
-                                    <IonBackButton />
-                                </IonButtons>
-                                <IonTitle>{`${profileQuery.data?.username}`}&apos;s library</IonTitle>
-                            </>
-                        )}
-                    </IonToolbar>
-                </IonHeader>
+                {isInTab && isOwnLibrary ? (
+                    <TabHeader title={"Library"} />
+                ) : (
+                    <IonHeader>
+                        <IonToolbar>
+                            <IonButtons slot={"start"}>
+                                <IonBackButton />
+                            </IonButtons>
+                            <IonTitle>{`${profileQuery.data?.username}`}&apos;s library</IonTitle>
+                        </IonToolbar>
+                    </IonHeader>
+                )}
+
                 <IonContent>
                     {isOwnLibrary && <LibraryViewFab selectedCollectionId={selectedCollectionId} />}
                     <Container fluid className="my-4">

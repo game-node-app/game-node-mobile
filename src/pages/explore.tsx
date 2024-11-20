@@ -86,11 +86,7 @@ const ExplorePage = () => {
 
     return (
         <IonPage>
-            <IonHeader>
-                <IonToolbar>
-                    <TabHeader />
-                </IonToolbar>
-            </IonHeader>
+            <TabHeader title={"Explore"} />
             <IonContent>
                 <Container fluid className={"min-h-screen my-4"}>
                     <Box className={"my-6"}>

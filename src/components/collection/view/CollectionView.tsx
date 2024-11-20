@@ -70,12 +70,15 @@ const CollectionView = ({ collectionId, libraryUserId }: ICollectionViewProps) =
         return ids?.filter((id) => id != undefined);
     }, [collectionEntriesQuery.data]);
 
-    const gamesQuery = useGames({
-        gameIds: gamesIds,
-        relations: {
-            cover: true,
+    const gamesQuery = useGames(
+        {
+            gameIds: gamesIds,
+            relations: {
+                cover: true,
+            },
         },
-    });
+        true,
+    );
 
     const games = gamesQuery.data;
 
@@ -107,7 +110,7 @@ const CollectionView = ({ collectionId, libraryUserId }: ICollectionViewProps) =
                     <GameView.LayoutSwitcher setLayout={setLayout} />
                     <GameView.Content
                         items={games}
-                        isLoading={false}
+                        isLoading={isLoading}
                         isFetching={isFetching}
                         hasNextPage={collectionEntriesQuery.hasNextPage}
                         onLoadMore={() => {

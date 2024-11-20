@@ -12,11 +12,7 @@ const HomePage = () => {
     const userId = useUserId();
     return (
         <IonPage>
-            <IonHeader>
-                <IonToolbar>
-                    <TabHeader />
-                </IonToolbar>
-            </IonHeader>
+            <TabHeader title={"Home"} />
             <IonContent>
                 <Container fluid className={"w-full my-4"}>
                     <Stack className={"w-full gap-8"}>

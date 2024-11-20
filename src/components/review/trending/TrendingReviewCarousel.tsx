@@ -66,8 +66,8 @@ const TrendingReviewCarousel = () => {
                         lg: "md",
                     }}
                     slidesToScroll={onMobile ? 1 : 2}
-                    controlsOffset="xs"
                     dragFree
+                    withControls={false}
                 >
                     {buildSlides()}
                 </Carousel>

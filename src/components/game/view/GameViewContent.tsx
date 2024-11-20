@@ -87,10 +87,17 @@ const GameViewContent = ({
                         <Text>No items to show.</Text>
                     </Center>
                 )}
+                {isLoading && <CenteredLoading />}
                 <IonList className={"w-full"} lines={"inset"}>
                     {isFetching && buildLoadingSkeletons()}
                     {buildListItems()}
                 </IonList>
+                {!isLoading && !isFetching && hasNextPage && (
+                    <Group className={"w-full justify-center"}>
+                        <Button onClick={onLoadMore}>Load more</Button>
+                    </Group>
+                )}
+                {isFetching && <CenteredLoading />}
             </Stack>
         );
     }

@@ -40,17 +40,20 @@ import "@ionic/react/css/palettes/dark.always.css";
 /* Theme variables */
 import "./theme/variables.css";
 import SuperTokensProvider from "./components/auth/SuperTokensProvider";
-import { IconHome, IconLibrary, IconRouteAltLeft, IconUser } from "@tabler/icons-react";
+import { IconBell, IconHome, IconLibrary, IconRouteAltLeft, IconSettings, IconUser } from "@tabler/icons-react";
 import { OpenAPI as ServerOpenAPI } from "@/wrapper/server";
 import { OpenAPI as SearchOpenAPI } from "@/wrapper/search";
 import NotificationsManager from "./components/general/NotificationsManager";
 import CenteredLoading from "@/components/general/CenteredLoading";
 import { getCommonRoutes } from "@/pages/routes/getCommonRoutes";
+
 import HomePage from "./pages/home";
 import ExplorePage from "./pages/explore";
 import SearchResultsPage from "./pages/search_results";
 import ProfilePage from "./pages/profile/profile";
 import LibraryPage from "./pages/library";
+import NotificationsPage from "@/pages/notifications";
+import PreferencesPage from "@/pages/preferences";
 
 /**
  * Basic configuration for wrapper services
@@ -86,7 +89,7 @@ const App: React.FC = () => {
                                     <Suspense fallback={<CenteredLoading message={"Loading page..."} />}>
                                         {/* ---- HOME ROUTES ---- */}
                                         <Route exact path="/">
-                                            <Redirect to="/home" />
+                                            <Redirect to="/home" push={false} />
                                         </Route>
                                         <Route exact path={"/home"}>
                                             <HomePage />
@@ -112,25 +115,29 @@ const App: React.FC = () => {
                                             <LibraryPage />
                                         </Route>
                                         {getCommonRoutes("/library")}
+                                        {/* ---- PREFERENCES ROUTES ---- */}
+                                        <Route exact path="/preferences">
+                                            <PreferencesPage />
+                                        </Route>
+                                        {getCommonRoutes("/preferences")}
                                     </Suspense>
                                 </IonRouterOutlet>
                                 <IonTabBar slot="bottom">
                                     <IonTabButton tab="home" href="/home">
                                         <IconHome aria-hidden={"true"} />
-                                        <IonLabel>Home</IonLabel>
                                     </IonTabButton>
                                     <IonTabButton tab="explore" href="/explore">
                                         <IconRouteAltLeft aria-hidden={"true"} />
-                                        <IonLabel>Explore</IonLabel>
                                     </IonTabButton>
 
                                     <IonTabButton tab="library" href="/library">
                                         <IconLibrary aria-hidden={"true"} />
-                                        <IonLabel>Library</IonLabel>
                                     </IonTabButton>
                                     <IonTabButton tab="profile" href="/profile">
                                         <IconUser aria-hidden={"true"} />
-                                        <IonLabel>Profile</IonLabel>
+                                    </IonTabButton>
+                                    <IonTabButton tab="preferences" href="/preferences">
+                                        <IconSettings aria-hidden={"true"} />
                                     </IonTabButton>
                                 </IonTabBar>
                             </IonTabs>
