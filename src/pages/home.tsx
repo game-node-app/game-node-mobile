@@ -18,13 +18,6 @@ const HomePage = () => {
     const [selectedActivityTab, setSelectedActivityTab] = useState<ActivityFeedTabValue>("all");
     return (
         <IonPage>
-            <IonHeader>
-                <IonToolbar>
-                    <IonButtons className={"px-4"}>
-                        <GameNodeLogo withBadge className={"w-28 h-10"} />
-                    </IonButtons>
-                </IonToolbar>
-            </IonHeader>
             <IonContent fixedSlotPlacement="before" ref={contentRef}>
                 <IonFab horizontal="end" vertical="bottom" slot="fixed">
                     <IonFabButton
