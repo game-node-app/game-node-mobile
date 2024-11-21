@@ -1,0 +1,10 @@
+{
+	"appId": "app.gamenode",
+	"appName": "GameNode",
+	"webDir": "dist",
+	"plugins": {
+		"CapacitorCookies": {
+			"enabled": true
+		}
+	}
+}
