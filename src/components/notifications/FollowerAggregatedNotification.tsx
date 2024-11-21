@@ -15,7 +15,7 @@ const FollowerAggregatedNotification = ({ aggregatedNotification }: AggregatedNo
         const followerProfile = aggregatedNotification.notifications[0].profile;
         const followerUserId = aggregatedNotification.notifications[0].profileUserId;
         return (
-            <Link to={getTabAwareHref(`/profile/${ownUserId}`)} className={"w-full"}>
+            <Link to={getTabAwareHref(`/profile/${followerUserId}`)} className={"w-full"}>
                 <Group>
                     {followerUserId && <UserAvatar userId={followerUserId} />}
                     <Text>
@@ -24,7 +24,7 @@ const FollowerAggregatedNotification = ({ aggregatedNotification }: AggregatedNo
                 </Group>
             </Link>
         );
-    }, [aggregatedNotification, ownUserId]);
+    }, [aggregatedNotification]);
 
     return content;
 };

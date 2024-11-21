@@ -16,6 +16,14 @@ const ActivityFeedLayout = ({ children, currentTab, onChange }: Props) => {
             <Tabs value={currentTab}>
                 <Tabs.List grow>
                     <Tabs.Tab
+                        value={"all"}
+                        onClick={() => {
+                            onChange("all");
+                        }}
+                    >
+                        All
+                    </Tabs.Tab>
+                    <Tabs.Tab
                         value={"following"}
                         disabled={userId == undefined}
                         onClick={() => {
@@ -23,14 +31,6 @@ const ActivityFeedLayout = ({ children, currentTab, onChange }: Props) => {
                         }}
                     >
                         Following
-                    </Tabs.Tab>
-                    <Tabs.Tab
-                        value={"all"}
-                        onClick={() => {
-                            onChange("all");
-                        }}
-                    >
-                        All
                     </Tabs.Tab>
                 </Tabs.List>
             </Tabs>

@@ -10,6 +10,7 @@ import SupertokensAuthPage from "@/pages/auth";
 import NotificationsPage from "@/pages/notifications";
 import ImporterPage from "@/pages/importer/importer";
 import ImporterByTypePage from "@/pages/importer/type";
+import ActivityPage from "@/pages/activity";
 
 /**
  * Retrieves a list of common routes that should be available in all tabs.
@@ -92,5 +93,8 @@ export function getCommonRoutes(prefix: string): React.ReactNode[] {
                 return <ImporterByTypePage type={props.match.params.type} />;
             }}
         />,
+        <Route key={`${prefix}-activity`} path={`${prefix}/activity`}>
+            <ActivityPage />
+        </Route>,
     ];
 }
