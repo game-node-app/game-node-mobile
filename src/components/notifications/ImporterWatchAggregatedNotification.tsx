@@ -5,6 +5,7 @@ import NotificationSkeleton from "@/components/notifications/NotificationSkeleto
 import { Group, Image, Text } from "@mantine/core";
 import { getServerStoredIcon } from "@/util/getServerStoredImages";
 import { Link } from "react-router-dom";
+import { getCapitalizedText } from "@/util/getCapitalizedText";
 
 const ImporterWatchAggregatedNotification = ({ aggregatedNotification }: AggregatedNotificationContentProps) => {
     const notificationQuery = useImporterNotification(aggregatedNotification.sourceId as number);
@@ -12,7 +13,7 @@ const ImporterWatchAggregatedNotification = ({ aggregatedNotification }: Aggrega
     const sourceName = useMemo(() => {
         if (notificationQuery.data && notificationQuery.data.source) {
             // Capitalizes the source name
-            return notificationQuery.data.source.charAt(0).toUpperCase() + notificationQuery.data.source.slice(1);
+            return getCapitalizedText(notificationQuery.data.source);
         }
     }, [notificationQuery.data]);
 

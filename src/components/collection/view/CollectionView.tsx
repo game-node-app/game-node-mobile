@@ -61,7 +61,7 @@ const CollectionView = ({ collectionId, libraryUserId }: ICollectionViewProps) =
         offset: requestParams.offset,
         limit: requestParams.limit,
         orderBy: {
-            createdAt: "DESC",
+            addedDate: "DESC",
         },
     });
     const gamesIds = useMemo(() => {

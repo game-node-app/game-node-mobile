@@ -40,7 +40,7 @@ const SELECT_PERIOD_DATA = [
     },
 ];
 
-const DEFAULT_LIMIT = 12;
+const DEFAULT_LIMIT = 24;
 
 const ExplorePage = () => {
     const router = useIonRouter();

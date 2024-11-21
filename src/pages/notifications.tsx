@@ -59,6 +59,14 @@ const NotificationsPage = () => {
     return (
         <IonPage>
             <SessionAuth>
+                <IonHeader>
+                    <IonToolbar>
+                        <IonButtons slot={"start"}>
+                            <IonBackButton />
+                        </IonButtons>
+                        <IonTitle>Notifications</IonTitle>
+                    </IonToolbar>
+                </IonHeader>
                 <IonContent>
                     <Container fluid className={"min-h-screen p-0 mb-4"}>
                         <Stack w={"100%"} h={"100%"} align={"center"} gap={0}>

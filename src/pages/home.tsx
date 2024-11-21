@@ -1,4 +1,4 @@
-import { IonContent, IonFab, IonFabButton, IonHeader, IonPage, IonToolbar } from "@ionic/react";
+import { IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonPage, IonToolbar } from "@ionic/react";
 import React, { useRef, useState } from "react";
 import { Container, Stack } from "@mantine/core";
 import TrendingReviewCarousel from "@/components/review/trending/TrendingReviewCarousel";
@@ -9,6 +9,8 @@ import useUserId from "@/components/auth/hooks/useUserId";
 import ActivityFeed from "@/components/activity/ActivityFeed";
 import { IconArrowUp } from "@tabler/icons-react";
 import ActivityFeedLayout, { ActivityFeedTabValue } from "@/components/activity/ActivityFeedLayout";
+import GameNodeLogo from "@/components/general/GameNodeLogo";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
     const userId = useUserId();
@@ -16,6 +18,13 @@ const HomePage = () => {
     const [selectedActivityTab, setSelectedActivityTab] = useState<ActivityFeedTabValue>("all");
     return (
         <IonPage>
+            <IonHeader>
+                <IonToolbar>
+                    <IonButtons className={"px-4"}>
+                        <GameNodeLogo withBadge className={"w-28 h-10"} />
+                    </IonButtons>
+                </IonToolbar>
+            </IonHeader>
             <IonContent fixedSlotPlacement="before" ref={contentRef}>
                 <IonFab horizontal="end" vertical="bottom" slot="fixed">
                     <IonFabButton
