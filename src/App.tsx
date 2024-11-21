@@ -55,6 +55,7 @@ import LibraryPage from "./pages/library";
 import NotificationsPage from "@/pages/notifications";
 import PreferencesPage from "@/pages/preferences";
 import NotificationsIcon from "@/components/notifications/NotificationsIcon";
+import AppUrlListener from "./components/general/AppUrlListener";
 
 /**
  * Basic configuration for wrapper services
@@ -83,6 +84,7 @@ const App: React.FC = () => {
             <MantineProvider theme={theme} forceColorScheme={"dark"}>
                 <QueryClientProvider client={queryClient}>
                     <SuperTokensProvider>
+                        <AppUrlListener />
                         <NotificationsManager />
                         <IonReactRouter>
                             <IonTabs>
