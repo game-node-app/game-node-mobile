@@ -4,9 +4,10 @@ import { Skeleton, Stack } from "@mantine/core";
 import CenteredErrorMessage from "@/components/general/CenteredErrorMessage";
 import { useIntersection } from "@mantine/hooks";
 import ActivityList from "@/components/activity/ActivityList";
+import { ActivityFeedTabValue } from "@/components/activity/ActivityFeedLayout";
 
 interface Props {
-    criteria: "following" | "all";
+    criteria: ActivityFeedTabValue;
 }
 
 const ActivityFeed = ({ criteria }: Props) => {
@@ -41,12 +42,9 @@ const ActivityFeed = ({ criteria }: Props) => {
     }, []);
 
     useEffect(() => {
-        const lastElement =
-            activityQuery.data?.pages[activityQuery.data?.pages.length - 1];
+        const lastElement = activityQuery.data?.pages[activityQuery.data?.pages.length - 1];
         const hasNextPage =
-            lastElement != undefined &&
-            lastElement.data.length > 0 &&
-            lastElement.pagination.hasNextPage;
+            lastElement != undefined && lastElement.data.length > 0 && lastElement.pagination.hasNextPage;
 
         const canFetchNextPage = !isFetching && !isLoading && hasNextPage;
 
@@ -54,11 +52,7 @@ const ActivityFeed = ({ criteria }: Props) => {
         // intersection to be considered valid
         const minimumIntersectionTime = 3000;
 
-        if (
-            canFetchNextPage &&
-            entry?.isIntersecting &&
-            entry.time > minimumIntersectionTime
-        ) {
+        if (canFetchNextPage && entry?.isIntersecting && entry.time > minimumIntersectionTime) {
             activityQuery.fetchNextPage({ cancelRefetch: false });
         }
     }, [activityQuery, entry, isFetching, isLoading]);
@@ -67,15 +61,11 @@ const ActivityFeed = ({ criteria }: Props) => {
         <Stack className={"w-full h-full"}>
             {activityQuery.isLoading && buildSkeletons()}
             {!isLoading && isEmpty && (
-                <CenteredErrorMessage
-                    message={"No activities to show. Try a different filter."}
-                />
+                <CenteredErrorMessage message={"No activities to show. Try a different filter."} />
             )}
             {isError && (
                 <CenteredErrorMessage
-                    message={
-                        "Error while fetching activities. Please try again or contact support."
-                    }
+                    message={"Error while fetching activities. Please try again or contact support."}
                 />
             )}
             <ActivityList items={items} />

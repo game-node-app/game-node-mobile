@@ -1,8 +1,6 @@
 import useUserId from "@/components/auth/hooks/useUserId";
 import CollectionView from "@/components/collection/view/CollectionView";
 import { DetailsBox } from "@/components/general/DetailsBox";
-import TabHeader from "@/components/general/TabHeader";
-import { useUserLibrary } from "@/components/library/hooks/useUserLibrary";
 import LibraryViewFab from "@/components/library/view/fab/LibraryViewFab";
 import LibraryView from "@/components/library/view/LibraryView";
 import useUserProfile from "@/components/profile/hooks/useUserProfile";
@@ -52,9 +50,7 @@ const LibraryPage = ({ userId }: Props) => {
     return (
         <IonPage>
             <SessionAuth requireAuth={userId == undefined}>
-                {isInTab && isOwnLibrary ? (
-                    <TabHeader title={"Library"} />
-                ) : (
+                {isInTab && isOwnLibrary ? null : (
                     <IonHeader>
                         <IonToolbar>
                             <IonButtons slot={"start"}>

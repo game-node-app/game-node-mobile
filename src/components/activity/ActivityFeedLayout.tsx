@@ -1,29 +1,37 @@
 import React, { PropsWithChildren } from "react";
 import { Box, Divider, Stack, Tabs } from "@mantine/core";
 import useUserId from "@/components/auth/hooks/useUserId";
-import Link from "next/link";
+
+export type ActivityFeedTabValue = "following" | "all";
 
 interface Props extends PropsWithChildren {
-    currentTab: "following" | "all";
+    currentTab: ActivityFeedTabValue;
+    onChange: (value: ActivityFeedTabValue) => void;
 }
 
-const ActivityFeedLayout = ({ children, currentTab }: Props) => {
+const ActivityFeedLayout = ({ children, currentTab, onChange }: Props) => {
     const userId = useUserId();
     return (
         <Stack className={"w-full h-full"}>
             <Tabs value={currentTab}>
-                <Tabs.List>
-                    <Link href={"/activity/following"}>
-                        <Tabs.Tab
-                            value={"following"}
-                            disabled={userId == undefined}
-                        >
-                            Following
-                        </Tabs.Tab>
-                    </Link>
-                    <Link href={"/activity/all"}>
-                        <Tabs.Tab value={"all"}>All</Tabs.Tab>
-                    </Link>
+                <Tabs.List grow>
+                    <Tabs.Tab
+                        value={"following"}
+                        disabled={userId == undefined}
+                        onClick={() => {
+                            onChange("following");
+                        }}
+                    >
+                        Following
+                    </Tabs.Tab>
+                    <Tabs.Tab
+                        value={"all"}
+                        onClick={() => {
+                            onChange("all");
+                        }}
+                    >
+                        All
+                    </Tabs.Tab>
                 </Tabs.List>
             </Tabs>
             <Box>{children}</Box>

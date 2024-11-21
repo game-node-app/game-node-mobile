@@ -108,7 +108,7 @@ const CollectionEntryAddOrUpdateForm = ({ gameId, onClose, showGameInfo = true }
             platforms: true,
         },
     });
-    const gamePlatformsQuery = useGamesResource<GamePlatform>("platforms");
+    const gamePlatformsQuery = useGamesResource("platforms");
 
     const game = gameQuery.data;
     const userId = useUserId();

@@ -14,7 +14,7 @@ const GameInfoPlaytime = ({ gameId }: Props) => {
     const playtimeQuery = useQuery({
         queryKey: ["game", "playtime", gameId],
         queryFn: () => {
-            return PlaytimeService.playtimeControllerFindOneByGameIdV1(gameId);
+            return PlaytimeService.playtimeControllerFindOneByGameId(gameId);
         },
         enabled: !!gameId,
         staleTime: Infinity,

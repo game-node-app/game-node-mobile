@@ -9,7 +9,6 @@ import {
     useIonRouter,
 } from "@ionic/react";
 import React from "react";
-import TabHeader from "@/components/general/TabHeader";
 import useUserId from "@/components/auth/hooks/useUserId";
 import useUserProfile from "@/components/profile/hooks/useUserProfile";
 import ProfileUserInfoWithBanner from "@/components/profile/view/ProfileUserInfoWithBanner";
@@ -41,9 +40,7 @@ const ProfilePage = ({ userId }: Props) => {
     return (
         <IonPage>
             <SessionAuth requireAuth={userId == undefined}>
-                {isInTab && isOwnProfile ? (
-                    <TabHeader title={"Profile"} />
-                ) : (
+                {isInTab && isOwnProfile ? null : (
                     <IonHeader>
                         <IonToolbar>
                             <IonButtons slot={"start"}>

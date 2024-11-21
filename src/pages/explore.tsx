@@ -7,12 +7,12 @@ import {
     IonContent,
     IonHeader,
     IonPage,
+    IonSearchbar,
     IonSelect,
     IonSelectOption,
     IonToolbar,
     useIonRouter,
 } from "@ionic/react";
-import TabHeader from "@/components/general/TabHeader";
 import { FindStatisticsTrendingGamesDto, GameStatisticsPaginatedResponseDto } from "@/wrapper/server";
 import period = FindStatisticsTrendingGamesDto.period;
 import GameView from "@/components/game/view/GameView";
@@ -86,24 +86,26 @@ const ExplorePage = () => {
 
     return (
         <IonPage>
-            <TabHeader title={"Explore"} />
+            <IonHeader>
+                <IonToolbar>
+                    <IonSearchbar
+                        animated={true}
+                        placeholder="Search for games"
+                        value={query}
+                        onIonInput={(evt) => {
+                            setQuery(evt.detail.value ?? "");
+                        }}
+                        onIonChange={(evt) => {
+                            setQuery(evt.detail.value ?? "");
+                            if (evt.detail.value && evt.detail.value.length > 2) {
+                                router.push(`/explore/search_results?q=${query}`);
+                            }
+                        }}
+                    />
+                </IonToolbar>
+            </IonHeader>
             <IonContent>
                 <Container fluid className={"min-h-screen my-4"}>
-                    <Box className={"my-6"}>
-                        <form
-                            onSubmit={(evt) => {
-                                evt.preventDefault();
-                                router.push(`/explore/search_results?q=${query}`);
-                            }}
-                        >
-                            <SearchBar
-                                label={"Search for games"}
-                                value={query}
-                                onChange={(evt) => setQuery(evt.currentTarget.value)}
-                                withButton
-                            />
-                        </form>
-                    </Box>
                     <Stack className={"w-full"}>
                         <Flex className={"w-full justify-end"}>
                             <IonSelect

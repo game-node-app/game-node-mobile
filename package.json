@@ -98,5 +98,8 @@
     "vite": "^5.4.11",
     "vitest": "^0.34.6"
   },
+  "resolutions": {
+    "prosemirror-model": "1.23.0"
+  },
   "description": "GameNode's hybrid PWA/mobile app"
 }

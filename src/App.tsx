@@ -54,6 +54,7 @@ import ProfilePage from "./pages/profile/profile";
 import LibraryPage from "./pages/library";
 import NotificationsPage from "@/pages/notifications";
 import PreferencesPage from "@/pages/preferences";
+import NotificationsIcon from "@/components/notifications/NotificationsIcon";
 
 /**
  * Basic configuration for wrapper services
@@ -115,6 +116,11 @@ const App: React.FC = () => {
                                             <LibraryPage />
                                         </Route>
                                         {getCommonRoutes("/library")}
+                                        {/* ---- LIBRARY ROUTES ---- */}
+                                        <Route exact path="/notifications">
+                                            <NotificationsPage />
+                                        </Route>
+                                        {getCommonRoutes("/notifications")}
                                         {/* ---- PREFERENCES ROUTES ---- */}
                                         <Route exact path="/preferences">
                                             <PreferencesPage />
@@ -135,6 +141,9 @@ const App: React.FC = () => {
                                     </IonTabButton>
                                     <IonTabButton tab="profile" href="/profile">
                                         <IconUser aria-hidden={"true"} />
+                                    </IonTabButton>
+                                    <IonTabButton tab="notifications" href="/notifications">
+                                        <NotificationsIcon />
                                     </IonTabButton>
                                     <IonTabButton tab="preferences" href="/preferences">
                                         <IconSettings aria-hidden={"true"} />

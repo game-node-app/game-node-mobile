@@ -1,29 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
-import {
-    ActionIcon,
-    Button,
-    Checkbox,
-    Chip,
-    Group,
-    Stack,
-    Text,
-} from "@mantine/core";
+import React from "react";
+import { ActionIcon, Button, Chip, Group, Stack, Text } from "@mantine/core";
 import { FieldPath, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-    BaseModalChildrenProps,
-    BaseModalProps,
-} from "@/util/types/modal-props";
-import GameInfoSharePreview, {
-    GAME_INFO_SHARE_PREVIEW_ID,
-} from "@/components/game/info/share/GameInfoSharePreview";
-import { DetailsBox } from "@/components/general/DetailsBox";
+import { BaseModalChildrenProps } from "@/util/types/modal-props";
+import GameInfoSharePreview, { GAME_INFO_SHARE_PREVIEW_ID } from "@/components/game/info/share/GameInfoSharePreview";
 import { toBlob } from "html-to-image";
 import { useMutation } from "@tanstack/react-query";
-import CenteredErrorMessage from "@/components/general/CenteredErrorMessage";
 import { IconDownload } from "@tabler/icons-react";
-import { useRouter } from "next/router";
 
 interface GameInfoShareProps extends BaseModalChildrenProps {
     gameId: number;
@@ -49,31 +33,25 @@ function downloadFile(file: File) {
     URL.revokeObjectURL(objectURL);
 }
 
-const GameInfoShare = ({ gameId, onClose }: GameInfoShareProps) => {
+const GameInfoShare = ({ gameId }: GameInfoShareProps) => {
     const canShare = navigator.canShare != undefined;
-    const router = useRouter();
 
-    const { watch, register, setValue, handleSubmit } =
-        useForm<ShareFormValues>({
-            mode: "onBlur",
-            resolver: zodResolver(ShareFormSchema),
-            defaultValues: {
-                transparentBackground: false,
-                withRating: true,
-                withOwnedPlatforms: true,
-                withDivider: true,
-            },
-        });
+    const { watch, setValue, handleSubmit } = useForm<ShareFormValues>({
+        mode: "onBlur",
+        resolver: zodResolver(ShareFormSchema),
+        defaultValues: {
+            transparentBackground: false,
+            withRating: true,
+            withOwnedPlatforms: true,
+            withDivider: true,
+        },
+    });
 
     const shareMutation = useMutation({
         mutationFn: async (downloadOnly: boolean = false) => {
             if (!canShare) {
-                console.error(
-                    "User's browser doesn't support the WebShare API.",
-                );
-                throw new Error(
-                    "Failed to generate final image: Browser not compatible.",
-                );
+                console.error("User's browser doesn't support the WebShare API.");
+                throw new Error("Failed to generate final image: Browser not compatible.");
             }
             const node = document.getElementById(GAME_INFO_SHARE_PREVIEW_ID);
             const blob = await toBlob(node!);
@@ -105,9 +83,7 @@ const GameInfoShare = ({ gameId, onClose }: GameInfoShareProps) => {
                 console.error(e);
             }
 
-            throw new Error(
-                "Failed to generate final image: Browser not compatible",
-            );
+            throw new Error("Failed to generate final image: Browser not compatible");
         },
     });
 
@@ -128,8 +104,8 @@ const GameInfoShare = ({ gameId, onClose }: GameInfoShareProps) => {
             <Stack w={"100%"} align={"center"}>
                 {!canShare && (
                     <Text c={"red"} className={"mt-2 mb-2 text-center"}>
-                        It seems like your browser doesn't support direct share.
-                        You can still download the generated image.
+                        It seems like your browser doesn&apos;t support direct share. You can still download the
+                        generated image.
                     </Text>
                 )}
                 {shareMutation.isError && (
@@ -142,25 +118,13 @@ const GameInfoShare = ({ gameId, onClose }: GameInfoShareProps) => {
 
                 <Group w={"100%"} className={"mt-4 mb-4"}>
                     <Chip {...registerChip("withRating")}>Rating</Chip>
-                    <Chip {...registerChip("withOwnedPlatforms")}>
-                        Owned platforms
-                    </Chip>
+                    <Chip {...registerChip("withOwnedPlatforms")}>Owned platforms</Chip>
                     <Chip {...registerChip("withDivider")}>Divider</Chip>
-                    <Chip {...registerChip("transparentBackground")}>
-                        Transparent background
-                    </Chip>
+                    <Chip {...registerChip("transparentBackground")}>Transparent background</Chip>
                 </Group>
 
-                <Group
-                    className={"justify-end"}
-                    h={"fit-content"}
-                    gap={"0.5rem"}
-                >
-                    <Button
-                        disabled={!canShare}
-                        loading={shareMutation.isPending}
-                        type={"submit"}
-                    >
+                <Group className={"justify-end"} h={"fit-content"} gap={"0.5rem"}>
+                    <Button disabled={!canShare} loading={shareMutation.isPending} type={"submit"}>
                         Share
                     </Button>
                     <ActionIcon

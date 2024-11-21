@@ -1,19 +1,31 @@
-import { IonContent, IonHeader, IonPage, IonToolbar } from "@ionic/react";
-import React from "react";
-import TabHeader from "@/components/general/TabHeader";
+import { IonContent, IonFab, IonFabButton, IonHeader, IonPage, IonToolbar } from "@ionic/react";
+import React, { useRef, useState } from "react";
 import { Container, Stack } from "@mantine/core";
 import TrendingReviewCarousel from "@/components/review/trending/TrendingReviewCarousel";
 import { DetailsBox } from "@/components/general/DetailsBox";
 import RecentActivityList from "@/components/activity/RecentActivityList";
 import RecommendationCarousel from "@/components/recommendation/carousel/RecommendationCarousel";
 import useUserId from "@/components/auth/hooks/useUserId";
+import ActivityFeed from "@/components/activity/ActivityFeed";
+import { IconArrowUp } from "@tabler/icons-react";
+import ActivityFeedLayout, { ActivityFeedTabValue } from "@/components/activity/ActivityFeedLayout";
 
 const HomePage = () => {
     const userId = useUserId();
+    const contentRef = useRef<HTMLIonContentElement>(null);
+    const [selectedActivityTab, setSelectedActivityTab] = useState<ActivityFeedTabValue>("all");
     return (
         <IonPage>
-            <TabHeader title={"Home"} />
-            <IonContent>
+            <IonContent fixedSlotPlacement="before" ref={contentRef}>
+                <IonFab horizontal="end" vertical="bottom" slot="fixed">
+                    <IonFabButton
+                        onClick={() => {
+                            contentRef.current?.scrollToTop(500);
+                        }}
+                    >
+                        <IconArrowUp />
+                    </IonFabButton>
+                </IonFab>
                 <Container fluid className={"w-full my-4"}>
                     <Stack className={"w-full gap-8"}>
                         {userId && (
@@ -44,12 +56,14 @@ const HomePage = () => {
                         )}
 
                         <DetailsBox
-                            title={"Recent activity from our users"}
+                            title={"Activity from our users"}
                             stackProps={{
                                 className: "",
                             }}
                         >
-                            <RecentActivityList limit={10} />
+                            <ActivityFeedLayout currentTab={selectedActivityTab} onChange={setSelectedActivityTab}>
+                                <ActivityFeed criteria={selectedActivityTab} />
+                            </ActivityFeedLayout>
                         </DetailsBox>
                     </Stack>
                 </Container>
