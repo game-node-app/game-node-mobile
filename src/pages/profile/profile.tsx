@@ -4,6 +4,7 @@ import {
     IonContent,
     IonHeader,
     IonPage,
+    IonProgressBar,
     IonTitle,
     IonToolbar,
     useIonRouter,
@@ -46,7 +47,11 @@ const ProfilePage = ({ userId }: Props) => {
                             <IonButtons slot={"start"}>
                                 <IonBackButton />
                             </IonButtons>
-                            <IonTitle>{profileQuery.data?.username}&apos;s profile</IonTitle>
+                            {isOwnProfile ? (
+                                <IonTitle>Your profile</IonTitle>
+                            ) : (
+                                <IonTitle>{profileQuery.data?.username}&apos;s profile</IonTitle>
+                            )}
                         </IonToolbar>
                     </IonHeader>
                 )}

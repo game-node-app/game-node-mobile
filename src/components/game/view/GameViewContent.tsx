@@ -88,16 +88,15 @@ const GameViewContent = ({
                     </Center>
                 )}
                 {isLoading && <CenteredLoading />}
-                <IonList className={"w-full"} lines={"inset"}>
-                    {isFetching && buildLoadingSkeletons()}
+                <IonList className={"w-full"} lines={"full"}>
                     {buildListItems()}
+                    {isFetching && buildLoadingSkeletons()}
                 </IonList>
                 {!isLoading && !isFetching && hasNextPage && (
                     <Group className={"w-full justify-center"}>
                         <Button onClick={onLoadMore}>Load more</Button>
                     </Group>
                 )}
-                {isFetching && <CenteredLoading />}
             </Stack>
         );
     }

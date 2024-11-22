@@ -5,6 +5,7 @@ import CenteredErrorMessage from "@/components/general/CenteredErrorMessage";
 import { useIntersection } from "@mantine/hooks";
 import ActivityList from "@/components/activity/ActivityList";
 import { ActivityFeedTabValue } from "@/components/activity/ActivityFeedLayout";
+import CenteredLoading from "@/components/general/CenteredLoading";
 
 interface Props {
     criteria: ActivityFeedTabValue;
@@ -69,6 +70,7 @@ const ActivityFeed = ({ criteria }: Props) => {
                 />
             )}
             <ActivityList items={items} />
+            {activityQuery.isFetching && buildSkeletons()}
             <div ref={ref} id={"last-element-tracker"}></div>
         </Stack>
     );

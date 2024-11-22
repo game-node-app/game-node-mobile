@@ -19,6 +19,9 @@ import { Container } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import { SessionAuth } from "supertokens-auth-react/recipe/session";
 import { useSearchParameters } from "@/components/general/hooks/useSearchParameters";
+import useCollectionEntriesForUserId from "@/components/collection/collection-entry/hooks/useCollectionEntriesForUserId";
+import GameView from "@/components/game/view/GameView";
+import CollectionEntriesView from "@/components/collection/collection-entry/view/CollectionEntriesView";
 
 interface Props {
     userId?: string;
@@ -38,6 +41,7 @@ const LibraryPage = ({ userId }: Props) => {
     const isInTab = pathname.split("/").length === 2;
 
     const profileQuery = useUserProfile(userIdToUse);
+
     const [selectedCollectionId, setSelectedCollectionId] = useState<string | undefined>(undefined);
 
     useEffect(() => {
@@ -56,7 +60,11 @@ const LibraryPage = ({ userId }: Props) => {
                             <IonButtons slot={"start"}>
                                 <IonBackButton />
                             </IonButtons>
-                            <IonTitle>{`${profileQuery.data?.username}`}&apos;s library</IonTitle>
+                            {isOwnLibrary ? (
+                                <IonTitle>Your library</IonTitle>
+                            ) : (
+                                <IonTitle>{`${profileQuery.data?.username}`}&apos;s library</IonTitle>
+                            )}
                         </IonToolbar>
                     </IonHeader>
                 )}
@@ -73,10 +81,14 @@ const LibraryPage = ({ userId }: Props) => {
                                 <CollectionView libraryUserId={userIdToUse!} collectionId={selectedCollectionId} />
                             ) : (
                                 <DetailsBox
-                                    title={`${profileQuery.data?.username}'s Favorite Games`}
+                                    title={
+                                        isOwnLibrary
+                                            ? "Your recent games"
+                                            : `${profileQuery.data?.username}'s recent games`
+                                    }
                                     stackProps={{ className: "w-full" }}
                                 >
-                                    <ProfileFavoriteGames userId={userIdToUse as string} />
+                                    <CollectionEntriesView userId={userIdToUse!} />
                                 </DetailsBox>
                             )}
                         </LibraryView>
