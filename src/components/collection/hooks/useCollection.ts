@@ -2,13 +2,10 @@ import { ExtendedUseQueryResult } from "@/util/types/ExtendedUseQueryResult";
 import { Collection, CollectionsService } from "@/wrapper/server";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-export function useCollection(
-    collectionId: string | undefined,
-): ExtendedUseQueryResult<Collection> {
+export function useCollection(collectionId: string | undefined | null): ExtendedUseQueryResult<Collection> {
     const queryClient = useQueryClient();
     const queryKey = ["collection", collectionId];
-    const invalidate = () =>
-        queryClient.invalidateQueries({ queryKey: [queryKey[0], queryKey[1]] });
+    const invalidate = () => queryClient.invalidateQueries({ queryKey: [queryKey[0], queryKey[1]] });
     return {
         ...useQuery({
             queryKey: queryKey,
@@ -17,9 +14,7 @@ export function useCollection(
                     return null;
                 }
 
-                return CollectionsService.collectionsControllerFindOneByIdWithPermissions(
-                    collectionId,
-                );
+                return CollectionsService.collectionsControllerFindOneByIdWithPermissions(collectionId);
             },
         }),
         invalidate,

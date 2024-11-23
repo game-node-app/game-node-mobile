@@ -5,8 +5,8 @@ import LibraryViewCollectionsSelect from "@/components/library/view/sidebar/Libr
 
 interface ILibraryViewProps extends PropsWithChildren {
     userId: string | undefined;
-    collectionId: string | undefined;
-    onChange: (collectionId: string | undefined) => void;
+    collectionId: string | null;
+    onChange: (collectionId: string | null) => void;
 }
 
 /**
@@ -25,12 +25,10 @@ const LibraryView = ({ children, userId, collectionId, onChange }: ILibraryViewP
                     userId={userId}
                     value={collectionId}
                     onChange={(value) => {
-                        if (value) {
-                            onChange(value);
-                        }
+                        onChange(value);
                     }}
                     onClear={() => {
-                        onChange(undefined);
+                        onChange(null);
                     }}
                 />
             </Flex>

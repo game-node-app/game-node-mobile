@@ -9,7 +9,7 @@ interface ICreateCollectionModalProps extends BaseModalProps {
     /**
      * Existing collection id (for update actions)
      */
-    collectionId?: string;
+    collectionId?: string | null;
 }
 
 const CollectionCreateOrUpdateModal = ({ opened, onClose, collectionId }: ICreateCollectionModalProps) => {

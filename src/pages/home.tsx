@@ -1,18 +1,17 @@
 import { IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonPage, IonToolbar } from "@ionic/react";
 import React, { useRef, useState } from "react";
-import { Container, Stack } from "@mantine/core";
+import { Container, Stack, Transition } from "@mantine/core";
 import TrendingReviewCarousel from "@/components/review/trending/TrendingReviewCarousel";
 import { DetailsBox } from "@/components/general/DetailsBox";
-import RecentActivityList from "@/components/activity/RecentActivityList";
 import RecommendationCarousel from "@/components/recommendation/carousel/RecommendationCarousel";
 import useUserId from "@/components/auth/hooks/useUserId";
 import ActivityFeed from "@/components/activity/ActivityFeed";
 import { IconArrowUp } from "@tabler/icons-react";
 import ActivityFeedLayout, { ActivityFeedTabValue } from "@/components/activity/ActivityFeedLayout";
-import GameNodeLogo from "@/components/general/GameNodeLogo";
-import { Link } from "react-router-dom";
+import { useWindowScroll } from "@mantine/hooks";
 
 const HomePage = () => {
+    const [scroll] = useWindowScroll();
     const userId = useUserId();
     const contentRef = useRef<HTMLIonContentElement>(null);
     const [selectedActivityTab, setSelectedActivityTab] = useState<ActivityFeedTabValue>("all");
@@ -28,6 +27,7 @@ const HomePage = () => {
                         <IconArrowUp />
                     </IonFabButton>
                 </IonFab>
+
                 <Container fluid className={"w-full my-4"}>
                     <Stack className={"w-full gap-8"}>
                         {userId && (

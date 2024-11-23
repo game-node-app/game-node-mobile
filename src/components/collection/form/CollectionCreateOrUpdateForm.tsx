@@ -32,7 +32,7 @@ const CreateCollectionFormSchema = z
 type CreateCollectionFormValues = z.infer<typeof CreateCollectionFormSchema>;
 
 interface ICollectionCreateOrUpdateFormProps extends BaseModalChildrenProps {
-    collectionId?: string;
+    collectionId?: string | null;
 }
 
 const CollectionCreateOrUpdateForm = ({ onClose, collectionId }: ICollectionCreateOrUpdateFormProps) => {

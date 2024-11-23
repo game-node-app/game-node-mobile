@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { IconBell, IconBellFilled } from "@tabler/icons-react";
+import { IconBell } from "@tabler/icons-react";
 import { Indicator } from "@mantine/core";
 import { useInfiniteAggregatedNotifications } from "@/components/notifications/hooks/useInfiniteAggregatedNotifications";
 
@@ -22,7 +22,7 @@ const NotificationsIcon = () => {
 
     return (
         <Indicator position={"top-end"} processing disabled={!hasUnreadNotifications}>
-            <IconBellFilled />
+            <IconBell />
         </Indicator>
     );
 };
