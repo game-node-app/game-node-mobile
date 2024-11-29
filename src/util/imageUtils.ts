@@ -18,12 +18,8 @@ export function rotateSize(width: number, height: number, rotation: number) {
     const rotRad = getRadianAngle(rotation);
 
     return {
-        width:
-            Math.abs(Math.cos(rotRad) * width) +
-            Math.abs(Math.sin(rotRad) * height),
-        height:
-            Math.abs(Math.sin(rotRad) * width) +
-            Math.abs(Math.cos(rotRad) * height),
+        width: Math.abs(Math.cos(rotRad) * width) + Math.abs(Math.sin(rotRad) * height),
+        height: Math.abs(Math.sin(rotRad) * width) + Math.abs(Math.cos(rotRad) * height),
     };
 }
 
@@ -52,11 +48,7 @@ export async function getCroppedImg(
     const rotRad = getRadianAngle(rotation);
 
     // calculate bounding box of the rotated image
-    const { width: bBoxWidth, height: bBoxHeight } = rotateSize(
-        image.width,
-        image.height,
-        rotation,
-    );
+    const { width: bBoxWidth, height: bBoxHeight } = rotateSize(image.width, image.height, rotation);
 
     // set canvas size to match the bounding box
     canvas.width = bBoxWidth;
@@ -109,4 +101,13 @@ export async function getCroppedImg(
 
 export function base64ToBlob(base64: string): Promise<Blob> {
     return fetch(base64).then((res) => res.blob());
+}
+
+export async function blobToBase64(blob: Blob): Promise<string> {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = reject;
+    });
 }

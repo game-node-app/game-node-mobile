@@ -52,29 +52,10 @@ interface ProfileUserInfoWithBannerProps extends PropsWithChildren {
  */
 
 const ProfileUserInfoWithBanner = ({ userId, children }: ProfileUserInfoWithBannerProps) => {
-    const onMobile = useOnMobile();
-    const ownUserId = useUserId();
     const profileQuery = useUserProfile(userId);
-
-    const [editModalOpened, editModalUtils] = useDisclosure();
 
     return (
         <Stack className={"w-full h-full gap-0"}>
-            <IonModal isOpen={editModalOpened} onDidDismiss={editModalUtils.close}>
-                <IonHeader>
-                    <IonToolbar>
-                        <IonTitle>Edit profile</IonTitle>
-                        <IonButtons slot="end">
-                            <IonButton onClick={editModalUtils.close}>Cancel</IonButton>
-                        </IonButtons>
-                    </IonToolbar>
-                </IonHeader>
-                <IonContent>
-                    <Container fluid className="my-4">
-                        <ProfileEditForm userId={userId} />
-                    </Container>
-                </IonContent>
-            </IonModal>
             <ProfileBanner userId={userId} />
 
             <Group className={"w-full justify-start items-start flex-wrap lg:flex-nowrap"}>
@@ -87,12 +68,11 @@ const ProfileUserInfoWithBanner = ({ userId, children }: ProfileUserInfoWithBann
                                 size={"10rem"}
                             />
                         </Box>
-
                         <Text className={"text-center"}>{profileQuery.data?.username}</Text>
                     </Stack>
 
                     <Stack className={"w-full h-full relative -top-14"}>
-                        <ProfileUserInfo userId={userId} onEditClick={editModalUtils.open} />
+                        <ProfileUserInfo userId={userId} />
                     </Stack>
                 </Stack>
 

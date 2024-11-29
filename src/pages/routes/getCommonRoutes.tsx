@@ -77,12 +77,6 @@ export function getCommonRoutes(prefix: string): React.ReactNode[] {
                 return <LibraryPage userId={props.match.params.userId} />;
             }}
         />,
-        <Route key={`${prefix}-auth`} path={`${prefix}/auth`}>
-            <SupertokensAuthPage />
-        </Route>,
-        <Route key={`${prefix}-notifications`} path={`${prefix}/notifications`}>
-            <NotificationsPage />
-        </Route>,
         <Route key={`${prefix}-importer`} path={`${prefix}/importer`}>
             <ImporterPage />
         </Route>,
@@ -90,9 +84,13 @@ export function getCommonRoutes(prefix: string): React.ReactNode[] {
             key={`${prefix}-importer-type`}
             path={`${prefix}/importer/:type`}
             render={(props) => {
+                // eslint-disable-next-line react/prop-types
                 return <ImporterByTypePage type={props.match.params.type} />;
             }}
         />,
+        <Route key={`${prefix}-auth`} path={`${prefix}/auth`}>
+            <SupertokensAuthPage />
+        </Route>,
         <Route key={`${prefix}-activity`} path={`${prefix}/activity`}>
             <ActivityPage />
         </Route>,

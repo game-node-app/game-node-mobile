@@ -1,10 +1,9 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import { DEFAULT_REVIEW_EDITOR_EXTENSIONS } from "@/components/game/info/review/editor/GameInfoReviewEditor";
-import { Box, Flex, Group, ScrollArea, Spoiler, Stack, Transition } from "@mantine/core";
+import { Box, Flex, Group, Spoiler, Stack } from "@mantine/core";
 import { FindOneStatisticsDto, Review } from "@/wrapper/server";
 import useOnMobile from "@/components/general/hooks/useOnMobile";
-import useUserId from "@/components/auth/hooks/useUserId";
 import ReviewListItemDropdownButton from "@/components/review/view/ReviewListItemDropdownButton";
 import { UserAvatarGroup } from "@/components/general/avatar/UserAvatarGroup";
 import { useGame } from "@/components/game/hooks/useGame";
@@ -12,6 +11,7 @@ import TextLink from "@/components/general/TextLink";
 import GameRating from "@/components/general/input/GameRating";
 import ReviewListItemComments from "@/components/review/view/ReviewListItemComments";
 import ItemLikesButton from "@/components/statistics/input/ItemLikesButton";
+import { getTabAwareHref } from "@/util/getTabAwareHref";
 
 interface IReviewListViewProps {
     review: Review;
@@ -93,7 +93,7 @@ const ReviewListItem = ({ review, withGameInfo }: IReviewListViewProps) => {
                     <Group justify={withGameInfo ? "space-between" : "end"}>
                         {withGameInfo && gameQuery.data != undefined && (
                             <Box className={"w-6/12 lg:w-4/12"}>
-                                <TextLink href={`/game/${gameQuery.data?.id}`} c={"dimmed"}>
+                                <TextLink href={getTabAwareHref(`/game/${gameQuery.data?.id}`)} c={"dimmed"}>
                                     {gameQuery.data?.name}
                                 </TextLink>
                             </Box>
@@ -105,7 +105,6 @@ const ReviewListItem = ({ review, withGameInfo }: IReviewListViewProps) => {
                                 sourceId={review.id}
                                 sourceType={FindOneStatisticsDto.sourceType.REVIEW}
                             />
-
                             <ReviewListItemDropdownButton review={review} />
                         </Group>
                     </Group>

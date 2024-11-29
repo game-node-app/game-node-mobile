@@ -1,0 +1,59 @@
+import React from "react";
+import {
+    IonButton,
+    IonButtons,
+    IonContent,
+    IonHeader,
+    IonItem,
+    IonItemDivider,
+    IonItemGroup,
+    IonLabel,
+    IonModal,
+    IonTitle,
+    IonToolbar,
+} from "@ionic/react";
+import { useDisclosure } from "@mantine/hooks";
+import { Container, Group } from "@mantine/core";
+import ProfileEditForm from "@/components/profile/edit/ProfileEditForm";
+import useUserId from "@/components/auth/hooks/useUserId";
+import { IconUser } from "@tabler/icons-react";
+
+const PreferencesProfileItems = () => {
+    const userId = useUserId();
+
+    const [editModalOpened, editModalUtils] = useDisclosure();
+
+    if (!userId) return null;
+
+    return (
+        <IonItemGroup>
+            <IonModal isOpen={editModalOpened} onDidDismiss={editModalUtils.close}>
+                <IonHeader>
+                    <IonToolbar>
+                        <IonTitle>Edit profile</IonTitle>
+                        <IonButtons slot="end">
+                            <IonButton onClick={editModalUtils.close}>Cancel</IonButton>
+                        </IonButtons>
+                    </IonToolbar>
+                </IonHeader>
+                <IonContent>
+                    <Container fluid className="my-4">
+                        <ProfileEditForm userId={userId} />
+                    </Container>
+                </IonContent>
+            </IonModal>
+            <IonItemDivider>
+                <IonLabel>Profile</IonLabel>
+            </IonItemDivider>
+
+            <IonItem button onClick={editModalUtils.open}>
+                <Group className={"gap-2"}>
+                    <IconUser />
+                    <IonLabel>Edit profile details</IonLabel>
+                </Group>
+            </IonItem>
+        </IonItemGroup>
+    );
+};
+
+export default PreferencesProfileItems;

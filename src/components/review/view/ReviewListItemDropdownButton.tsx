@@ -6,6 +6,7 @@ import useUserId from "@/components/auth/hooks/useUserId";
 import ItemDropdown from "@/components/general/input/dropdown/ItemDropdown";
 import ReportCreateFormModal from "@/components/report/modal/ReportCreateFormModal";
 import GameInfoReviewCreateUpdateModal from "@/components/game/info/review/editor/GameInfoReviewCreateUpdateModal";
+import GameInfoShareModal from "@/components/game/info/share/GameInfoShareModal";
 
 interface IReviewListItemDropdownProps {
     review: Review;
@@ -18,9 +19,11 @@ const ReviewListItemDropdownButton = ({ review }: IReviewListItemDropdownProps) 
     const [reviewRemoveModalOpened, reviewRemoveModalUtils] = useDisclosure();
     const [reportFormModalOpened, reportFormModalUtils] = useDisclosure();
     const [reviewEditModalOpened, reviewEditModalUtils] = useDisclosure();
+    const [shareModalOpened, shareModalUtils] = useDisclosure();
 
     return (
         <>
+            <GameInfoShareModal gameId={review.gameId} opened={shareModalOpened} onClose={shareModalUtils.close} />
             <GameInfoReviewCreateUpdateModal
                 opened={reviewEditModalOpened}
                 onClose={reviewEditModalUtils.close}
@@ -40,6 +43,11 @@ const ReviewListItemDropdownButton = ({ review }: IReviewListItemDropdownProps) 
             <ItemDropdown>
                 {isOwnReview ? (
                     <>
+                        <ItemDropdown.ShareButton
+                            onClick={() => {
+                                shareModalUtils.open();
+                            }}
+                        />
                         <ItemDropdown.EditButton
                             onClick={() => {
                                 reviewEditModalUtils.open();

@@ -2,6 +2,8 @@ import {
     IonBackButton,
     IonButtons,
     IonContent,
+    IonFab,
+    IonFabButton,
     IonHeader,
     IonPage,
     IonProgressBar,
@@ -20,6 +22,9 @@ import ProfileStatsSimpleOverview from "@/components/profile/view/ProfileStatsSi
 import RecentActivityList from "@/components/activity/RecentActivityList";
 import CenteredLoading from "@/components/general/CenteredLoading";
 import { SessionAuth } from "supertokens-auth-react/recipe/session";
+import { IconAdjustmentsCog, IconSettings } from "@tabler/icons-react";
+import { Link } from "react-router-dom";
+import { getTabAwareHref } from "@/util/getTabAwareHref";
 
 interface Props {
     userId?: string;
@@ -57,6 +62,15 @@ const ProfilePage = ({ userId }: Props) => {
                 )}
 
                 <IonContent>
+                    {isOwnProfile && (
+                        <IonFab slot="fixed" horizontal="end" vertical="bottom" className={"me-2 mb-2"}>
+                            <Link to={getTabAwareHref("/preferences")}>
+                                <IonFabButton>
+                                    <IconSettings />
+                                </IonFabButton>
+                            </Link>
+                        </IonFab>
+                    )}
                     <Container fluid className="my-4">
                         {profileQuery.isLoading && <CenteredLoading />}
 

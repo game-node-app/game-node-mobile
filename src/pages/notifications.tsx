@@ -3,11 +3,21 @@ import { useInfiniteAggregatedNotifications } from "@/components/notifications/h
 import { useMutation } from "@tanstack/react-query";
 import { NotificationsService } from "@/wrapper/server";
 import { Notification } from "@/wrapper/server";
-import { IonBackButton, IonButtons, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from "@ionic/react";
-import { Button, Center, Container, Stack, Text } from "@mantine/core";
+import {
+    IonBackButton,
+    IonButton,
+    IonButtons,
+    IonContent,
+    IonHeader,
+    IonPage,
+    IonTitle,
+    IonToolbar,
+} from "@ionic/react";
+import { ActionIcon, Button, Center, Container, Stack, Text } from "@mantine/core";
 import AggregatedNotification from "@/components/notifications/AggregatedNotification";
 import CenteredLoading from "@/components/general/CenteredLoading";
 import { SessionAuth } from "supertokens-auth-react/recipe/session";
+import { IconInbox, IconInboxOff } from "@tabler/icons-react";
 
 const NotificationsPage = () => {
     const { data, isLoading, isError, invalidate, isFetching, fetchNextPage } = useInfiniteAggregatedNotifications();
@@ -56,6 +66,19 @@ const NotificationsPage = () => {
         return false;
     }, [aggregations]);
 
+    const markAllAsRead = () => {
+        const unreadNotifications = aggregations
+            ?.filter((aggregation) => {
+                return aggregation.notifications.some((notification) => !notification.isViewed);
+            })
+            .flatMap((aggregate) => aggregate.notifications);
+
+        if (unreadNotifications && unreadNotifications.length > 0) {
+            console.log(`Marking ${unreadNotifications.length} notifications as read`);
+            notificationViewMutation.mutate(unreadNotifications);
+        }
+    };
+
     return (
         <IonPage>
             <SessionAuth>
@@ -65,6 +88,17 @@ const NotificationsPage = () => {
                             <IonBackButton />
                         </IonButtons>
                         <IonTitle>Notifications</IonTitle>
+                        <IonButtons slot={"primary"}>
+                            <IonButton onClick={markAllAsRead}>
+                                {hasUnreadNotifications ? (
+                                    <ActionIcon>
+                                        <IconInboxOff />
+                                    </ActionIcon>
+                                ) : (
+                                    <IconInbox />
+                                )}
+                            </IonButton>
+                        </IonButtons>
                     </IonToolbar>
                 </IonHeader>
                 <IonContent>

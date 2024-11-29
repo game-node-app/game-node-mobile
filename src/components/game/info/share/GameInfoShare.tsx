@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ActionIcon, Button, Chip, Group, Stack, Text } from "@mantine/core";
 import { FieldPath, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -8,6 +8,9 @@ import GameInfoSharePreview, { GAME_INFO_SHARE_PREVIEW_ID } from "@/components/g
 import { toBlob } from "html-to-image";
 import { useMutation } from "@tanstack/react-query";
 import { IconDownload } from "@tabler/icons-react";
+import { Share } from "@capacitor/share";
+import { blobToBase64 } from "@/util/imageUtils";
+import { Filesystem, Directory } from "@capacitor/filesystem";
 
 interface GameInfoShareProps extends BaseModalChildrenProps {
     gameId: number;
@@ -34,8 +37,7 @@ function downloadFile(file: File) {
 }
 
 const GameInfoShare = ({ gameId }: GameInfoShareProps) => {
-    const canShare = navigator.canShare != undefined;
-
+    const [errorText, setErrorText] = useState("");
     const { watch, setValue, handleSubmit } = useForm<ShareFormValues>({
         mode: "onBlur",
         resolver: zodResolver(ShareFormSchema),
@@ -49,10 +51,6 @@ const GameInfoShare = ({ gameId }: GameInfoShareProps) => {
 
     const shareMutation = useMutation({
         mutationFn: async (downloadOnly: boolean = false) => {
-            if (!canShare) {
-                console.error("User's browser doesn't support the WebShare API.");
-                throw new Error("Failed to generate final image: Browser not compatible.");
-            }
             const node = document.getElementById(GAME_INFO_SHARE_PREVIEW_ID);
             const blob = await toBlob(node!);
             if (!blob) {
@@ -69,21 +67,31 @@ const GameInfoShare = ({ gameId }: GameInfoShareProps) => {
                 return downloadFile(file);
             }
 
-            const toShare: ShareData = {
-                title: "GameNode Share",
-                text: `See more at https://gamenode.app/game/${gameId}`,
-                files: [file],
-                url: `https://gamenode.app/game/${gameId}`,
-            };
+            const base64 = await blobToBase64(file);
+            console.log("file: ", file);
+            console.log("base64: ", base64);
             try {
-                if (navigator.canShare(toShare)) {
-                    return await navigator.share(toShare);
-                }
-            } catch (e) {
+                const cachedFileResult = await Filesystem.writeFile({
+                    path: file.name,
+                    data: base64,
+                    directory: Directory.Cache,
+                });
+
+                const canShare = await Share.canShare();
+                console.log("canShare: ", canShare);
+
+                await Share.share({
+                    title: "My review of this game",
+                    dialogTitle: "Share your review with friends!",
+                    url: cachedFileResult.uri,
+                });
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            } catch (e: any) {
                 console.error(e);
+                setErrorText(e?.message || "");
             }
 
-            throw new Error("Failed to generate final image: Browser not compatible");
+            throw new Error("Failed to generate final image: not compatible");
         },
     });
 
@@ -102,12 +110,9 @@ const GameInfoShare = ({ gameId }: GameInfoShareProps) => {
             })}
         >
             <Stack w={"100%"} align={"center"}>
-                {!canShare && (
-                    <Text c={"red"} className={"mt-2 mb-2 text-center"}>
-                        It seems like your browser doesn&apos;t support direct share. You can still download the
-                        generated image.
-                    </Text>
-                )}
+                <Text c={"red"} className={"mt-2 mb-2 text-center"}>
+                    {errorText}
+                </Text>
                 {shareMutation.isError && (
                     <Text c={"red"} className={"mt-2 mb-2 text-center"}>
                         {shareMutation.error.message}
@@ -124,7 +129,7 @@ const GameInfoShare = ({ gameId }: GameInfoShareProps) => {
                 </Group>
 
                 <Group className={"justify-end"} h={"fit-content"} gap={"0.5rem"}>
-                    <Button disabled={!canShare} loading={shareMutation.isPending} type={"submit"}>
+                    <Button disabled={false} loading={shareMutation.isPending} type={"submit"}>
                         Share
                     </Button>
                     <ActionIcon

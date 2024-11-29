@@ -10,6 +10,7 @@ import {
     IconPencil,
     IconPencilPlus,
     IconPlus,
+    IconShare,
     IconStarFilled,
     IconStars,
     IconStarsFilled,
@@ -24,6 +25,7 @@ import CollectionEntryRemoveModal from "@/components/collection/collection-entry
 import GameInfoReviewCreateUpdateModal from "@/components/game/info/review/editor/GameInfoReviewCreateUpdateModal";
 import { CollectionsEntriesService } from "@/wrapper/server";
 import { useMutation } from "@tanstack/react-query";
+import GameInfoShareModal from "@/components/game/info/share/GameInfoShareModal";
 
 interface Props {
     gameId: number;
@@ -45,6 +47,7 @@ const GameInfoViewFab = ({ gameId }: Props) => {
     const [addModalOpened, addModalUtils] = useDisclosure();
     const [removeModalOpened, removeModalUtils] = useDisclosure();
     const [reviewModalOpened, reviewModalUtils] = useDisclosure();
+    const [shareModalOpened, shareModalUtils] = useDisclosure();
 
     const collectionEntryFavoriteMutation = useMutation({
         mutationFn: (gameId: number) => {
@@ -60,6 +63,7 @@ const GameInfoViewFab = ({ gameId }: Props) => {
 
     return (
         <IonFab slot="fixed" horizontal="end" vertical="bottom" className={"me-2 mb-2"}>
+            <GameInfoShareModal gameId={gameId} opened={shareModalOpened} onClose={shareModalUtils.close} />
             <CollectionEntryAddOrUpdateModal id={gameId} onClose={addModalUtils.close} opened={addModalOpened} />
             <CollectionEntryRemoveModal opened={removeModalOpened} onClose={removeModalUtils.close} gameId={gameId} />
             <GameInfoReviewCreateUpdateModal
@@ -84,6 +88,11 @@ const GameInfoViewFab = ({ gameId }: Props) => {
                     <IonFabButton color={"primary"} onClick={addModalUtils.open}>
                         <IconDots />
                     </IonFabButton>
+                    {hasReview && (
+                        <IonFabButton color={"primary"} onClick={shareModalUtils.open}>
+                            <IconShare />
+                        </IonFabButton>
+                    )}
                     <IonFabButton color={"primary"} onClick={reviewModalUtils.open}>
                         {hasReview ? <IconStarsFilled /> : <IconStars />}
                     </IonFabButton>

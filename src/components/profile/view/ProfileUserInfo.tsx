@@ -1,12 +1,5 @@
 import React, { useMemo } from "react";
-import {
-    AvatarProps,
-    Box,
-    Paper,
-    Stack,
-    StackProps,
-    Text,
-} from "@mantine/core";
+import { AvatarProps, Box, Paper, Stack, StackProps, Text } from "@mantine/core";
 import useUserProfile from "@/components/profile/hooks/useUserProfile";
 import { UserAvatar } from "@/components/general/avatar/UserAvatar";
 import UserLevelInfo from "@/components/user-level/UserLevelInfo";
@@ -33,9 +26,7 @@ const ProfileUserInfo = ({ userId, onEditClick }: Props) => {
 
     const featuredAchievement = useMemo(() => {
         if (obtainedAchievementsQuery.data == undefined) return null;
-        return obtainedAchievementsQuery.data.find(
-            (achievement) => achievement.isFeatured,
-        );
+        return obtainedAchievementsQuery.data.find((achievement) => achievement.isFeatured);
     }, [obtainedAchievementsQuery.data]);
 
     if (profileQuery.isLoading) {
@@ -71,26 +62,8 @@ const ProfileUserInfo = ({ userId, onEditClick }: Props) => {
                     <ProfileFollowActions targetUserId={userId} />
                 </Box>
 
-                {isOwnProfile && (
-                    <TextLink
-                        linkProps={{
-                            onClick: (evt) => {
-                                evt.preventDefault();
-                                if (onEditClick) onEditClick();
-                            },
-                        }}
-                        href={"#"}
-                        className={"mt-6"}
-                    >
-                        Edit profile details
-                    </TextLink>
-                )}
-
                 <Text className={"mt-6"} fz={"0.8rem"} c={"dimmed"}>
-                    Joined at{" "}
-                    {dateFormatter.format(
-                        new Date(profileQuery.data.createdAt),
-                    )}
+                    Joined at {dateFormatter.format(new Date(profileQuery.data.createdAt))}
                 </Text>
             </Stack>
         </Paper>

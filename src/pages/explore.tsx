@@ -43,9 +43,6 @@ const SELECT_PERIOD_DATA = [
 const DEFAULT_LIMIT = 24;
 
 const ExplorePage = () => {
-    const router = useIonRouter();
-    const [query, setQuery] = useState<string>("");
-
     const [selectedPeriod, setSelectedPeriod] = useState(period.MONTH);
 
     const [trendingQueryDto, setTrendingQueryDto] = useState<FindStatisticsTrendingGamesDto>({
@@ -86,24 +83,6 @@ const ExplorePage = () => {
 
     return (
         <IonPage>
-            <IonHeader>
-                <IonToolbar>
-                    <IonSearchbar
-                        animated={true}
-                        placeholder="Search for games"
-                        value={query}
-                        onIonInput={(evt) => {
-                            setQuery(evt.detail.value ?? "");
-                        }}
-                        onIonChange={(evt) => {
-                            setQuery(evt.detail.value ?? "");
-                            if (evt.detail.value && evt.detail.value.length > 2) {
-                                router.push(`/explore/search_results?q=${query}`);
-                            }
-                        }}
-                    />
-                </IonToolbar>
-            </IonHeader>
             <IonContent>
                 <Container fluid className={"min-h-screen my-4"}>
                     <Stack className={"w-full"}>

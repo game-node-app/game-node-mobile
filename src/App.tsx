@@ -1,10 +1,20 @@
 import React, { Suspense, useState } from "react";
 
-import { Redirect, Route } from "react-router-dom";
-import { IonApp, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs, setupIonicReact } from "@ionic/react";
+import { Link, Redirect, Route } from "react-router-dom";
+import {
+    IonApp,
+    IonFab,
+    IonFabButton,
+    IonLabel,
+    IonRouterOutlet,
+    IonTabBar,
+    IonTabButton,
+    IonTabs,
+    setupIonicReact,
+} from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { MantineProvider } from "@mantine/core";
+import { ActionIcon, MantineProvider } from "@mantine/core";
 import { theme } from "./util/theme";
 
 /**
@@ -40,7 +50,15 @@ import "@ionic/react/css/palettes/dark.always.css";
 /* Theme variables */
 import "./theme/variables.css";
 import SuperTokensProvider from "./components/auth/SuperTokensProvider";
-import { IconBell, IconHome, IconLibrary, IconRouteAltLeft, IconSettings, IconUser } from "@tabler/icons-react";
+import {
+    IconBell,
+    IconHome,
+    IconLibrary,
+    IconPlus,
+    IconRouteAltLeft,
+    IconSettings,
+    IconUser,
+} from "@tabler/icons-react";
 import { OpenAPI as ServerOpenAPI } from "@/wrapper/server";
 import { OpenAPI as SearchOpenAPI } from "@/wrapper/search";
 import NotificationsManager from "./components/general/NotificationsManager";
@@ -56,6 +74,7 @@ import NotificationsPage from "@/pages/notifications";
 import PreferencesPage from "@/pages/preferences";
 import NotificationsIcon from "@/components/notifications/NotificationsIcon";
 import AppUrlListener from "./components/general/AppUrlListener";
+import Tabs from "./Tabs";
 
 /**
  * Basic configuration for wrapper services
@@ -87,71 +106,12 @@ const App: React.FC = () => {
                         <AppUrlListener />
                         <NotificationsManager />
                         <IonReactRouter>
-                            <IonTabs>
-                                <IonRouterOutlet>
-                                    <Suspense fallback={<CenteredLoading message={"Loading page..."} />}>
-                                        {/* ---- HOME ROUTES ---- */}
-                                        <Route exact path="/">
-                                            <Redirect to="/home" push={false} />
-                                        </Route>
-                                        <Route exact path={"/home"}>
-                                            <HomePage />
-                                        </Route>
-                                        {getCommonRoutes("/home")}
-
-                                        {/* ---- EXPLORE ROUTES ---- */}
-                                        <Route exact path={"/explore"}>
-                                            <ExplorePage />
-                                        </Route>
-                                        <Route exact path={`/explore/search_results`}>
-                                            <SearchResultsPage />
-                                        </Route>
-                                        {getCommonRoutes("/explore")}
-
-                                        {/* ---- PROFILE ROUTES ---- */}
-                                        <Route exact path={"/profile"}>
-                                            <ProfilePage />
-                                        </Route>
-                                        {getCommonRoutes("/profile")}
-                                        {/* ---- LIBRARY ROUTES ---- */}
-                                        <Route exact path="/library">
-                                            <LibraryPage />
-                                        </Route>
-                                        {getCommonRoutes("/library")}
-                                        {/* ---- LIBRARY ROUTES ---- */}
-                                        <Route exact path="/notifications">
-                                            <NotificationsPage />
-                                        </Route>
-                                        {getCommonRoutes("/notifications")}
-                                        {/* ---- PREFERENCES ROUTES ---- */}
-                                        <Route exact path="/preferences">
-                                            <PreferencesPage />
-                                        </Route>
-                                        {getCommonRoutes("/preferences")}
-                                    </Suspense>
-                                </IonRouterOutlet>
-                                <IonTabBar slot="bottom">
-                                    <IonTabButton tab="home" href="/home">
-                                        <IconHome aria-hidden={"true"} />
-                                    </IonTabButton>
-                                    <IonTabButton tab="explore" href="/explore">
-                                        <IconRouteAltLeft aria-hidden={"true"} />
-                                    </IonTabButton>
-
-                                    <IonTabButton tab="library" href="/library">
-                                        <IconLibrary aria-hidden={"true"} />
-                                    </IonTabButton>
-                                    <IonTabButton tab="profile" href="/profile">
-                                        <IconUser aria-hidden={"true"} />
-                                    </IonTabButton>
-                                    <IonTabButton tab="notifications" href="/notifications">
-                                        <NotificationsIcon />
-                                    </IonTabButton>
-                                    <IonTabButton tab="preferences" href="/preferences">
-                                        <IconSettings aria-hidden={"true"} />
-                                    </IonTabButton>
-                                </IonTabBar>
-                            </IonTabs>
+                            <Tabs />
+                            <IonFab slot="bottom" horizontal="center" vertical="bottom" edge={false}>
+                                <IonFabButton routerLink={"/home"}>
+                                    <IconPlus />
+                                </IonFabButton>
+                            </IonFab>
                         </IonReactRouter>
                     </SuperTokensProvider>
                 </QueryClientProvider>

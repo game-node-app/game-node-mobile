@@ -10,6 +10,7 @@ import {
     IonLabel,
     IonList,
     IonPage,
+    IonRouterLink,
     IonTitle,
     IonToolbar,
 } from "@ionic/react";
@@ -18,6 +19,8 @@ import { Container } from "@mantine/core";
 import PreferencesConnectionsItems from "@/components/preferences/connections/PreferencesConnectionsItems";
 import { getTabAwareHref } from "@/util/getTabAwareHref";
 import { Link } from "react-router-dom";
+import PreferencesProfileItems from "@/components/preferences/profile/PreferencesProfileItems";
+import PreferencesImporterItems from "@/components/preferences/importer/PreferencesImporterItems";
 
 const PreferencesPage = () => {
     return (
@@ -34,17 +37,9 @@ const PreferencesPage = () => {
                 <IonContent>
                     <Container fluid className={"mb-4 p-0"}>
                         <IonList className={"pt-0"}>
+                            <PreferencesProfileItems />
                             <PreferencesConnectionsItems />
-                            <IonItemGroup>
-                                <IonItemDivider>
-                                    <IonLabel>Importer system</IonLabel>
-                                </IonItemDivider>
-                                <Link to={getTabAwareHref("/importer")}>
-                                    <IonItem>
-                                        <IonLabel>Import games</IonLabel>
-                                    </IonItem>
-                                </Link>
-                            </IonItemGroup>
+                            <PreferencesImporterItems />
                         </IonList>
                     </Container>
                 </IonContent>
