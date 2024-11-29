@@ -42,6 +42,7 @@ const HomePage = () => {
 
                 <Container fluid className={"w-full my-4"}>
                     <IonSearchbar
+                        type={"text"}
                         className={"mb-3"}
                         animated={true}
                         placeholder="Search for games"

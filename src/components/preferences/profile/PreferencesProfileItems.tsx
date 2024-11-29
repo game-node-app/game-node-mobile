@@ -16,7 +16,8 @@ import { useDisclosure } from "@mantine/hooks";
 import { Container, Group } from "@mantine/core";
 import ProfileEditForm from "@/components/profile/edit/ProfileEditForm";
 import useUserId from "@/components/auth/hooks/useUserId";
-import { IconUser } from "@tabler/icons-react";
+import { IconLogout2, IconUser } from "@tabler/icons-react";
+import { signOut } from "supertokens-website";
 
 const PreferencesProfileItems = () => {
     const userId = useUserId();
@@ -50,6 +51,17 @@ const PreferencesProfileItems = () => {
                 <Group className={"gap-2"}>
                     <IconUser />
                     <IonLabel>Edit profile details</IonLabel>
+                </Group>
+            </IonItem>
+            <IonItem
+                button
+                onClick={() => {
+                    signOut();
+                }}
+            >
+                <Group className={"gap-2"}>
+                    <IconLogout2 />
+                    <IonLabel>Sign out</IonLabel>
                 </Group>
             </IonItem>
         </IonItemGroup>

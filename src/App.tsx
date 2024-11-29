@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 
 import { Link, Redirect, Route } from "react-router-dom";
 import {
@@ -14,7 +14,7 @@ import {
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ActionIcon, MantineProvider } from "@mantine/core";
+import { ActionIcon, Box, MantineProvider } from "@mantine/core";
 import { theme } from "./util/theme";
 
 /**
@@ -50,31 +50,13 @@ import "@ionic/react/css/palettes/dark.always.css";
 /* Theme variables */
 import "./theme/variables.css";
 import SuperTokensProvider from "./components/auth/SuperTokensProvider";
-import {
-    IconBell,
-    IconHome,
-    IconLibrary,
-    IconPlus,
-    IconRouteAltLeft,
-    IconSettings,
-    IconUser,
-} from "@tabler/icons-react";
+import { IconPlus } from "@tabler/icons-react";
 import { OpenAPI as ServerOpenAPI } from "@/wrapper/server";
 import { OpenAPI as SearchOpenAPI } from "@/wrapper/search";
 import NotificationsManager from "./components/general/NotificationsManager";
-import CenteredLoading from "@/components/general/CenteredLoading";
-import { getCommonRoutes } from "@/pages/routes/getCommonRoutes";
-
-import HomePage from "./pages/home";
-import ExplorePage from "./pages/explore";
-import SearchResultsPage from "./pages/search_results";
-import ProfilePage from "./pages/profile/profile";
-import LibraryPage from "./pages/library";
-import NotificationsPage from "@/pages/notifications";
-import PreferencesPage from "@/pages/preferences";
-import NotificationsIcon from "@/components/notifications/NotificationsIcon";
 import AppUrlListener from "./components/general/AppUrlListener";
 import Tabs from "./Tabs";
+import { Keyboard } from "@capacitor/keyboard";
 
 /**
  * Basic configuration for wrapper services
@@ -86,6 +68,7 @@ SearchOpenAPI.BASE = import.meta.env.VITE_PUBLIC_SEARCH_URL!;
 setupIonicReact();
 
 const App: React.FC = () => {
+    const [keyboardOpened, setKeyboardOpened] = useState(false);
     const [queryClient] = useState(
         () =>
             new QueryClient({
@@ -98,6 +81,19 @@ const App: React.FC = () => {
             }),
     );
 
+    useEffect(() => {
+        Keyboard.addListener("keyboardWillShow", () => {
+            setKeyboardOpened(true);
+        });
+        Keyboard.addListener("keyboardWillHide", () => {
+            setKeyboardOpened(false);
+        });
+
+        return () => {
+            Keyboard.removeAllListeners();
+        };
+    }, []);
+
     return (
         <IonApp>
             <MantineProvider theme={theme} forceColorScheme={"dark"}>
@@ -107,7 +103,13 @@ const App: React.FC = () => {
                         <NotificationsManager />
                         <IonReactRouter>
                             <Tabs />
-                            <IonFab slot="bottom" horizontal="center" vertical="bottom" edge={false}>
+                            <IonFab
+                                className={keyboardOpened ? "hidden" : undefined}
+                                slot="fixed"
+                                horizontal="center"
+                                vertical="bottom"
+                                edge={false}
+                            >
                                 <IonFabButton routerLink={"/home"}>
                                     <IconPlus />
                                 </IonFabButton>

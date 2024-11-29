@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { IonRouterOutlet, IonTabBar, IonTabButton, IonTabs } from "@ionic/react";
+import { IonFab, IonFabButton, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs } from "@ionic/react";
 import CenteredLoading from "@/components/general/CenteredLoading";
 import { Redirect, Route } from "react-router-dom";
 import HomePage from "@/pages/home";
@@ -10,7 +10,7 @@ import ProfilePage from "@/pages/profile/profile";
 import LibraryPage from "@/pages/library";
 import NotificationsPage from "@/pages/notifications";
 import PreferencesPage from "@/pages/preferences";
-import { IconLibrary, IconRouteAltLeft, IconUser } from "@tabler/icons-react";
+import { IconLibrary, IconPlus, IconRouteAltLeft, IconUser } from "@tabler/icons-react";
 import NotificationsIcon from "@/components/notifications/NotificationsIcon";
 
 const Tabs = () => {
