@@ -1,9 +1,5 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-    AchievementDto,
-    AchievementsService,
-    ObtainedAchievement,
-} from "@/wrapper/server";
+import { AchievementDto, AchievementsService, ObtainedAchievement } from "@/wrapper/server";
 import { ExtendedUseQueryResult } from "@/util/types/ExtendedUseQueryResult";
 
 export function useAllObtainedAchievements(
@@ -14,12 +10,7 @@ export function useAllObtainedAchievements(
     sortByLatestObtained = false,
 ): ExtendedUseQueryResult<ObtainedAchievement[] | null> {
     const queryClient = useQueryClient();
-    const queryKey = [
-        "obtained-achievement",
-        "all",
-        targetUserId,
-        sortByLatestObtained,
-    ];
+    const queryKey = ["obtained-achievement", "all", targetUserId, sortByLatestObtained];
     const invalidate = () => queryClient.invalidateQueries({ queryKey });
     return {
         ...useQuery({
@@ -29,9 +20,7 @@ export function useAllObtainedAchievements(
                     return null;
                 }
                 const achievements =
-                    await AchievementsService.achievementsControllerGetAllObtainedAchievements(
-                        targetUserId,
-                    );
+                    await AchievementsService.achievementsControllerGetAllObtainedAchievementsV1(targetUserId);
                 if (achievements == undefined || achievements.length === 0) {
                     return null;
                 } else if (sortByLatestObtained) {

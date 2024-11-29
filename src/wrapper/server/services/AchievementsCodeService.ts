@@ -13,7 +13,7 @@ export class AchievementsCodeService {
      * @returns any
      * @throws ApiError
      */
-    public static achievementsCodeControllerConsume(
+    public static achievementsCodeControllerConsumeV1(
         code: string,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
@@ -29,7 +29,7 @@ export class AchievementsCodeService {
      * @returns CreateAchievementCodeResponseDto
      * @throws ApiError
      */
-    public static achievementsCodeControllerGenerate(
+    public static achievementsCodeControllerGenerateV1(
         requestBody: CreateAchievementCodeRequestDto,
     ): CancelablePromise<CreateAchievementCodeResponseDto> {
         return __request(OpenAPI, {

@@ -16,7 +16,7 @@ const GameInfoExternalStores = ({ gameId, iconsProps, ...others }: Props) => {
     const externalStoresQuery = useQuery({
         queryKey: ["game", "external-stores", gameId],
         queryFn: async () => {
-            return GameRepositoryService.gameRepositoryControllerGetExternalStoresForGameId(gameId);
+            return GameRepositoryService.gameRepositoryControllerGetExternalStoresForGameIdV1(gameId);
         },
         retry: false,
     });

@@ -15,7 +15,7 @@ export class ProfileMetricsService {
      * @returns ProfileMetricsOverviewDto
      * @throws ApiError
      */
-    public static profileMetricsControllerGetStatsOverview(
+    public static profileMetricsControllerGetStatsOverviewV1(
         userId: string,
     ): CancelablePromise<ProfileMetricsOverviewDto> {
         return __request(OpenAPI, {
@@ -32,7 +32,7 @@ export class ProfileMetricsService {
      * @returns ProfileMetricsYearDistributionResponseDto
      * @throws ApiError
      */
-    public static profileMetricsControllerGetYearDistribution(
+    public static profileMetricsControllerGetYearDistributionV1(
         userId: string,
         by: 'release_year' | 'finish_year' | 'playtime',
     ): CancelablePromise<ProfileMetricsYearDistributionResponseDto> {
@@ -53,7 +53,7 @@ export class ProfileMetricsService {
      * @returns ProfileMetricsTypeDistributionResponseDto
      * @throws ApiError
      */
-    public static profileMetricsControllerGetTypeDistribution(
+    public static profileMetricsControllerGetTypeDistributionV1(
         userId: string,
         by: 'genre' | 'category' | 'mode' | 'theme' | 'platform',
     ): CancelablePromise<ProfileMetricsTypeDistributionResponseDto> {

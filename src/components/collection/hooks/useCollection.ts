@@ -14,7 +14,7 @@ export function useCollection(collectionId: string | undefined | null): Extended
                     return null;
                 }
 
-                return CollectionsService.collectionsControllerFindOneByIdWithPermissions(collectionId);
+                return CollectionsService.collectionsControllerFindOneByIdWithPermissionsV1(collectionId);
             },
         }),
         invalidate,

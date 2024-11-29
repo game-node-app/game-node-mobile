@@ -5,6 +5,7 @@
 import type { CreateReviewDto } from '../models/CreateReviewDto';
 import type { FindAllReviewsByIdDto } from '../models/FindAllReviewsByIdDto';
 import type { FindReviewPaginatedDto } from '../models/FindReviewPaginatedDto';
+import type { Object } from '../models/Object';
 import type { Review } from '../models/Review';
 import type { ReviewScoreResponseDto } from '../models/ReviewScoreResponseDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -16,7 +17,7 @@ export class ReviewsService {
      * @returns any
      * @throws ApiError
      */
-    public static reviewsControllerCreateOrUpdate(
+    public static reviewsControllerCreateOrUpdateV1(
         requestBody: CreateReviewDto,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
@@ -32,7 +33,7 @@ export class ReviewsService {
      * @returns Review
      * @throws ApiError
      */
-    public static reviewsControllerFindOneByUserIdAndGameId(
+    public static reviewsControllerFindOneByUserIdAndGameIdV1(
         id: string,
         gameId: number,
     ): CancelablePromise<Review> {
@@ -50,7 +51,7 @@ export class ReviewsService {
      * @returns Review
      * @throws ApiError
      */
-    public static reviewsControllerFindAllById(
+    public static reviewsControllerFindAllByIdV1(
         requestBody: FindAllReviewsByIdDto,
     ): CancelablePromise<Array<Review>> {
         return __request(OpenAPI, {
@@ -65,7 +66,7 @@ export class ReviewsService {
      * @returns ReviewScoreResponseDto
      * @throws ApiError
      */
-    public static reviewsControllerGetScoreForGameId(
+    public static reviewsControllerGetScoreForGameIdV1(
         gameId: number,
     ): CancelablePromise<ReviewScoreResponseDto> {
         return __request(OpenAPI, {
@@ -80,13 +81,15 @@ export class ReviewsService {
      * @param userId
      * @param offset
      * @param limit
+     * @param orderBy
      * @returns FindReviewPaginatedDto
      * @throws ApiError
      */
-    public static reviewsControllerFindAllByUserId(
+    public static reviewsControllerFindAllByUserIdV1(
         userId: string,
         offset?: number,
         limit: number = 20,
+        orderBy?: Object,
     ): CancelablePromise<FindReviewPaginatedDto> {
         return __request(OpenAPI, {
             method: 'GET',
@@ -97,6 +100,7 @@ export class ReviewsService {
             query: {
                 'offset': offset,
                 'limit': limit,
+                'orderBy': orderBy,
             },
         });
     }
@@ -104,13 +108,15 @@ export class ReviewsService {
      * @param id
      * @param offset
      * @param limit
+     * @param orderBy
      * @returns FindReviewPaginatedDto
      * @throws ApiError
      */
-    public static reviewsControllerFindAllByGameId(
+    public static reviewsControllerFindAllByGameIdV1(
         id: number,
         offset?: number,
         limit: number = 20,
+        orderBy?: Object,
     ): CancelablePromise<FindReviewPaginatedDto> {
         return __request(OpenAPI, {
             method: 'GET',
@@ -121,6 +127,7 @@ export class ReviewsService {
             query: {
                 'offset': offset,
                 'limit': limit,
+                'orderBy': orderBy,
             },
         });
     }
@@ -129,7 +136,7 @@ export class ReviewsService {
      * @returns Review
      * @throws ApiError
      */
-    public static reviewsControllerFindOneById(
+    public static reviewsControllerFindOneByIdV1(
         id: string,
     ): CancelablePromise<Review> {
         return __request(OpenAPI, {
@@ -145,7 +152,7 @@ export class ReviewsService {
      * @returns any
      * @throws ApiError
      */
-    public static reviewsControllerDelete(
+    public static reviewsControllerDeleteV1(
         id: string,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {

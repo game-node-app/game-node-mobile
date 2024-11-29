@@ -14,7 +14,7 @@ export class ActivitiesService {
      * @returns ActivitiesPaginatedResponseDto
      * @throws ApiError
      */
-    public static activitiesRepositoryControllerFindLatest(
+    public static activitiesRepositoryControllerFindLatestV1(
         userId?: string,
         offset?: number,
         limit: number = 20,

@@ -23,7 +23,7 @@ const NotificationsPage = () => {
 
             const ids = notifications.map((notification) => notification.id);
 
-            await NotificationsService.notificationsControllerUpdateViewedStatus({
+            await NotificationsService.notificationsControllerUpdateViewedStatusV1({
                 isViewed: true,
                 notificationIds: ids,
             });

@@ -5,8 +5,9 @@ export function useFavoriteCollectionEntriesForUserId(userId: string, offset: nu
     return useQuery({
         queryKey: ["collection-entries", "favorites", userId, offset, limit],
         queryFn: () => {
-            return CollectionsEntriesService.collectionsEntriesControllerFindFavoritesByLibraryId(
+            return CollectionsEntriesService.collectionsEntriesControllerFindFavoritesByLibraryIdV1(
                 userId,
+                {},
                 offset,
                 limit,
             );

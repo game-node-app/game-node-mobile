@@ -1,7 +1,4 @@
-import {
-    CollectionEntriesPaginatedResponseDto,
-    CollectionsEntriesService,
-} from "@/wrapper/server";
+import { CollectionEntriesPaginatedResponseDto, CollectionsEntriesService } from "@/wrapper/server";
 
 /**
  * Returns a list CollectionEntry entity, given any is available in the user's library for that
@@ -18,14 +15,11 @@ export async function getCollectionEntriesByCollectionId(
     orderBy?: Record<string, any>,
 ): Promise<CollectionEntriesPaginatedResponseDto | undefined> {
     try {
-        return await CollectionsEntriesService.collectionsEntriesControllerFindAllByCollectionId(
-            collectionId,
-            {
-                offset,
-                limit,
-                orderBy,
-            },
-        );
+        return await CollectionsEntriesService.collectionsEntriesControllerFindAllByCollectionIdV1(collectionId, {
+            offset,
+            limit,
+            orderBy,
+        });
     } catch (e) {
         console.error(e);
         return undefined;

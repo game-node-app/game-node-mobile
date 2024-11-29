@@ -23,9 +23,7 @@ export function useFeaturedObtainedAchievement(
                 }
 
                 const featuredAchivement =
-                    await AchievementsService.achievementsControllerGetFeaturedAchievementForUserId(
-                        userId,
-                    );
+                    await AchievementsService.achievementsControllerGetFeaturedAchievementForUserIdV1(userId);
 
                 if (!featuredAchivement) {
                     return null;

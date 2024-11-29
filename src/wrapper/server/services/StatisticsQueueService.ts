@@ -12,7 +12,7 @@ export class StatisticsQueueService {
      * @returns any
      * @throws ApiError
      */
-    public static statisticsQueueControllerAddLike(
+    public static statisticsQueueControllerAddLikeV1(
         requestBody: StatisticsActionDto,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
@@ -27,7 +27,7 @@ export class StatisticsQueueService {
      * @returns any
      * @throws ApiError
      */
-    public static statisticsQueueControllerRemoveLike(
+    public static statisticsQueueControllerRemoveLikeV1(
         requestBody: StatisticsActionDto,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
@@ -42,7 +42,7 @@ export class StatisticsQueueService {
      * @returns any
      * @throws ApiError
      */
-    public static statisticsQueueControllerAddView(
+    public static statisticsQueueControllerAddViewV1(
         requestBody: StatisticsActionDto,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {

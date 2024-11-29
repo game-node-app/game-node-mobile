@@ -16,7 +16,7 @@ export class AchievementsService {
      * @returns PaginatedAchievementsResponseDto
      * @throws ApiError
      */
-    public static achievementsControllerGetAchievements(
+    public static achievementsControllerGetAchievementsV1(
         offset?: number,
         limit: number = 20,
     ): CancelablePromise<PaginatedAchievementsResponseDto> {
@@ -35,7 +35,7 @@ export class AchievementsService {
      * @returns ObtainedAchievement
      * @throws ApiError
      */
-    public static achievementsControllerGetObtainedAchievement(
+    public static achievementsControllerGetObtainedAchievementV1(
         id: string,
         targetUserId: string,
     ): CancelablePromise<ObtainedAchievement> {
@@ -55,7 +55,7 @@ export class AchievementsService {
      * @returns ObtainedAchievement
      * @throws ApiError
      */
-    public static achievementsControllerGetAllObtainedAchievements(
+    public static achievementsControllerGetAllObtainedAchievementsV1(
         targetUserId: string,
     ): CancelablePromise<Array<ObtainedAchievement>> {
         return __request(OpenAPI, {
@@ -71,7 +71,7 @@ export class AchievementsService {
      * @returns any
      * @throws ApiError
      */
-    public static achievementsControllerGetFeaturedAchievementForUserId(
+    public static achievementsControllerGetFeaturedAchievementForUserIdV1(
         userId: string,
     ): CancelablePromise<Record<string, any>> {
         return __request(OpenAPI, {
@@ -88,7 +88,7 @@ export class AchievementsService {
      * @returns any
      * @throws ApiError
      */
-    public static achievementsControllerUpdateFeaturedObtainedAchievement(
+    public static achievementsControllerUpdateFeaturedObtainedAchievementV1(
         id: string,
         requestBody: UpdateFeaturedObtainedAchievementDto,
     ): CancelablePromise<any> {
@@ -107,7 +107,7 @@ export class AchievementsService {
      * @returns any
      * @throws ApiError
      */
-    public static achievementsControllerGrantAchievements(
+    public static achievementsControllerGrantAchievementsV1(
         requestBody: AchievementGrantRequestDto,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {

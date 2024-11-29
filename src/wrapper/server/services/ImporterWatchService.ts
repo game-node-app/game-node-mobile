@@ -12,7 +12,7 @@ export class ImporterWatchService {
      * @returns ImporterWatchNotification
      * @throws ApiError
      */
-    public static importerWatchControllerFindNotification(
+    public static importerWatchControllerFindNotificationV1(
         id: number,
     ): CancelablePromise<ImporterWatchNotification> {
         return __request(OpenAPI, {

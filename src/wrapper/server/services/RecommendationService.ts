@@ -14,7 +14,7 @@ export class RecommendationService {
      * @returns GetRecommendationsResponseDto
      * @throws ApiError
      */
-    public static recommendationControllerGetRecommendations(
+    public static recommendationControllerGetRecommendationsV1(
         criteria: 'finished' | 'genre' | 'theme',
         limit: number = 20,
     ): CancelablePromise<GetRecommendationsResponseDto> {

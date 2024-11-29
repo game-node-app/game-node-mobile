@@ -109,7 +109,7 @@ const CollectionEntriesMoveForm = ({ collectionId, onClose }: ICollectionEntries
             const promises: Promise<CancelablePromise<any>>[] = [];
             for (const entry of relevantCollectionEntries) {
                 const ownedPlatformsIds = entry.ownedPlatforms.map((platform) => platform.id);
-                const replacePromise = CollectionsEntriesService.collectionsEntriesControllerCreateOrUpdate({
+                const replacePromise = CollectionsEntriesService.collectionsEntriesControllerCreateOrUpdateV1({
                     isFavorite: entry.isFavorite,
                     platformIds: ownedPlatformsIds as unknown as any,
                     collectionIds: targetCollectionsIds,

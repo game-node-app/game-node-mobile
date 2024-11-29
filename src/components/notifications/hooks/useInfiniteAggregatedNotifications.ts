@@ -1,13 +1,6 @@
 import { ExtendedUseInfiniteQueryResult } from "@/util/types/ExtendedUseQueryResult";
-import {
-    NotificationsService,
-    PaginatedNotificationAggregationDto,
-} from "@/wrapper/server";
-import {
-    keepPreviousData,
-    useInfiniteQuery,
-    useQueryClient,
-} from "@tanstack/react-query";
+import { NotificationsService, PaginatedNotificationAggregationDto } from "@/wrapper/server";
+import { keepPreviousData, useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import useUserId from "@/components/auth/hooks/useUserId";
 
 export const DEFAULT_NOTIFICATIONS_LIMIT = 10;
@@ -28,9 +21,7 @@ export function useInfiniteAggregatedNotifications(
         ...useInfiniteQuery({
             queryKey,
             queryFn: ({ pageParam = 0 }) => {
-                return NotificationsService.notificationsControllerFindAllAndAggregate(
-                    pageParam,
-                );
+                return NotificationsService.notificationsControllerFindAllAndAggregateV1(pageParam);
             },
             placeholderData: keepPreviousData,
             getNextPageParam: (previousData, allData, lastPageParam) => {

@@ -11,7 +11,7 @@ export class LibrariesService {
      * @returns Library
      * @throws ApiError
      */
-    public static librariesControllerFindOwn(): CancelablePromise<Library> {
+    public static librariesControllerFindOwnV1(): CancelablePromise<Library> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/v1/libraries',
@@ -22,7 +22,7 @@ export class LibrariesService {
      * @returns Library
      * @throws ApiError
      */
-    public static librariesControllerFindOneByIdWithPermissions(
+    public static librariesControllerFindOneByIdWithPermissionsV1(
         id: string,
     ): CancelablePromise<Library> {
         return __request(OpenAPI, {

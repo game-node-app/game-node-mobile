@@ -10,7 +10,7 @@ export class AuthService {
      * @returns any
      * @throws ApiError
      */
-    public static authControllerLogout(): CancelablePromise<any> {
+    public static authControllerLogoutV1(): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/v1/auth/logout',

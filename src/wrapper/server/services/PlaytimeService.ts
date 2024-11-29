@@ -12,7 +12,7 @@ export class PlaytimeService {
      * @returns GamePlaytime
      * @throws ApiError
      */
-    public static playtimeControllerFindOneByGameId(
+    public static playtimeControllerFindOneByGameIdV1(
         gameId: number,
     ): CancelablePromise<GamePlaytime> {
         return __request(OpenAPI, {

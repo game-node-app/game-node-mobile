@@ -15,7 +15,7 @@ export class NotificationsService {
      * @returns PaginatedNotificationAggregationDto
      * @throws ApiError
      */
-    public static notificationsControllerFindAllAndAggregate(
+    public static notificationsControllerFindAllAndAggregateV1(
         offset?: number,
         limit: number = 20,
     ): CancelablePromise<PaginatedNotificationAggregationDto> {
@@ -34,7 +34,7 @@ export class NotificationsService {
      * @returns Notification
      * @throws ApiError
      */
-    public static notificationsControllerGetNewNotifications(): CancelablePromise<Array<Notification>> {
+    public static notificationsControllerGetNewNotificationsV1(): CancelablePromise<Array<Notification>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/v1/notifications/new',
@@ -45,7 +45,7 @@ export class NotificationsService {
      * @returns any
      * @throws ApiError
      */
-    public static notificationsControllerUpdateViewedStatus(
+    public static notificationsControllerUpdateViewedStatusV1(
         requestBody: NotificationViewUpdateDto,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {

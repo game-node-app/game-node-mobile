@@ -24,7 +24,7 @@ const ProfileEditBioForm = () => {
     });
     const profileMutation = useMutation({
         mutationFn: (values: TBioForm) => {
-            return ProfileService.profileControllerUpdate({
+            return ProfileService.profileControllerUpdateV1({
                 bio: values.bio,
             });
         },
@@ -36,9 +36,7 @@ const ProfileEditBioForm = () => {
         },
     });
     return (
-        <form
-            onSubmit={handleSubmit((values) => profileMutation.mutate(values))}
-        >
+        <form onSubmit={handleSubmit((values) => profileMutation.mutate(values))}>
             <Stack className={"w-full"}>
                 <Textarea
                     {...register("bio")}

@@ -17,7 +17,7 @@ export class CollectionsService {
      * @returns Collection
      * @throws ApiError
      */
-    public static collectionsControllerFindOneByIdWithPermissions(
+    public static collectionsControllerFindOneByIdWithPermissionsV1(
         id: string,
     ): CancelablePromise<Collection> {
         return __request(OpenAPI, {
@@ -34,7 +34,7 @@ export class CollectionsService {
      * @returns any
      * @throws ApiError
      */
-    public static collectionsControllerUpdate(
+    public static collectionsControllerUpdateV1(
         id: string,
         requestBody: UpdateCollectionDto,
     ): CancelablePromise<Record<string, any>> {
@@ -53,7 +53,7 @@ export class CollectionsService {
      * @returns void
      * @throws ApiError
      */
-    public static collectionsControllerDelete(
+    public static collectionsControllerDeleteV1(
         id: string,
     ): CancelablePromise<void> {
         return __request(OpenAPI, {
@@ -69,7 +69,7 @@ export class CollectionsService {
      * @returns Collection
      * @throws ApiError
      */
-    public static collectionsControllerFindAllByUserIdWithPermissions(
+    public static collectionsControllerFindAllByUserIdWithPermissionsV1(
         userId: string,
     ): CancelablePromise<Array<Collection>> {
         return __request(OpenAPI, {
@@ -85,7 +85,7 @@ export class CollectionsService {
      * @returns any
      * @throws ApiError
      */
-    public static collectionsControllerCreate(
+    public static collectionsControllerCreateV1(
         requestBody: CreateCollectionDto,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {

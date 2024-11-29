@@ -12,7 +12,7 @@ export class LevelService {
      * @returns UserLevel
      * @throws ApiError
      */
-    public static levelControllerFindOne(
+    public static levelControllerFindOneV1(
         userId: string,
     ): CancelablePromise<UserLevel> {
         return __request(OpenAPI, {

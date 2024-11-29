@@ -16,16 +16,9 @@ const UseReviewForUserIdAndGameId = (
             queryFn: async () => {
                 if (!userId || userId === "" || !gameId) return null;
                 try {
-                    const review =
-                        await ReviewsService.reviewsControllerFindOneByUserIdAndGameId(
-                            userId,
-                            gameId,
-                        );
+                    const review = await ReviewsService.reviewsControllerFindOneByUserIdAndGameIdV1(userId, gameId);
                     // No idea why this happens.
-                    if (
-                        typeof review === "undefined" ||
-                        typeof review === "string"
-                    ) {
+                    if (typeof review === "undefined" || typeof review === "string") {
                         return null;
                     }
                     return review;

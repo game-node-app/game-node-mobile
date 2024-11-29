@@ -6,6 +6,7 @@ import type { CreateCommentDto } from '../models/CreateCommentDto';
 import type { DeleteCommentDto } from '../models/DeleteCommentDto';
 import type { FindAllCommentsDto } from '../models/FindAllCommentsDto';
 import type { FindCommentsPaginatedResponseDto } from '../models/FindCommentsPaginatedResponseDto';
+import type { Object } from '../models/Object';
 import type { ReviewComment } from '../models/ReviewComment';
 import type { UpdateCommentDto } from '../models/UpdateCommentDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -17,7 +18,7 @@ export class CommentService {
      * @returns FindCommentsPaginatedResponseDto
      * @throws ApiError
      */
-    public static commentControllerFindAll(
+    public static commentControllerFindAllV1(
         requestBody: FindAllCommentsDto,
     ): CancelablePromise<FindCommentsPaginatedResponseDto> {
         return __request(OpenAPI, {
@@ -33,7 +34,7 @@ export class CommentService {
      * @returns ReviewComment
      * @throws ApiError
      */
-    public static commentControllerFindOneById(
+    public static commentControllerFindOneByIdV1(
         sourceType: string,
         id: string,
     ): CancelablePromise<ReviewComment> {
@@ -52,15 +53,17 @@ export class CommentService {
      * @param search
      * @param offset
      * @param limit
+     * @param orderBy
      * @returns ReviewComment
      * @throws ApiError
      */
-    public static commentControllerFindAllChildrenById(
+    public static commentControllerFindAllChildrenByIdV1(
         sourceType: string,
         id: string,
         search?: string,
         offset?: number,
         limit: number = 20,
+        orderBy?: Object,
     ): CancelablePromise<Array<ReviewComment>> {
         return __request(OpenAPI, {
             method: 'GET',
@@ -73,6 +76,7 @@ export class CommentService {
                 'search': search,
                 'offset': offset,
                 'limit': limit,
+                'orderBy': orderBy,
             },
         });
     }
@@ -81,7 +85,7 @@ export class CommentService {
      * @returns any
      * @throws ApiError
      */
-    public static commentControllerCreate(
+    public static commentControllerCreateV1(
         requestBody: CreateCommentDto,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
@@ -97,7 +101,7 @@ export class CommentService {
      * @returns void
      * @throws ApiError
      */
-    public static commentControllerUpdate(
+    public static commentControllerUpdateV1(
         id: string,
         requestBody: UpdateCommentDto,
     ): CancelablePromise<void> {
@@ -117,7 +121,7 @@ export class CommentService {
      * @returns any
      * @throws ApiError
      */
-    public static commentControllerDelete(
+    public static commentControllerDeleteV1(
         id: string,
         requestBody: DeleteCommentDto,
     ): CancelablePromise<any> {

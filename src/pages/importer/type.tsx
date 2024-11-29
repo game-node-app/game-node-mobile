@@ -135,7 +135,7 @@ const ImporterByTypePage = ({ type }: Props) => {
                 throw new Error("Error while inserting game. Invalid external game ID. Please contact support.");
             }
 
-            await ImporterService.importerControllerChangeStatus({
+            await ImporterService.importerControllerChangeStatusV1({
                 externalGameId: externalGame.id,
                 status: "ignored",
             });
@@ -171,13 +171,13 @@ const ImporterByTypePage = ({ type }: Props) => {
                     throw new Error("Error while inserting game. Invalid external game ID. Please contact support.");
                 }
 
-                await CollectionsEntriesService.collectionsEntriesControllerCreateOrUpdate({
+                await CollectionsEntriesService.collectionsEntriesControllerCreateOrUpdateV1({
                     gameId: selectedGameId,
                     collectionIds: selectedCollectionIds,
                     platformIds: [platformId],
                     isFavorite: false,
                 });
-                await ImporterService.importerControllerChangeStatus({
+                await ImporterService.importerControllerChangeStatusV1({
                     externalGameId: externalGame.id,
                     status: "processed",
                 });

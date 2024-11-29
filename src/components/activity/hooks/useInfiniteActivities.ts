@@ -6,26 +6,14 @@ interface UseActivitiesProps {
     limit?: number;
 }
 
-export function useInfiniteActivities({
-    criteria,
-    limit = 20,
-}: UseActivitiesProps) {
+export function useInfiniteActivities({ criteria, limit = 20 }: UseActivitiesProps) {
     return useInfiniteQuery({
         queryKey: ["activities", criteria, limit],
         queryFn: async ({ pageParam }) => {
-            return ActivitiesFeedService.activitiesFeedControllerBuildActivitiesFeed(
-                criteria,
-                pageParam,
-                limit,
-            );
+            return ActivitiesFeedService.activitiesFeedControllerBuildActivitiesFeedV1(criteria, pageParam, limit);
         },
         initialPageParam: 0,
-        getNextPageParam: (
-            lastPage,
-            allPages,
-            lastPageParam,
-            allPageParams,
-        ) => {
+        getNextPageParam: (lastPage, allPages, lastPageParam, allPageParams) => {
             return lastPageParam + limit;
         },
     });

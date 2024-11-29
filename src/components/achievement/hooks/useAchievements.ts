@@ -10,10 +10,7 @@ export function useAchievements({ offset = 0, limit = 1000 }: Props) {
     return useQuery({
         queryKey: ["achievements"],
         queryFn: () => {
-            return AchievementsService.achievementsControllerGetAchievements(
-                offset,
-                limit,
-            );
+            return AchievementsService.achievementsControllerGetAchievementsV1(offset, limit);
         },
     });
 }

@@ -15,7 +15,7 @@ export class GameRepositoryService {
      * @returns any
      * @throws ApiError
      */
-    public static gameRepositoryControllerGetResource(
+    public static gameRepositoryControllerGetResourceV1(
         resourceName: string,
     ): CancelablePromise<Record<string, any>> {
         return __request(OpenAPI, {
@@ -31,7 +31,7 @@ export class GameRepositoryService {
      * @returns string
      * @throws ApiError
      */
-    public static gameRepositoryControllerGetIconNamesForPlatformAbbreviations(
+    public static gameRepositoryControllerGetIconNamesForPlatformAbbreviationsV1(
         id: number,
     ): CancelablePromise<Array<string>> {
         return __request(OpenAPI, {
@@ -47,7 +47,7 @@ export class GameRepositoryService {
      * @returns GameExternalStoreDto
      * @throws ApiError
      */
-    public static gameRepositoryControllerGetExternalStoresForGameId(
+    public static gameRepositoryControllerGetExternalStoresForGameIdV1(
         id: number,
     ): CancelablePromise<Array<GameExternalStoreDto>> {
         return __request(OpenAPI, {
@@ -64,7 +64,7 @@ export class GameRepositoryService {
      * @returns Game
      * @throws ApiError
      */
-    public static gameRepositoryControllerFindOneById(
+    public static gameRepositoryControllerFindOneByIdV1(
         id: number,
         requestBody: GameRepositoryFindOneDto,
     ): CancelablePromise<Game> {
@@ -83,7 +83,7 @@ export class GameRepositoryService {
      * @returns Game
      * @throws ApiError
      */
-    public static gameRepositoryControllerFindAllByIds(
+    public static gameRepositoryControllerFindAllByIdsV1(
         requestBody: GameRepositoryFindAllDto,
     ): CancelablePromise<Array<Game>> {
         return __request(OpenAPI, {

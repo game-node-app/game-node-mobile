@@ -18,7 +18,7 @@ export class StatisticsService {
      * @returns any
      * @throws ApiError
      */
-    public static statisticsControllerFindOneBySourceIdAndType(
+    public static statisticsControllerFindOneBySourceIdAndTypeV1(
         requestBody: FindOneStatisticsDto,
     ): CancelablePromise<Record<string, any>> {
         return __request(OpenAPI, {
@@ -33,7 +33,7 @@ export class StatisticsService {
      * @returns GameStatisticsPaginatedResponseDto
      * @throws ApiError
      */
-    public static statisticsControllerFindTrendingGames(
+    public static statisticsControllerFindTrendingGamesV1(
         requestBody: FindStatisticsTrendingGamesDto,
     ): CancelablePromise<GameStatisticsPaginatedResponseDto> {
         return __request(OpenAPI, {
@@ -48,7 +48,7 @@ export class StatisticsService {
      * @returns ReviewStatisticsPaginatedResponseDto
      * @throws ApiError
      */
-    public static statisticsControllerFindTrendingReviews(
+    public static statisticsControllerFindTrendingReviewsV1(
         requestBody: FindStatisticsTrendingReviewsDto,
     ): CancelablePromise<ReviewStatisticsPaginatedResponseDto> {
         return __request(OpenAPI, {
@@ -63,7 +63,7 @@ export class StatisticsService {
      * @returns ReviewStatisticsPaginatedResponseDto
      * @throws ApiError
      */
-    public static statisticsControllerFindTrendingActivities(
+    public static statisticsControllerFindTrendingActivitiesV1(
         requestBody: FindStatisticsTrendingActivitiesDto,
     ): CancelablePromise<ReviewStatisticsPaginatedResponseDto> {
         return __request(OpenAPI, {
@@ -79,7 +79,7 @@ export class StatisticsService {
      * @returns StatisticsStatus
      * @throws ApiError
      */
-    public static statisticsControllerGetStatus(
+    public static statisticsControllerGetStatusV1(
         statisticsId: number,
         sourceType: 'game' | 'review' | 'activity' | 'review_comment',
     ): CancelablePromise<StatisticsStatus> {

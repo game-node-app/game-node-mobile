@@ -1,14 +1,6 @@
 import useUserId from "@/components/auth/hooks/useUserId";
-import {
-    keepPreviousData,
-    useQuery,
-    useQueryClient,
-} from "@tanstack/react-query";
-import {
-    NotificationAggregateDto,
-    NotificationsService,
-    PaginatedNotificationAggregationDto,
-} from "@/wrapper/server";
+import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query";
+import { NotificationAggregateDto, NotificationsService, PaginatedNotificationAggregationDto } from "@/wrapper/server";
 import { ExtendedUseQueryResult } from "@/util/types/ExtendedUseQueryResult";
 
 export function useAggregatedNotifications(
@@ -27,10 +19,7 @@ export function useAggregatedNotifications(
         ...useQuery({
             queryKey,
             queryFn: () => {
-                return NotificationsService.notificationsControllerFindAllAndAggregate(
-                    offset,
-                    limit,
-                );
+                return NotificationsService.notificationsControllerFindAllAndAggregateV1(offset, limit);
             },
             placeholderData: keepPreviousData,
             enabled: !!userId,

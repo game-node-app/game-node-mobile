@@ -10,7 +10,7 @@ export class HealthService {
      * @returns any
      * @throws ApiError
      */
-    public static healthControllerHealth(): CancelablePromise<Record<string, any>> {
+    public static healthControllerHealthV1(): CancelablePromise<Record<string, any>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/v1/health',

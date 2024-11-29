@@ -1,15 +1,5 @@
-import {
-    CancelablePromise,
-    FollowInfoRequestDto,
-    FollowInfoResponseDto,
-    FollowService,
-} from "@/wrapper/server";
-import {
-    keepPreviousData,
-    useInfiniteQuery,
-    useQuery,
-    useQueryClient,
-} from "@tanstack/react-query";
+import { CancelablePromise, FollowInfoRequestDto, FollowInfoResponseDto, FollowService } from "@/wrapper/server";
+import { keepPreviousData, useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ExtendedUseInfiniteQueryResult } from "@/util/types/ExtendedUseQueryResult";
 
 export function useInfiniteFollowInfo(
@@ -30,18 +20,13 @@ export function useInfiniteFollowInfo(
         ...useInfiniteQuery({
             queryKey,
             queryFn: async ({ pageParam }) => {
-                return FollowService.followControllerGetFollowInfo({
+                return FollowService.followControllerGetFollowInfoV1({
                     ...dto,
                     offset: pageParam,
                 }) as CancelablePromise<FollowInfoResponseDto>;
             },
             initialPageParam: 0,
-            getNextPageParam: (
-                lastPage,
-                allPages,
-                lastPageParam,
-                allPageParams,
-            ) => {
+            getNextPageParam: (lastPage, allPages, lastPageParam, allPageParams) => {
                 return limit + lastPageParam;
             },
             placeholderData: keepPreviousData,

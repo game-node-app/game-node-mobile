@@ -1,15 +1,9 @@
-import {
-    useQuery,
-    useQueryClient,
-    UseQueryResult,
-} from "@tanstack/react-query";
+import { useQuery, useQueryClient, UseQueryResult } from "@tanstack/react-query";
 import { ApiError, LibrariesService, Library } from "@/wrapper/server";
 import { ExtendedUseQueryResult } from "@/util/types/ExtendedUseQueryResult";
 import useUserId from "@/components/auth/hooks/useUserId";
 
-export function useUserLibrary(
-    userId: string | undefined | null,
-): ExtendedUseQueryResult<Library | null> {
+export function useUserLibrary(userId: string | undefined | null): ExtendedUseQueryResult<Library | null> {
     const queryClient = useQueryClient();
     const queryKey = ["library", userId];
     const currentUserId = useUserId();
@@ -23,9 +17,7 @@ export function useUserLibrary(
                 // if (currentUserId && currentUserId === userId) {
                 //     return LibrariesService.librariesControllerFindOwn();
                 // }
-                return LibrariesService.librariesControllerFindOneByIdWithPermissions(
-                    userId,
-                );
+                return LibrariesService.librariesControllerFindOneByIdWithPermissionsV1(userId);
             },
             enabled: !!userId,
         }),

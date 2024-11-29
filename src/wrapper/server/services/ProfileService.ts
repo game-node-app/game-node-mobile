@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { FindAllProfileResponseItemDto } from '../models/FindAllProfileResponseItemDto';
 import type { Profile } from '../models/Profile';
 import type { UpdateProfileDto } from '../models/UpdateProfileDto';
 import type { UpdateProfileImageDto } from '../models/UpdateProfileImageDto';
@@ -14,7 +15,7 @@ export class ProfileService {
      * @returns any
      * @throws ApiError
      */
-    public static profileControllerUpdate(
+    public static profileControllerUpdateV1(
         requestBody: UpdateProfileDto,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
@@ -29,7 +30,7 @@ export class ProfileService {
      * @returns Profile
      * @throws ApiError
      */
-    public static profileControllerFindOwn(): CancelablePromise<Profile> {
+    public static profileControllerFindOwnV1(): CancelablePromise<Profile> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/v1/profile',
@@ -40,7 +41,7 @@ export class ProfileService {
      * @returns any
      * @throws ApiError
      */
-    public static profileControllerUpdateImage(
+    public static profileControllerUpdateImageV1(
         formData: UpdateProfileImageDto,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
@@ -56,7 +57,7 @@ export class ProfileService {
      * @returns any
      * @throws ApiError
      */
-    public static profileControllerRemoveImage(
+    public static profileControllerRemoveImageV1(
         imageType: string,
         imageId: number,
     ): CancelablePromise<any> {
@@ -70,10 +71,10 @@ export class ProfileService {
         });
     }
     /**
-     * @returns Profile
+     * @returns FindAllProfileResponseItemDto
      * @throws ApiError
      */
-    public static profileControllerFindAll(): CancelablePromise<Array<Profile>> {
+    public static profileControllerFindAllV1(): CancelablePromise<Array<FindAllProfileResponseItemDto>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/v1/profile/all',
@@ -85,7 +86,7 @@ export class ProfileService {
      * @returns Profile
      * @throws ApiError
      */
-    public static profileControllerFindOneById(
+    public static profileControllerFindOneByIdV1(
         id: string,
     ): CancelablePromise<Profile> {
         return __request(OpenAPI, {

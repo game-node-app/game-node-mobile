@@ -1,13 +1,5 @@
 import React, { useCallback, useMemo } from "react";
-import {
-    Group,
-    GroupProps,
-    Image,
-    ImageProps,
-    Popover,
-    Skeleton,
-    Text,
-} from "@mantine/core";
+import { Group, GroupProps, Image, ImageProps, Popover, Skeleton, Text } from "@mantine/core";
 import useOnMobile from "@/components/general/hooks/useOnMobile";
 import { getServerStoredIcon } from "@/util/getServerStoredImages";
 import { getGamePlatformInfo } from "@/components/game/util/getGamePlatformInfo";
@@ -21,11 +13,7 @@ interface IGameInfoPlatformsProps extends GroupProps {
     iconsProps?: ImageProps;
 }
 
-const GameInfoPlatforms = ({
-    gameId,
-    iconsProps,
-    ...others
-}: IGameInfoPlatformsProps) => {
+const GameInfoPlatforms = ({ gameId, iconsProps, ...others }: IGameInfoPlatformsProps) => {
     const onMobile = useOnMobile();
     const gameQuery = useGame(gameId, {
         relations: {
@@ -37,9 +25,7 @@ const GameInfoPlatforms = ({
         queryFn: async () => {
             if (!gameId) return null;
             try {
-                return GameRepositoryService.gameRepositoryControllerGetIconNamesForPlatformAbbreviations(
-                    gameId,
-                );
+                return GameRepositoryService.gameRepositoryControllerGetIconNamesForPlatformAbbreviationsV1(gameId);
             } catch (e) {
                 console.error(e);
                 return [];
@@ -57,15 +43,7 @@ const GameInfoPlatforms = ({
         const icons = iconsQuery.data;
         if (!icons) return null;
         return icons.map((icon) => {
-            return (
-                <Image
-                    key={icon}
-                    w={60}
-                    alt={icon}
-                    src={getServerStoredIcon(icon)}
-                    {...iconsProps}
-                />
-            );
+            return <Image key={icon} w={60} alt={icon} src={getServerStoredIcon(icon)} {...iconsProps} />;
         });
     }, [iconsProps, iconsQuery.data]);
 
@@ -75,12 +53,7 @@ const GameInfoPlatforms = ({
     return (
         <Popover shadow={"md"}>
             <Popover.Target>
-                <Group
-                    w={"100%"}
-                    justify={onMobile ? "center" : "start"}
-                    wrap={"wrap"}
-                    {...others}
-                >
+                <Group w={"100%"} justify={onMobile ? "center" : "start"} wrap={"wrap"} {...others}>
                     {iconsQuery.isLoading ? buildIconsSkeletons() : icons}
                     {!iconsQuery.isLoading && isEmpty && "Not available"}
                 </Group>

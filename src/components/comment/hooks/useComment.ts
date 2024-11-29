@@ -6,10 +6,7 @@ import { useQuery } from "@tanstack/react-query";
  * Retrieves a single comment based on criteria.
  * Will only be enabled if commentId is not null.
  */
-export function useComment(
-    commentId: string | undefined,
-    sourceType: sourceType,
-) {
+export function useComment(commentId: string | undefined, sourceType: sourceType) {
     return useQuery({
         queryKey: ["comment", "findOne", sourceType, commentId],
         queryFn: async () => {
@@ -17,10 +14,7 @@ export function useComment(
                 return null;
             }
 
-            return CommentService.commentControllerFindOneById(
-                sourceType.valueOf(),
-                commentId,
-            );
+            return CommentService.commentControllerFindOneByIdV1(sourceType.valueOf(), commentId);
         },
         enabled: commentId != undefined,
         retry: 1,

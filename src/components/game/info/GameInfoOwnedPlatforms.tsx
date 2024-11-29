@@ -1,22 +1,11 @@
 import React, { useCallback, useMemo } from "react";
-import {
-    Group,
-    GroupProps,
-    Image,
-    ImageProps,
-    Popover,
-    Skeleton,
-    Text,
-} from "@mantine/core";
+import { Group, GroupProps, Image, ImageProps, Popover, Skeleton, Text } from "@mantine/core";
 import useOnMobile from "@/components/general/hooks/useOnMobile";
 import { getServerStoredIcon } from "@/util/getServerStoredImages";
 import { getGamePlatformInfo } from "@/components/game/util/getGamePlatformInfo";
 import { useGame } from "@/components/game/hooks/useGame";
 import { useQuery } from "@tanstack/react-query";
-import {
-    CollectionsEntriesService,
-    GameRepositoryService,
-} from "@/wrapper/server";
+import { CollectionsEntriesService, GameRepositoryService } from "@/wrapper/server";
 import { useOwnCollectionEntryForGameId } from "@/components/collection/collection-entry/hooks/useOwnCollectionEntryForGameId";
 
 interface IGameInfoOwnedPlatformsProps extends GroupProps {
@@ -24,26 +13,16 @@ interface IGameInfoOwnedPlatformsProps extends GroupProps {
     iconsProps?: ImageProps;
 }
 
-const GameInfoOwnedPlatforms = ({
-    gameId,
-    iconsProps,
-    ...others
-}: IGameInfoOwnedPlatformsProps) => {
+const GameInfoOwnedPlatforms = ({ gameId, iconsProps, ...others }: IGameInfoOwnedPlatformsProps) => {
     const onMobile = useOnMobile();
     const collectionEntry = useOwnCollectionEntryForGameId(gameId);
     const iconsQuery = useQuery({
-        queryKey: [
-            "game",
-            "owned-platforms",
-            "icon",
-            gameId,
-            collectionEntry.data?.id,
-        ],
+        queryKey: ["game", "owned-platforms", "icon", gameId, collectionEntry.data?.id],
         queryFn: async () => {
             if (!collectionEntry.data) return [];
             if (!gameId) return [];
             try {
-                return await CollectionsEntriesService.collectionsEntriesControllerGetIconsForOwnedPlatforms(
+                return await CollectionsEntriesService.collectionsEntriesControllerGetIconsForOwnedPlatformsV1(
                     collectionEntry.data.id,
                 );
             } catch (e) {
@@ -64,15 +43,7 @@ const GameInfoOwnedPlatforms = ({
 
         if (!icons) return null;
         return icons.map((icon) => {
-            return (
-                <Image
-                    key={icon}
-                    w={60}
-                    alt={icon}
-                    src={getServerStoredIcon(icon)}
-                    {...iconsProps}
-                />
-            );
+            return <Image key={icon} w={60} alt={icon} src={getServerStoredIcon(icon)} {...iconsProps} />;
         });
     }, [iconsProps, iconsQuery.data]);
 
@@ -85,12 +56,7 @@ const GameInfoOwnedPlatforms = ({
     return (
         <Popover shadow={"md"}>
             <Popover.Target>
-                <Group
-                    w={"100%"}
-                    justify={onMobile ? "center" : "start"}
-                    wrap={"wrap"}
-                    {...others}
-                >
+                <Group w={"100%"} justify={onMobile ? "center" : "start"} wrap={"wrap"} {...others}>
                     {!iconsQuery.isLoading && isEmpty && "Not available"}
                     {iconsQuery.isLoading ? buildIconsSkeletons() : icons}
                 </Group>

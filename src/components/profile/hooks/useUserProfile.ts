@@ -3,9 +3,7 @@ import { Profile, ProfileService } from "@/wrapper/server";
 import { ExtendedUseQueryResult } from "@/util/types/ExtendedUseQueryResult";
 import useUserId from "@/components/auth/hooks/useUserId";
 
-export default function useUserProfile(
-    userId: string | undefined,
-): ExtendedUseQueryResult<Profile | undefined> {
+export default function useUserProfile(userId: string | undefined): ExtendedUseQueryResult<Profile | undefined> {
     const queryClient = useQueryClient();
     const queryKey = ["userProfile", userId];
     const invalidate = () => queryClient.invalidateQueries({ queryKey });
@@ -14,7 +12,7 @@ export default function useUserProfile(
             queryKey: queryKey,
             queryFn: async () => {
                 if (!userId) return null;
-                return ProfileService.profileControllerFindOneById(userId);
+                return ProfileService.profileControllerFindOneByIdV1(userId);
             },
             enabled: !!userId,
             retry: 1,

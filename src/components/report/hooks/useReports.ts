@@ -19,11 +19,7 @@ export function useReports(
         ...useQuery({
             queryKey,
             queryFn: async () => {
-                return ReportService.reportControllerFindAllByLatest(
-                    includeClosed,
-                    offset,
-                    limit,
-                );
+                return ReportService.reportControllerFindAllByLatestV1(includeClosed, offset, limit);
             },
         }),
         queryKey,

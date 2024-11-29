@@ -135,7 +135,7 @@ const CollectionEntryAddOrUpdateForm = ({ gameId, onClose, showGameInfo = true }
             const isFavorite =
                 isUpdateAction && collectionEntryQuery.data != undefined && collectionEntryQuery.data.isFavorite;
 
-            await CollectionsEntriesService.collectionsEntriesControllerCreateOrUpdate({
+            await CollectionsEntriesService.collectionsEntriesControllerCreateOrUpdateV1({
                 collectionIds: collectionIds,
                 gameId: gameId,
                 platformIds: parsedPlatformIds,

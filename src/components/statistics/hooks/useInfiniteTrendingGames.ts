@@ -28,7 +28,7 @@ export function useInfiniteTrendingGames(
         ...useInfiniteQuery({
             queryKey,
             queryFn: async ({ pageParam = 0 }) => {
-                return StatisticsService.statisticsControllerFindTrendingGames({
+                return StatisticsService.statisticsControllerFindTrendingGamesV1({
                     ...dto,
                     offset: pageParam,
                 });

@@ -12,34 +12,34 @@ export type Report = {
      */
     sourceType: Report.sourceType;
     category: Report.category;
-    targetReview: Review | null;
-    targetReviewId: string | null;
-    targetReviewComment: ReviewComment | null;
-    targetReviewCommentId: string | null;
+    /**
+     * User-submitted reason for report.
+     */
+    reason: string | null;
     /**
      * Profile that is being target of a report
      */
     targetProfile: Profile;
     targetProfileUserId: string;
     /**
-     * User-submitted reason for report.
-     */
-    reason: string | null;
-    /**
      * User responsible for report.
      */
     profile: Profile;
     profileUserId: string;
-    isClosed: boolean;
-    /**
-     * Action taken when closing this report
-     */
-    closeHandleAction: Report.closeHandleAction | null;
     /**
      * User responsible for closing this report
      */
     closeProfile: Profile | null;
     closeProfileUserId: string | null;
+    targetReview: Review | null;
+    targetReviewId: string | null;
+    targetReviewComment: ReviewComment | null;
+    targetReviewCommentId: string | null;
+    isClosed: boolean;
+    /**
+     * Action taken when closing this report
+     */
+    closeHandleAction: Report.closeHandleAction | null;
     createdAt: string;
     updatedAt: string;
 };

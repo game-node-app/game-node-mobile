@@ -1,13 +1,6 @@
-import {
-    FindOneStatisticsDto,
-    StatisticsActionDto,
-    StatisticsQueueService,
-} from "@/wrapper/server";
+import { FindOneStatisticsDto, StatisticsActionDto, StatisticsQueueService } from "@/wrapper/server";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-    StatisticsWithStatus,
-    useItemStatistics,
-} from "@/components/statistics/hooks/useItemStatistics";
+import { StatisticsWithStatus, useItemStatistics } from "@/components/statistics/hooks/useItemStatistics";
 import useUserId from "@/components/auth/hooks/useUserId";
 
 export interface IToggleLikeProps {
@@ -24,11 +17,7 @@ export interface IToggleLikeProps {
  * @param sourceType
  * @param onSuccess
  */
-export function useUserLike({
-    sourceId,
-    sourceType,
-    targetUserId,
-}: IToggleLikeProps) {
+export function useUserLike({ sourceId, sourceType, targetUserId }: IToggleLikeProps) {
     const queryClient = useQueryClient();
     const userId = useUserId();
     const statisticsQuery = useItemStatistics(sourceId, sourceType);
@@ -51,13 +40,11 @@ export function useUserLike({
             };
 
             if (isLiked) {
-                StatisticsQueueService.statisticsQueueControllerRemoveLike(
-                    dto,
-                ).then();
+                StatisticsQueueService.statisticsQueueControllerRemoveLikeV1(dto).then();
                 return;
             }
 
-            StatisticsQueueService.statisticsQueueControllerAddLike(dto).then();
+            StatisticsQueueService.statisticsQueueControllerAddLikeV1(dto).then();
         },
         onSuccess: () => {},
 
@@ -66,10 +53,7 @@ export function useUserLike({
                 queryKey: statisticsQueryKey,
             });
 
-            let previousStatistics =
-                await queryClient.getQueryData<Promise<StatisticsWithStatus>>(
-                    statisticsQueryKey,
-                )!;
+            let previousStatistics = await queryClient.getQueryData<Promise<StatisticsWithStatus>>(statisticsQueryKey)!;
 
             if (!previousStatistics) {
                 previousStatistics = {
@@ -102,10 +86,7 @@ export function useUserLike({
 
         onError: (err, _, context) => {
             console.error(err);
-            queryClient.setQueryData(
-                statisticsQueryKey,
-                context?.previousStatistics,
-            );
+            queryClient.setQueryData(statisticsQueryKey, context?.previousStatistics);
         },
         onSettled: () => {},
     });

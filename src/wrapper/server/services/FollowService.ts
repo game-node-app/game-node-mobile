@@ -18,7 +18,7 @@ export class FollowService {
      * @returns FollowStatusDto
      * @throws ApiError
      */
-    public static followControllerGetFollowerStatus(
+    public static followControllerGetFollowerStatusV1(
         followerUserId: string,
         followedUserId: string,
     ): CancelablePromise<FollowStatusDto> {
@@ -36,7 +36,7 @@ export class FollowService {
      * @returns UserFollow
      * @throws ApiError
      */
-    public static followControllerGetUserFollowById(
+    public static followControllerGetUserFollowByIdV1(
         id: number,
     ): CancelablePromise<UserFollow> {
         return __request(OpenAPI, {
@@ -52,7 +52,7 @@ export class FollowService {
      * @returns FollowInfoResponseDto
      * @throws ApiError
      */
-    public static followControllerGetFollowInfo(
+    public static followControllerGetFollowInfoV1(
         requestBody: FollowInfoRequestDto,
     ): CancelablePromise<FollowInfoResponseDto> {
         return __request(OpenAPI, {
@@ -67,7 +67,7 @@ export class FollowService {
      * @returns any
      * @throws ApiError
      */
-    public static followControllerRegisterFollow(
+    public static followControllerRegisterFollowV1(
         requestBody: FollowRegisterDto,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
@@ -82,7 +82,7 @@ export class FollowService {
      * @returns any
      * @throws ApiError
      */
-    public static followControllerRemoveFollow(
+    public static followControllerRemoveFollowV1(
         requestBody: FollowRemoveDto,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {

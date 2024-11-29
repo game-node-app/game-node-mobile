@@ -15,7 +15,7 @@ export class ImporterService {
      * @returns ImporterPaginatedResponseDto
      * @throws ApiError
      */
-    public static importerControllerFindUnprocessedEntries(
+    public static importerControllerFindUnprocessedEntriesV1(
         source: string,
         limit: number = 20,
         offset?: number,
@@ -37,7 +37,7 @@ export class ImporterService {
      * @returns any
      * @throws ApiError
      */
-    public static importerControllerChangeStatus(
+    public static importerControllerChangeStatusV1(
         requestBody: ImporterStatusUpdateRequestDto,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {

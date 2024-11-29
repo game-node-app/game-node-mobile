@@ -1,8 +1,5 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-    ImporterPaginatedResponseDto,
-    ImporterService,
-} from "@/wrapper/server";
+import { ImporterPaginatedResponseDto, ImporterService } from "@/wrapper/server";
 import { ExtendedUseQueryResult } from "@/util/types/ExtendedUseQueryResult";
 
 interface Props {
@@ -17,14 +14,7 @@ export function useImporterEntries({
     limit,
 }: Props): ExtendedUseQueryResult<ImporterPaginatedResponseDto> {
     const queryClient = useQueryClient();
-    const queryKey = [
-        "importer",
-        "entries",
-        "unprocessed",
-        source,
-        offset,
-        limit,
-    ];
+    const queryKey = ["importer", "entries", "unprocessed", source, offset, limit];
     const invalidate = () => {
         queryClient.invalidateQueries({
             queryKey: queryKey.slice(0, 4),
@@ -32,20 +22,9 @@ export function useImporterEntries({
     };
     return {
         ...useQuery({
-            queryKey: [
-                "importer",
-                "entries",
-                "unprocessed",
-                source,
-                offset,
-                limit,
-            ],
+            queryKey: ["importer", "entries", "unprocessed", source, offset, limit],
             queryFn: async () => {
-                return ImporterService.importerControllerFindUnprocessedEntries(
-                    source,
-                    limit,
-                    offset,
-                );
+                return ImporterService.importerControllerFindUnprocessedEntriesV1(source, limit, offset);
             },
             enabled: source != undefined,
         }),

@@ -9,8 +9,7 @@ export default function useReviewsForGameId(
 ): ExtendedUseQueryResult<FindReviewPaginatedDto> {
     const queryClient = useQueryClient();
     const queryKey = ["review", gameId, dto];
-    const invalidate = () =>
-        queryClient.invalidateQueries({ queryKey: queryKey.slice(0, 2) });
+    const invalidate = () => queryClient.invalidateQueries({ queryKey: queryKey.slice(0, 2) });
 
     return {
         ...useQuery({
@@ -19,11 +18,7 @@ export default function useReviewsForGameId(
                 if (gameId == undefined) return null;
 
                 try {
-                    return await ReviewsService.reviewsControllerFindAllByGameId(
-                        gameId,
-                        dto?.offset,
-                        dto?.limit,
-                    );
+                    return await ReviewsService.reviewsControllerFindAllByGameIdV1(gameId, dto?.offset, dto?.limit);
                 } catch (e) {
                     return null;
                 }

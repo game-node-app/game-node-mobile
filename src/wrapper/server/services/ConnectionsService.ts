@@ -13,7 +13,7 @@ export class ConnectionsService {
      * @returns FindAvailableConnectionsResponseDto
      * @throws ApiError
      */
-    public static connectionsControllerFindAvailableConnections(): CancelablePromise<Array<FindAvailableConnectionsResponseDto>> {
+    public static connectionsControllerFindAvailableConnectionsV1(): CancelablePromise<Array<FindAvailableConnectionsResponseDto>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/v1/connections',
@@ -24,7 +24,7 @@ export class ConnectionsService {
      * @returns any
      * @throws ApiError
      */
-    public static connectionsControllerCreateOrUpdate(
+    public static connectionsControllerCreateOrUpdateV1(
         requestBody: ConnectionCreateDto,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
@@ -38,7 +38,7 @@ export class ConnectionsService {
      * @returns UserConnection
      * @throws ApiError
      */
-    public static connectionsControllerFindOwn(): CancelablePromise<Array<UserConnection>> {
+    public static connectionsControllerFindOwnV1(): CancelablePromise<Array<UserConnection>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/v1/connections/own',
@@ -49,7 +49,7 @@ export class ConnectionsService {
      * @returns UserConnection
      * @throws ApiError
      */
-    public static connectionsControllerFindOwnByType(
+    public static connectionsControllerFindOwnByTypeV1(
         type: string,
     ): CancelablePromise<UserConnection> {
         return __request(OpenAPI, {
@@ -65,7 +65,7 @@ export class ConnectionsService {
      * @returns any
      * @throws ApiError
      */
-    public static connectionsControllerDelete(
+    public static connectionsControllerDeleteV1(
         id: number,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {

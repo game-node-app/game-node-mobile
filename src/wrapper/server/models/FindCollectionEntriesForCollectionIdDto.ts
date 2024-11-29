@@ -2,9 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { FindCollectionEntriesForCollectionIdOrderBy } from './FindCollectionEntriesForCollectionIdOrderBy';
+import type { FindCollectionEntriesOrderBy } from './FindCollectionEntriesOrderBy';
 export type FindCollectionEntriesForCollectionIdDto = {
-    orderBy?: FindCollectionEntriesForCollectionIdOrderBy;
+    orderBy?: FindCollectionEntriesOrderBy;
     offset?: number;
     limit?: number;
 };

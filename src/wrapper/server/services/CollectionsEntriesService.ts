@@ -7,6 +7,7 @@ import type { CollectionEntry } from '../models/CollectionEntry';
 import type { CreateFavoriteStatusCollectionEntryDto } from '../models/CreateFavoriteStatusCollectionEntryDto';
 import type { CreateUpdateCollectionEntryDto } from '../models/CreateUpdateCollectionEntryDto';
 import type { FindCollectionEntriesForCollectionIdDto } from '../models/FindCollectionEntriesForCollectionIdDto';
+import type { FindCollectionEntriesOrderBy } from '../models/FindCollectionEntriesOrderBy';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
@@ -16,7 +17,7 @@ export class CollectionsEntriesService {
      * @returns any
      * @throws ApiError
      */
-    public static collectionsEntriesControllerCreateOrUpdate(
+    public static collectionsEntriesControllerCreateOrUpdateV1(
         requestBody: CreateUpdateCollectionEntryDto,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
@@ -31,7 +32,7 @@ export class CollectionsEntriesService {
      * @returns CollectionEntry
      * @throws ApiError
      */
-    public static collectionsEntriesControllerFindEntryById(
+    public static collectionsEntriesControllerFindEntryByIdV1(
         id: string,
     ): CancelablePromise<CollectionEntry> {
         return __request(OpenAPI, {
@@ -47,7 +48,7 @@ export class CollectionsEntriesService {
      * @returns void
      * @throws ApiError
      */
-    public static collectionsEntriesControllerDeleteOwnEntry(
+    public static collectionsEntriesControllerDeleteOwnEntryV1(
         id: string,
     ): CancelablePromise<void> {
         return __request(OpenAPI, {
@@ -64,7 +65,7 @@ export class CollectionsEntriesService {
      * @returns CollectionEntry
      * @throws ApiError
      */
-    public static collectionsEntriesControllerFindOwnEntryByGameId(
+    public static collectionsEntriesControllerFindOwnEntryByGameIdV1(
         id: number,
     ): CancelablePromise<CollectionEntry> {
         return __request(OpenAPI, {
@@ -83,7 +84,7 @@ export class CollectionsEntriesService {
      * @returns string
      * @throws ApiError
      */
-    public static collectionsEntriesControllerGetIconsForOwnedPlatforms(
+    public static collectionsEntriesControllerGetIconsForOwnedPlatformsV1(
         id: string,
     ): CancelablePromise<Array<string>> {
         return __request(OpenAPI, {
@@ -100,7 +101,7 @@ export class CollectionsEntriesService {
      * @returns void
      * @throws ApiError
      */
-    public static collectionsEntriesControllerChangeFavoriteStatus(
+    public static collectionsEntriesControllerChangeFavoriteStatusV1(
         id: number,
         requestBody: CreateFavoriteStatusCollectionEntryDto,
     ): CancelablePromise<void> {
@@ -116,13 +117,15 @@ export class CollectionsEntriesService {
     }
     /**
      * @param id
+     * @param orderBy
      * @param offset
      * @param limit
      * @returns CollectionEntriesPaginatedResponseDto
      * @throws ApiError
      */
-    public static collectionsEntriesControllerFindAllByLibraryId(
+    public static collectionsEntriesControllerFindAllByLibraryIdV1(
         id: string,
+        orderBy?: FindCollectionEntriesOrderBy,
         offset?: number,
         limit: number = 20,
     ): CancelablePromise<CollectionEntriesPaginatedResponseDto> {
@@ -133,6 +136,7 @@ export class CollectionsEntriesService {
                 'id': id,
             },
             query: {
+                'orderBy': orderBy,
                 'offset': offset,
                 'limit': limit,
             },
@@ -140,13 +144,15 @@ export class CollectionsEntriesService {
     }
     /**
      * @param id
+     * @param orderBy
      * @param offset
      * @param limit
      * @returns CollectionEntriesPaginatedResponseDto
      * @throws ApiError
      */
-    public static collectionsEntriesControllerFindFavoritesByLibraryId(
+    public static collectionsEntriesControllerFindFavoritesByLibraryIdV1(
         id: string,
+        orderBy?: FindCollectionEntriesOrderBy,
         offset?: number,
         limit: number = 20,
     ): CancelablePromise<CollectionEntriesPaginatedResponseDto> {
@@ -157,6 +163,7 @@ export class CollectionsEntriesService {
                 'id': id,
             },
             query: {
+                'orderBy': orderBy,
                 'offset': offset,
                 'limit': limit,
             },
@@ -168,7 +175,7 @@ export class CollectionsEntriesService {
      * @returns CollectionEntriesPaginatedResponseDto
      * @throws ApiError
      */
-    public static collectionsEntriesControllerFindAllByCollectionId(
+    public static collectionsEntriesControllerFindAllByCollectionIdV1(
         id: string,
         requestBody: FindCollectionEntriesForCollectionIdDto,
     ): CancelablePromise<CollectionEntriesPaginatedResponseDto> {

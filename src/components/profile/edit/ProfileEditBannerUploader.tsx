@@ -34,10 +34,7 @@ const ProfileEditBannerUploader = ({ onClose }: BaseModalChildrenProps) => {
     const [previewModalOpened, previewModalUtils] = useDisclosure();
 
     const onCropComplete = async (_: Area, croppedAreaPixels: Area) => {
-        const croppedImage = await getCroppedImg(
-            uploadedFileSrc!,
-            croppedAreaPixels,
-        );
+        const croppedImage = await getCroppedImg(uploadedFileSrc!, croppedAreaPixels);
         setFinalImageSrc(croppedImage ?? undefined);
     };
 
@@ -60,7 +57,7 @@ const ProfileEditBannerUploader = ({ onClose }: BaseModalChildrenProps) => {
                 throw new Error("Invalid image source");
             }
 
-            await ProfileService.profileControllerUpdateImage({
+            await ProfileService.profileControllerUpdateImageV1({
                 file: await base64ToBlob(finalImageSrc),
                 type: type.BANNER,
             });
@@ -107,24 +104,12 @@ const ProfileEditBannerUploader = ({ onClose }: BaseModalChildrenProps) => {
                             onCropComplete={onCropComplete}
                             onZoomChange={setZoom}
                         />
-                        <Slider
-                            mt={350}
-                            min={0.1}
-                            step={0.1}
-                            max={2}
-                            value={zoom}
-                            onChange={setZoom}
-                        />
+                        <Slider mt={350} min={0.1} step={0.1} max={2} value={zoom} onChange={setZoom} />
                         <Group justify={"center"} mb={10}>
-                            <Button
-                                variant={"default"}
-                                onClick={() => handleStepClick(0)}
-                            >
+                            <Button variant={"default"} onClick={() => handleStepClick(0)}>
                                 Go back
                             </Button>
-                            <Button onClick={() => handleStepClick(2)}>
-                                Confirm
-                            </Button>
+                            <Button onClick={() => handleStepClick(2)}>Confirm</Button>
                         </Group>
                     </>
                 );
@@ -136,27 +121,16 @@ const ProfileEditBannerUploader = ({ onClose }: BaseModalChildrenProps) => {
                     <>
                         <DetailsBox
                             title={"Preview"}
-                            description={
-                                "Actual banner size may vary based on device size and model."
-                            }
+                            description={"Actual banner size may vary based on device size and model."}
                             withBorder
                         >
-                            <ProfileBanner
-                                userId={userId}
-                                customSource={finalImageSrc}
-                            />
+                            <ProfileBanner userId={userId} customSource={finalImageSrc} />
                         </DetailsBox>
                         <Group justify={"center"} mb={10}>
-                            <Button
-                                variant={"default"}
-                                onClick={() => handleStepClick(1)}
-                            >
+                            <Button variant={"default"} onClick={() => handleStepClick(1)}>
                                 Go back
                             </Button>
-                            <Button
-                                onClick={() => handleImageUpload()}
-                                loading={profileBannerMutation.isPending}
-                            >
+                            <Button onClick={() => handleImageUpload()} loading={profileBannerMutation.isPending}>
                                 Confirm
                             </Button>
                         </Group>
@@ -167,20 +141,13 @@ const ProfileEditBannerUploader = ({ onClose }: BaseModalChildrenProps) => {
 
     return (
         <Stack className={"w-full"}>
-            <Stepper
-                active={currentStep}
-                onStepClick={handleStepClick}
-                allowNextStepsSelect={false}
-                size={"sm"}
-            >
+            <Stepper active={currentStep} onStepClick={handleStepClick} allowNextStepsSelect={false} size={"sm"}>
                 <Stepper.Step />
                 <Stepper.Step />
                 <Stepper.Step />
             </Stepper>
 
-            <Stack className={"w-full h-full relative"}>
-                {renderBasedOnStep()}
-            </Stack>
+            <Stack className={"w-full h-full relative"}>{renderBasedOnStep()}</Stack>
         </Stack>
     );
 };

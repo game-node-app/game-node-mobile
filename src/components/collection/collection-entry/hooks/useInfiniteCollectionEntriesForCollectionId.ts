@@ -35,7 +35,7 @@ export function useInfiniteCollectionEntriesForCollectionId({
         ...useInfiniteQuery({
             queryKey: queryKey,
             queryFn: async ({ pageParam }) => {
-                return CollectionsEntriesService.collectionsEntriesControllerFindAllByCollectionId(collectionId, {
+                return CollectionsEntriesService.collectionsEntriesControllerFindAllByCollectionIdV1(collectionId, {
                     limit,
                     orderBy,
                     offset: pageParam,

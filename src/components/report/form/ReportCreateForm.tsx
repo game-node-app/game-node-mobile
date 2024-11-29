@@ -1,25 +1,14 @@
 import React, { useMemo } from "react";
 import { CreateReportRequestDto, ReportService } from "@/wrapper/server";
 import { useForm } from "react-hook-form";
-import {
-    Button,
-    ComboboxItem,
-    Select,
-    Stack,
-    Text,
-    Textarea,
-} from "@mantine/core";
-import reportCategoryToString, {
-    reportCategoryToDescription,
-} from "@/components/report/util/reportCategoryToString";
+import { Button, ComboboxItem, Select, Stack, Text, Textarea } from "@mantine/core";
+import reportCategoryToString, { reportCategoryToDescription } from "@/components/report/util/reportCategoryToString";
 import { useMutation } from "@tanstack/react-query";
 import { notifications } from "@mantine/notifications";
 import { z } from "zod";
 
 const ReportCreateFormSchema = z.object({
-    category: z
-        .nativeEnum(CreateReportRequestDto.category)
-        .default(CreateReportRequestDto.category.SPAM),
+    category: z.nativeEnum(CreateReportRequestDto.category).default(CreateReportRequestDto.category.SPAM),
     reason: z.string().optional(),
 });
 
@@ -31,19 +20,14 @@ export interface ReportCreateFormProps {
     onSuccess?: () => void;
 }
 
-const ReportCreateForm = ({
-    sourceId,
-    sourceType,
-    onSuccess,
-}: ReportCreateFormProps) => {
-    const { register, watch, handleSubmit, setValue } =
-        useForm<ReportCreateFormValues>({
-            mode: "onSubmit",
-            defaultValues: {
-                reason: undefined,
-                category: CreateReportRequestDto.category.SPAM,
-            },
-        });
+const ReportCreateForm = ({ sourceId, sourceType, onSuccess }: ReportCreateFormProps) => {
+    const { register, watch, handleSubmit, setValue } = useForm<ReportCreateFormValues>({
+        mode: "onSubmit",
+        defaultValues: {
+            reason: undefined,
+            category: CreateReportRequestDto.category.SPAM,
+        },
+    });
 
     const categorySelectOptions = useMemo<ComboboxItem[]>(() => {
         return Object.values(CreateReportRequestDto.category).map((v) => {
@@ -62,7 +46,7 @@ const ReportCreateForm = ({
 
     const reportCreateMutation = useMutation({
         mutationFn: async (data: ReportCreateFormValues) => {
-            await ReportService.reportControllerCreate({
+            await ReportService.reportControllerCreateV1({
                 sourceId,
                 sourceType,
                 category: data.category,
@@ -72,8 +56,7 @@ const ReportCreateForm = ({
         onError: () => {
             notifications.show({
                 color: "red",
-                message:
-                    "Error while sending your report. Please try again. If this persists, contact support.",
+                message: "Error while sending your report. Please try again. If this persists, contact support.",
             });
         },
         onSuccess: () => {
@@ -88,20 +71,14 @@ const ReportCreateForm = ({
     });
 
     return (
-        <form
-            className={"w-full h-full"}
-            onSubmit={handleSubmit((data) => reportCreateMutation.mutate(data))}
-        >
+        <form className={"w-full h-full"} onSubmit={handleSubmit((data) => reportCreateMutation.mutate(data))}>
             <Stack className={"w-full h-full"}>
                 <Select
                     withAsterisk
                     value={selectedCategory}
                     onChange={(v) => {
                         if (v) {
-                            setValue(
-                                "category",
-                                v as CreateReportRequestDto.category,
-                            );
+                            setValue("category", v as CreateReportRequestDto.category);
                         }
                     }}
                     name={"category"}
@@ -113,13 +90,10 @@ const ReportCreateForm = ({
                 <Textarea
                     {...register("reason")}
                     label={"Reason"}
-                    description={
-                        "Optional. Extra details that may help us decide if this content is harmful."
-                    }
+                    description={"Optional. Extra details that may help us decide if this content is harmful."}
                 />
                 <Text className={"text-dimmed text-sm"}>
-                    Don't worry, the reported user will never know you reported
-                    them.
+                    Don't worry, the reported user will never know you reported them.
                 </Text>
                 <Button className={"mt-2"} type={"submit"}>
                     Submit report

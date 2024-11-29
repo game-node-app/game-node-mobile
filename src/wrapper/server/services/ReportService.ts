@@ -17,7 +17,7 @@ export class ReportService {
      * @returns PaginatedReportResponseDto
      * @throws ApiError
      */
-    public static reportControllerFindAllByLatest(
+    public static reportControllerFindAllByLatestV1(
         includeClosed: boolean = false,
         offset?: number,
         limit: number = 20,
@@ -37,7 +37,7 @@ export class ReportService {
      * @returns any
      * @throws ApiError
      */
-    public static reportControllerCreate(
+    public static reportControllerCreateV1(
         requestBody: CreateReportRequestDto,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
@@ -52,7 +52,7 @@ export class ReportService {
      * @returns Report
      * @throws ApiError
      */
-    public static reportControllerFindOneById(
+    public static reportControllerFindOneByIdV1(
         id: number,
     ): CancelablePromise<Report> {
         return __request(OpenAPI, {
@@ -69,7 +69,7 @@ export class ReportService {
      * @returns any
      * @throws ApiError
      */
-    public static reportControllerHandle(
+    public static reportControllerHandleV1(
         id: number,
         requestBody: HandleReportRequestDto,
     ): CancelablePromise<any> {
