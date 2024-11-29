@@ -1,3 +1,8 @@
+/*
+* Thanks to @layer rule, tailwind base get lower "priority"
+* than mantine css rules even if they have same specificity.
+* Thanks to this, we CAN use preflight reset from tailwind.
+*/
 @layer tailwind {
     @tailwind base;
 }
@@ -13,11 +18,9 @@
    --ion-font-family: Inter;
 }
 
-/*
-* Thanks to @layer rule, tailwind base get lower "priority"
-* than mantine css rules even if they have same specificity.
-* Thanks to this, we CAN use preflight reset from tailwind.
-*/
+ion-tab-button:not(.tab-selected) {
+    --color-selected: var(--color);
+}
 
 /**
 Undo tailwind reset for tiptap elements
