@@ -11,6 +11,7 @@ import {
     IonModal,
     IonTitle,
     IonToolbar,
+    useIonRouter,
 } from "@ionic/react";
 import { useDisclosure } from "@mantine/hooks";
 import { Container, Group } from "@mantine/core";
@@ -21,6 +22,7 @@ import { signOut } from "supertokens-website";
 
 const PreferencesProfileItems = () => {
     const userId = useUserId();
+    const router = useIonRouter();
 
     const [editModalOpened, editModalUtils] = useDisclosure();
 
@@ -56,7 +58,9 @@ const PreferencesProfileItems = () => {
             <IonItem
                 button
                 onClick={() => {
-                    signOut();
+                    signOut().then(() => {
+                        router.push("/home");
+                    });
                 }}
             >
                 <Group className={"gap-2"}>
