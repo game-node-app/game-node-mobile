@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import useOnMobile from "@/components/general/hooks/useOnMobile";
 import useUserId from "@/components/auth/hooks/useUserId";
 import ReviewListItem from "@/components/review/view/ReviewListItem";
-import { Stack, Text } from "@mantine/core";
+import { Pagination, Stack, Text } from "@mantine/core";
 import CenteredLoading from "@/components/general/CenteredLoading";
 import CenteredErrorMessage from "@/components/general/CenteredErrorMessage";
 import { ParsedUrlQuery } from "querystring";
@@ -12,36 +12,15 @@ import GameViewPagination from "@/components/game/view/GameViewPagination";
 
 const DEFAULT_LIMIT = 7;
 
-const urlQueryToDto = (query: ParsedUrlQuery): TBasePaginationRequest => {
-    const dto: TBasePaginationRequest = {
-        offset: 0,
-        limit: DEFAULT_LIMIT,
-    };
-    const { page } = query;
-    if (page && typeof page === "string") {
-        const pageInt = parseInt(page, 10);
-        dto.offset = DEFAULT_LIMIT * (pageInt - 1);
-    }
-
-    return dto;
-};
-
-const queryDtoToSearchParams = (dto: TBasePaginationRequest) => {
-    const searchParams = new URLSearchParams();
-    const limitToUse = dto.limit || DEFAULT_LIMIT;
-    if (dto.offset) {
-        const offsetAsPage = dto.offset > limitToUse ? Math.ceil((dto.offset + 1) / limitToUse) : 1;
-        searchParams.set("page", `${offsetAsPage}`);
-    }
-    return searchParams;
-};
-
 interface IUserViewListView {
     userId: string;
 }
 
 const ProfileReviewListView = ({ userId }: IUserViewListView) => {
     const ownUserId = useUserId();
+
+    const [page, setPage] = useState(1);
+
     const [offset, setOffset] = useState(0);
     const reviewsQuery = useReviewsForUserId(userId, offset, DEFAULT_LIMIT);
 
@@ -52,6 +31,7 @@ const ProfileReviewListView = ({ userId }: IUserViewListView) => {
     const handlePagination = (page: number) => {
         const offset = (page - 1) * DEFAULT_LIMIT;
         setOffset(offset);
+        setPage(page);
     };
 
     const items = useMemo(() => {
@@ -59,8 +39,6 @@ const ProfileReviewListView = ({ userId }: IUserViewListView) => {
             return <ReviewListItem key={review.id} review={review} withGameInfo />;
         });
     }, [reviewsQuery.data]);
-
-    const offsetAsPage = offset >= DEFAULT_LIMIT ? Math.ceil(offset + 1 / DEFAULT_LIMIT) : 1;
 
     if (isLoading) {
         return <CenteredLoading />;
@@ -79,7 +57,7 @@ const ProfileReviewListView = ({ userId }: IUserViewListView) => {
             </Stack>
             {!isEmpty && (
                 <GameViewPagination
-                    page={offsetAsPage}
+                    page={page}
                     paginationInfo={reviewsQuery.data?.pagination}
                     onPaginationChange={handlePagination}
                 />
