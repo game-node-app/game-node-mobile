@@ -12,6 +12,7 @@ import NotificationsPage from "@/pages/notifications";
 import PreferencesPage from "@/pages/preferences";
 import { IconLibrary, IconPlus, IconRouteAltLeft, IconUser } from "@tabler/icons-react";
 import NotificationsIcon from "@/components/notifications/NotificationsIcon";
+import SupertokensAuthPage from "./pages/auth";
 
 const Tabs = () => {
     return (
@@ -36,6 +37,9 @@ const Tabs = () => {
                     {/* ---- HOME ROUTES ---- */}
                     <Route exact path={"/"}>
                         <Redirect to="/home" />
+                    </Route>
+                    <Route path={"/auth"}>
+                        <SupertokensAuthPage />
                     </Route>
 
                     <Route exact path={"/home"}>

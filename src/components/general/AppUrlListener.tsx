@@ -6,8 +6,9 @@ const AppUrlListener = () => {
     const history = useHistory();
     useEffect(() => {
         App.addListener("appUrlOpen", (event: URLOpenListenerEvent) => {
-            // Example url: https://beerswift.app/tabs/tab2
-            // slug = /tabs/tab2
+            // Example url: https://gamenode.app/profile/xxxxxxx/reviews
+            // slug = /profile/xxxxxxx/reviews
+            // TODO: convert website url to tab-based layout
             const slug = event.url.split(".app").pop();
             if (slug) {
                 history.push(slug);
