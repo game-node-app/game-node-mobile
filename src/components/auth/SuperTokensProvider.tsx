@@ -6,14 +6,14 @@ import ThirdParty, { Discord } from "supertokens-auth-react/recipe/thirdparty";
 import { SuperTokensConfig } from "supertokens-auth-react/lib/build/types";
 import { Capacitor } from "@capacitor/core";
 import capacitorCookieHandler from "@/util/capacitorCookieHandler";
-import { APP_BUNDLE_URL } from "@/util/constants";
+import { getTabAwareHref } from "@/util/getTabAwareHref";
 
 /**
  * @see https://github.com/RobSchilderr/nextjs-native-starter/blob/main/apps/next-app/config/frontendConfig.ts
  */
 export const frontendConfig = (): SuperTokensConfig => {
     const PARSED_WEBSITE_DOMAIN = Capacitor.isNativePlatform()
-        ? APP_BUNDLE_URL
+        ? `${window.location.protocol}//${window.location.host}`
         : import.meta.env.VITE_PUBLIC_DOMAIN_WEBSITE;
 
     return {
@@ -22,23 +22,23 @@ export const frontendConfig = (): SuperTokensConfig => {
             apiDomain: import.meta.env.VITE_PUBLIC_DOMAIN_SERVER as string,
             websiteDomain: PARSED_WEBSITE_DOMAIN,
             apiBasePath: "/v1/auth",
-            websiteBasePath: "/auth",
+            websiteBasePath: "/m/auth",
         },
         cookieHandler: capacitorCookieHandler,
         getRedirectionURL: async (context) => {
             if (context.action === "SUCCESS" && context.newSessionCreated) {
                 if (context.redirectToPath !== undefined) {
-                    // refirectToPath was specified
+                    // we are navigating back to where the user was before they authenticated
+                    return context.redirectToPath;
                 }
                 if (context.createdNewUser) {
                     // user signed up
                 } else {
                     // user signed in
                 }
-
                 return "/home";
             } else if (context.action === "TO_AUTH") {
-                return "/auth";
+                return "/m/auth";
             }
             return undefined;
         },
@@ -52,11 +52,19 @@ export const frontendConfig = (): SuperTokensConfig => {
                     functions: (oI) => {
                         return {
                             ...oI,
-                            getAuthorisationURLFromBackend: async (input) => {
-                                console.log("getAuthorisationURLFromBackend -> input: ", input);
-                                const result = await oI.getAuthorisationURLFromBackend(input);
-                                console.log("getAuthorisationURLFromBackend -> result: ", result);
-                                return result;
+                            getAuthorisationURLWithQueryParamsAndSetState: async (input) => {
+                                let frontendCallbackUrl: string;
+                                if (Capacitor.isNativePlatform()) {
+                                    // /m/ routes are used only for app deep linking
+                                    frontendCallbackUrl = `https://gamenode.app/m/auth/callback/${input.thirdPartyId}`;
+                                } else {
+                                    frontendCallbackUrl = input.frontendRedirectURI;
+                                }
+
+                                return oI.getAuthorisationURLWithQueryParamsAndSetState({
+                                    ...input,
+                                    frontendRedirectURI: frontendCallbackUrl,
+                                });
                             },
                         };
                     },

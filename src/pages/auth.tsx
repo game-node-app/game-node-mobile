@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Stack, Text } from "@mantine/core";
 import { PasswordlessPreBuiltUI } from "supertokens-auth-react/recipe/passwordless/prebuiltui";
 import { ThirdPartyPreBuiltUI } from "supertokens-auth-react/recipe/thirdparty/prebuiltui";
-import { canHandleRoute, getRoutingComponent } from "supertokens-auth-react/ui";
-import { IonBackButton, IonButtons, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from "@ionic/react";
+import { AuthPage, canHandleRoute, getRoutingComponent } from "supertokens-auth-react/ui";
+import {
+    IonBackButton,
+    IonButtons,
+    IonContent,
+    IonHeader,
+    IonPage,
+    IonTitle,
+    IonToolbar,
+    useIonRouter,
+} from "@ionic/react";
 import { Box } from "@mantine/core";
 
 const SupertokensAuthPage = () => {
@@ -18,8 +28,7 @@ const SupertokensAuthPage = () => {
             </IonHeader>
             <IonContent>
                 <Box className={"w-full h-full mt-20"}>
-                    {canHandleRoute([ThirdPartyPreBuiltUI, PasswordlessPreBuiltUI]) &&
-                        getRoutingComponent([ThirdPartyPreBuiltUI, PasswordlessPreBuiltUI])}
+                    <AuthPage preBuiltUIList={[ThirdPartyPreBuiltUI, PasswordlessPreBuiltUI]} />
                 </Box>
             </IonContent>
         </IonPage>

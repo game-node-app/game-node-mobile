@@ -96,12 +96,12 @@ const App: React.FC = () => {
 
     return (
         <IonApp>
-            <MantineProvider theme={theme} forceColorScheme={"dark"}>
-                <QueryClientProvider client={queryClient}>
-                    <SuperTokensProvider>
-                        <AppUrlListener />
-                        <NotificationsManager />
+            <SuperTokensProvider>
+                <MantineProvider theme={theme} forceColorScheme={"dark"}>
+                    <QueryClientProvider client={queryClient}>
                         <IonReactRouter>
+                            <AppUrlListener />
+                            <NotificationsManager />
                             <Tabs />
                             <IonFab
                                 className={keyboardOpened ? "hidden" : undefined}
@@ -115,9 +115,9 @@ const App: React.FC = () => {
                                 </IonFabButton>
                             </IonFab>
                         </IonReactRouter>
-                    </SuperTokensProvider>
-                </QueryClientProvider>
-            </MantineProvider>
+                    </QueryClientProvider>
+                </MantineProvider>
+            </SuperTokensProvider>
         </IonApp>
     );
 };

@@ -13,12 +13,24 @@ import PreferencesPage from "@/pages/preferences";
 import { IconLibrary, IconPlus, IconRouteAltLeft, IconUser } from "@tabler/icons-react";
 import NotificationsIcon from "@/components/notifications/NotificationsIcon";
 import SupertokensAuthPage from "./pages/auth";
+import AppUrlListener from "@/components/general/AppUrlListener";
+import NotificationsManager from "@/components/general/NotificationsManager";
+import SupertokensAuthCallbackPage from "@/pages/auth_callback";
 
 const Tabs = () => {
     return (
         <IonTabs>
             <IonRouterOutlet>
                 <Suspense fallback={<CenteredLoading message={"Loading page..."} />}>
+                    <Route exact path={"/m/auth"}>
+                        <SupertokensAuthPage />
+                    </Route>
+                    <Route
+                        path={"/m/auth/callback/:provider"}
+                        render={(match) => {
+                            return <SupertokensAuthCallbackPage provider={match.match.params.provider} />;
+                        }}
+                    />
                     {/* ---- LIBRARY ROUTES ---- */}
                     <Route exact path="/library">
                         <LibraryPage />
@@ -37,9 +49,6 @@ const Tabs = () => {
                     {/* ---- HOME ROUTES ---- */}
                     <Route exact path={"/"}>
                         <Redirect to="/home" />
-                    </Route>
-                    <Route path={"/auth"}>
-                        <SupertokensAuthPage />
                     </Route>
 
                     <Route exact path={"/home"}>
