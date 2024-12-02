@@ -82,15 +82,17 @@ const GameViewContent = ({
     if (layout === "list") {
         return (
             <Stack className={"w-full h-full"}>
-                {isEmpty && (
-                    <Center>
-                        <Text>No items to show.</Text>
-                    </Center>
-                )}
                 {isLoading && <CenteredLoading />}
-                <IonList className={"w-full"} lines={"full"}>
+                <IonList className={"w-full"}>
                     {buildListItems()}
                     {isFetching && buildLoadingSkeletons()}
+                    {isEmpty && (
+                        <IonItem className={"w-full"}>
+                            <Center className={"w-full"}>
+                                <Text>No items to show.</Text>
+                            </Center>
+                        </IonItem>
+                    )}
                 </IonList>
                 {!isLoading && !isFetching && hasNextPage && (
                     <Group className={"w-full justify-center"}>
@@ -110,7 +112,7 @@ const GameViewContent = ({
             )}
             {isLoading && <CenteredLoading />}
             <SimpleGrid id={"game-view-content"} cols={GRID_COLUMNS_COUNT} w={"100%"} h={"100%"} {...others}>
-                {buildGridColumns()}
+                {!isLoading && buildGridColumns()}
                 {isFetching && buildLoadingSkeletons()}
             </SimpleGrid>
             {!isLoading && !isFetching && hasNextPage && (

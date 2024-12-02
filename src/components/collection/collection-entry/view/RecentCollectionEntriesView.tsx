@@ -9,8 +9,10 @@ interface Props {
     limit?: number;
 }
 
-const CollectionEntriesView = ({ userId, offset = 0, limit = 12 }: Props) => {
-    const collectionEntriesQuery = useCollectionEntriesForUserId(userId as string, offset, limit);
+const RecentCollectionEntriesView = ({ userId, offset = 0, limit = 12 }: Props) => {
+    const collectionEntriesQuery = useCollectionEntriesForUserId(userId as string, offset, limit, {
+        addedDate: "DESC",
+    });
 
     const gameIds = useMemo(() => {
         return collectionEntriesQuery.data?.data?.map((entry) => entry.gameId);
@@ -38,4 +40,4 @@ const CollectionEntriesView = ({ userId, offset = 0, limit = 12 }: Props) => {
     );
 };
 
-export default CollectionEntriesView;
+export default RecentCollectionEntriesView;

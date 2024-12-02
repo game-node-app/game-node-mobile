@@ -31,7 +31,7 @@ const GameInfoView = ({ id }: IGameInfoViewProps) => {
                 <Grid columns={12} className="justify-center lg:justify-start p-3 lg:ps-3 w-full">
                     <Grid.Col span={{ xs: 12, lg: 3 }}>
                         <Flex wrap={"wrap"} justify={"center"} align={"start"} w={"inherit"} h={"inherit"}>
-                            <Box className="w-full lg:w-96">
+                            <Box className="w-48">
                                 <GameFigureImage
                                     game={game}
                                     linkProps={{

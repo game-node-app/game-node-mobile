@@ -77,7 +77,7 @@ const CollectionView = ({ collectionId, libraryUserId }: ICollectionViewProps) =
                 cover: true,
             },
         },
-        true,
+        false,
     );
 
     const games = gamesQuery.data;

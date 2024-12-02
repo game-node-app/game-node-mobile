@@ -10,11 +10,9 @@ import ProfilePage from "@/pages/profile/profile";
 import LibraryPage from "@/pages/library";
 import NotificationsPage from "@/pages/notifications";
 import PreferencesPage from "@/pages/preferences";
-import { IconLibrary, IconPlus, IconRouteAltLeft, IconUser } from "@tabler/icons-react";
+import { IconLibrary, IconRouteAltLeft, IconUser } from "@tabler/icons-react";
 import NotificationsIcon from "@/components/notifications/NotificationsIcon";
 import SupertokensAuthPage from "./pages/auth";
-import AppUrlListener from "@/components/general/AppUrlListener";
-import NotificationsManager from "@/components/general/NotificationsManager";
 import SupertokensAuthCallbackPage from "@/pages/auth_callback";
 
 const Tabs = () => {
@@ -80,7 +78,7 @@ const Tabs = () => {
                 <IonTabButton tab="explore" href="/explore">
                     <IconRouteAltLeft aria-hidden={"true"} />
                 </IonTabButton>
-                <IonTabButton></IonTabButton>
+                <IonTabButton tab={"home"} href={"/home"}></IonTabButton>
                 <IonTabButton tab="notifications" href="/notifications">
                     <NotificationsIcon />
                 </IonTabButton>

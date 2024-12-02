@@ -18,7 +18,7 @@ import { Container } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import { SessionAuth } from "supertokens-auth-react/recipe/session";
 import { useSearchParameters } from "@/components/general/hooks/useSearchParameters";
-import CollectionEntriesView from "@/components/collection/collection-entry/view/CollectionEntriesView";
+import RecentCollectionEntriesView from "@/components/collection/collection-entry/view/RecentCollectionEntriesView";
 
 interface Props {
     userId?: string;
@@ -83,7 +83,7 @@ const LibraryPage = ({ userId }: Props) => {
                                     }
                                     stackProps={{ className: "w-full" }}
                                 >
-                                    <CollectionEntriesView userId={userIdToUse!} />
+                                    <RecentCollectionEntriesView userId={userIdToUse!} />
                                 </DetailsBox>
                             )}
                         </LibraryView>

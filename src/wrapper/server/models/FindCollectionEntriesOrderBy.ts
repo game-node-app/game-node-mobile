@@ -3,7 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export type FindCollectionEntriesOrderBy = {
-    addedDate?: Record<string, any>;
-    releaseDate?: Record<string, any>;
+    addedDate?: string;
+    releaseDate?: string;
 };
 

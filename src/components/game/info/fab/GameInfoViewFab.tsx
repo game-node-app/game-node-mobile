@@ -78,7 +78,7 @@ const GameInfoViewFab = ({ gameId }: Props) => {
                     }
                 }}
             >
-                {gameInLibrary ? <IconEdit /> : <IconPlus />}
+                {gameInLibrary ? <IconEdit /> : <IconLibraryPlus />}
             </IonFabButton>
             {gameInLibrary && (
                 <IonFabList side="top">
