@@ -57,6 +57,7 @@ import NotificationsManager from "./components/general/NotificationsManager";
 import AppUrlListener from "./components/general/AppUrlListener";
 import Tabs from "./Tabs";
 import { Keyboard } from "@capacitor/keyboard";
+import AppUpdateListener from "@/components/general/AppUpdateListener";
 
 /**
  * Basic configuration for wrapper services
@@ -101,6 +102,7 @@ const App: React.FC = () => {
                     <QueryClientProvider client={queryClient}>
                         <IonReactRouter>
                             <AppUrlListener />
+                            <AppUpdateListener />
                             <NotificationsManager />
                             <Tabs />
                             <IonFab
