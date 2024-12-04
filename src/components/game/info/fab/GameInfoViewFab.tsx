@@ -6,6 +6,7 @@ import {
     IconEdit,
     IconHeartFilled,
     IconHeartPlus,
+    IconLibrary,
     IconLibraryPlus,
     IconPencil,
     IconPencilPlus,
@@ -78,7 +79,7 @@ const GameInfoViewFab = ({ gameId }: Props) => {
                     }
                 }}
             >
-                {gameInLibrary ? <IconEdit /> : <IconLibraryPlus />}
+                {gameInLibrary ? <IconLibrary /> : <IconLibraryPlus />}
             </IonFabButton>
             {gameInLibrary && (
                 <IonFabList side="top">
