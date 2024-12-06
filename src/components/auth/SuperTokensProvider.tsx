@@ -6,7 +6,6 @@ import ThirdParty, { Discord } from "supertokens-auth-react/recipe/thirdparty";
 import { SuperTokensConfig } from "supertokens-auth-react/lib/build/types";
 import { Capacitor } from "@capacitor/core";
 import capacitorCookieHandler from "@/util/capacitorCookieHandler";
-import { getTabAwareHref } from "@/util/getTabAwareHref";
 
 /**
  * @see https://github.com/RobSchilderr/nextjs-native-starter/blob/main/apps/next-app/config/frontendConfig.ts
@@ -36,7 +35,7 @@ export const frontendConfig = (): SuperTokensConfig => {
                 } else {
                     // user signed in
                 }
-                return "/home";
+                return "/";
             } else if (context.action === "TO_AUTH") {
                 return "/m/auth";
             }

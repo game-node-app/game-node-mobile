@@ -1,19 +1,8 @@
 import React, { useEffect, useState } from "react";
-import {
-    IonBackButton,
-    IonButtons,
-    IonContent,
-    IonHeader,
-    IonPage,
-    IonTitle,
-    IonToolbar,
-    useIonRouter,
-} from "@ionic/react";
-import { Center, Container, Text } from "@mantine/core";
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, useIonRouter } from "@ionic/react";
+import { Container } from "@mantine/core";
 import CenteredLoading from "@/components/general/CenteredLoading";
-import { useSearchParameters } from "@/components/general/hooks/useSearchParameters";
 import { signInAndUp } from "supertokens-auth-react/recipe/thirdparty";
-import CenteredErrorMessage from "@/components/general/CenteredErrorMessage";
 import { redirectToAuth } from "supertokens-auth-react";
 import { getCapitalizedText } from "@/util/getCapitalizedText";
 
@@ -42,7 +31,7 @@ const AuthCallbackPage = ({ provider }: Props) => {
                     } else {
                         // sign in successful
                     }
-                    router.push("/home");
+                    router.push("/");
                 } else if (response.status === "SIGN_IN_UP_NOT_ALLOWED") {
                     // the reason string is a user friendly message
                     // about what went wrong. It can also contain a support code which users

@@ -1,20 +1,8 @@
-import React, { Suspense, useEffect, useState } from "react";
-
-import { Link, Redirect, Route } from "react-router-dom";
-import {
-    IonApp,
-    IonFab,
-    IonFabButton,
-    IonLabel,
-    IonRouterOutlet,
-    IonTabBar,
-    IonTabButton,
-    IonTabs,
-    setupIonicReact,
-} from "@ionic/react";
+import React, { useEffect, useState } from "react";
+import { IonApp, IonFab, IonFabButton, setupIonicReact } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ActionIcon, Box, MantineProvider } from "@mantine/core";
+import { MantineProvider } from "@mantine/core";
 import { theme } from "./util/theme";
 
 /**
@@ -42,15 +30,13 @@ import "@ionic/react/css/core.css";
  * For more info, please see:
  * https://ionicframework.com/docs/theming/dark-mode
  */
-
 import "@ionic/react/css/palettes/dark.always.css";
 /* import '@ionic/react/css/palettes/dark.class.css'; */
 // import '@ionic/react/css/palettes/dark.system.css';
-
 /* Theme variables */
 import "./theme/variables.css";
 import SuperTokensProvider from "./components/auth/SuperTokensProvider";
-import { IconPlus } from "@tabler/icons-react";
+import { IconHome } from "@tabler/icons-react";
 import { OpenAPI as ServerOpenAPI } from "@/wrapper/server";
 import { OpenAPI as SearchOpenAPI } from "@/wrapper/search";
 import NotificationsManager from "./components/general/NotificationsManager";
@@ -112,8 +98,8 @@ const App: React.FC = () => {
                                 vertical="bottom"
                                 edge={false}
                             >
-                                <IonFabButton routerLink={"/home"}>
-                                    <IconPlus />
+                                <IonFabButton routerLink={"/"}>
+                                    <IconHome />
                                 </IonFabButton>
                             </IonFab>
                         </IonReactRouter>
