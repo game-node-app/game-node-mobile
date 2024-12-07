@@ -35,7 +35,7 @@ export const frontendConfig = (): SuperTokensConfig => {
                 } else {
                     // user signed in
                 }
-                return "/";
+                return "/home";
             } else if (context.action === "TO_AUTH") {
                 return "/m/auth";
             }

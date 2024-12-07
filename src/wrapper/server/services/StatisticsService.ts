@@ -81,7 +81,7 @@ export class StatisticsService {
      */
     public static statisticsControllerGetStatusV1(
         statisticsId: number,
-        sourceType: 'game' | 'review' | 'activity' | 'review_comment',
+        sourceType: 'game' | 'review' | 'activity' | 'review_comment' | 'activity_comment',
     ): CancelablePromise<StatisticsStatus> {
         return __request(OpenAPI, {
             method: 'GET',

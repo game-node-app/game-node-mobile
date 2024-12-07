@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { BubbleMenu, EditorOptions, useEditor } from "@tiptap/react";
 import { StarterKit } from "@tiptap/starter-kit";
 import { RichTextEditor } from "@mantine/tiptap";
@@ -21,8 +21,6 @@ const CommentEditor = ({ ...editorOptions }: Props) => {
         },
         [editorOptions.content],
     );
-
-    console.log(editorOptions.content);
 
     return (
         <RichTextEditor editor={editor} className={"w-full h-full"}>

@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { ActivityComment } from '../models/ActivityComment';
 import type { CreateCommentDto } from '../models/CreateCommentDto';
 import type { DeleteCommentDto } from '../models/DeleteCommentDto';
 import type { FindAllCommentsDto } from '../models/FindAllCommentsDto';
@@ -31,13 +32,13 @@ export class CommentService {
     /**
      * @param sourceType
      * @param id
-     * @returns ReviewComment
+     * @returns any
      * @throws ApiError
      */
     public static commentControllerFindOneByIdV1(
         sourceType: string,
         id: string,
-    ): CancelablePromise<ReviewComment> {
+    ): CancelablePromise<(ReviewComment | ActivityComment)> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/v1/comment/{sourceType}/{id}',
@@ -54,7 +55,7 @@ export class CommentService {
      * @param offset
      * @param limit
      * @param orderBy
-     * @returns ReviewComment
+     * @returns any
      * @throws ApiError
      */
     public static commentControllerFindAllChildrenByIdV1(
@@ -64,7 +65,7 @@ export class CommentService {
         offset?: number,
         limit: number = 20,
         orderBy?: Object,
-    ): CancelablePromise<Array<ReviewComment>> {
+    ): CancelablePromise<Record<string, any>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/v1/comment/{sourceType}/{id}/children',

@@ -13,6 +13,7 @@ export namespace StatisticsActionDto {
         REVIEW = 'review',
         ACTIVITY = 'activity',
         REVIEW_COMMENT = 'review_comment',
+        ACTIVITY_COMMENT = 'activity_comment',
     }
 }
 

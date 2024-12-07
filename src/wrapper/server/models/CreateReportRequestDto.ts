@@ -13,10 +13,12 @@ export namespace CreateReportRequestDto {
         REVIEW = 'review',
         PROFILE = 'profile',
         REVIEW_COMMENT = 'review_comment',
+        ACTIVITY_COMMENT = 'activity_comment',
     }
     export enum category {
         SPAM = 'spam',
         PERSONAL = 'personal',
+        NUDITY = 'nudity',
     }
 }
 

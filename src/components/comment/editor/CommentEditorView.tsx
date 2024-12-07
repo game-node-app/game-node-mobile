@@ -1,11 +1,10 @@
-import React, { MutableRefObject, RefObject, useEffect, useMemo, useRef, useState } from "react";
-import { ActionIcon, Box, Button, Group, LoadingOverlay, Stack, Text } from "@mantine/core";
+import React, { RefObject, useRef } from "react";
+import { ActionIcon, Button, Group, Stack } from "@mantine/core";
 import CommentEditor from "@/components/comment/editor/CommentEditor";
 import { IconX } from "@tabler/icons-react";
 import { Editor } from "@tiptap/core";
-import { useMutation, UseMutationOptions, useQueryClient } from "@tanstack/react-query";
-import { CommentService } from "@/wrapper/server";
-import { CreateCommentDto } from "@/wrapper/server";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { CommentService, CreateCommentDto } from "@/wrapper/server";
 import { notifications } from "@mantine/notifications";
 import { useComment } from "@/components/comment/hooks/useComment";
 import CenteredLoading from "@/components/general/CenteredLoading";
@@ -23,9 +22,10 @@ interface Props {
      * Triggered when the user clicks the cancel or finishes submitting with success.
      */
     onEditEnd?: () => void;
+    childOf?: string;
 }
 
-const CommentEditorView = ({ commentId, sourceType, sourceId, editorContainerRef, onEditEnd }: Props) => {
+const CommentEditorView = ({ commentId, sourceType, sourceId, editorContainerRef, onEditEnd, childOf }: Props) => {
     const queryClient = useQueryClient();
     const editorRef = useRef<Editor>();
     const commentQuery = useComment(commentId, sourceType);
@@ -52,6 +52,7 @@ const CommentEditorView = ({ commentId, sourceType, sourceId, editorContainerRef
                 sourceId,
                 sourceType,
                 content: content,
+                childOf,
             });
         },
         onSettled: () => {

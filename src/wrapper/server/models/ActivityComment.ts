@@ -2,13 +2,13 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { Activity } from './Activity';
 import type { Profile } from './Profile';
-import type { Review } from './Review';
-export type ReviewComment = {
-    review: Review;
-    reviewId: string;
-    parentOf: Array<ReviewComment> | null;
-    childOf: Array<ReviewComment> | null;
+export type ActivityComment = {
+    activity: Activity;
+    activityId: string;
+    parentOf: Array<ActivityComment> | null;
+    childOf: Array<ActivityComment> | null;
     childOfId: string | null;
     id: string;
     /**

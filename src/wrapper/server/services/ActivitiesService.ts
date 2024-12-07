@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { ActivitiesPaginatedResponseDto } from '../models/ActivitiesPaginatedResponseDto';
+import type { Activity } from '../models/Activity';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
@@ -26,6 +27,22 @@ export class ActivitiesService {
                 'userId': userId,
                 'offset': offset,
                 'limit': limit,
+            },
+        });
+    }
+    /**
+     * @param id
+     * @returns Activity
+     * @throws ApiError
+     */
+    public static activitiesRepositoryControllerFindOneByIdV1(
+        id: string,
+    ): CancelablePromise<Activity> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/v1/activities/detail/{id}',
+            path: {
+                'id': id,
             },
         });
     }

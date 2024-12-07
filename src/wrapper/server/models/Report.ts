@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { ActivityComment } from './ActivityComment';
 import type { Profile } from './Profile';
 import type { Review } from './Review';
 import type { ReviewComment } from './ReviewComment';
@@ -35,6 +36,8 @@ export type Report = {
     targetReviewId: string | null;
     targetReviewComment: ReviewComment | null;
     targetReviewCommentId: string | null;
+    targetActivityComment: ActivityComment | null;
+    targetActivityCommentId: string | null;
     isClosed: boolean;
     /**
      * Action taken when closing this report
@@ -51,10 +54,12 @@ export namespace Report {
         REVIEW = 'review',
         PROFILE = 'profile',
         REVIEW_COMMENT = 'review_comment',
+        ACTIVITY_COMMENT = 'activity_comment',
     }
     export enum category {
         SPAM = 'spam',
         PERSONAL = 'personal',
+        NUDITY = 'nudity',
     }
     /**
      * Action taken when closing this report

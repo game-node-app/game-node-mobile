@@ -1,13 +1,15 @@
 import React, { useMemo } from "react";
 import { NotificationAggregateDto } from "@/wrapper/server";
-import ReviewAggregatedNotification from "@/components/notifications/ReviewAggregatedNotification";
-import FollowerAggregatedNotification from "@/components/notifications/FollowerAggregatedNotification";
+import ReviewAggregatedNotification from "@/components/notifications/item/ReviewAggregatedNotification";
+import FollowerAggregatedNotification from "@/components/notifications/item/FollowerAggregatedNotification";
 import { Notification } from "@mantine/core";
+import ImporterWatchAggregatedNotification from "@/components/notifications/item/ImporterWatchAggregatedNotification";
+import ReportAggregatedNotification from "@/components/notifications/item/ReportAggregatedNotification";
+import ActivityAggregatedNotification from "@/components/notifications/item/ActivityAggregatedNotification";
+import ActivityCommentAggregatedNotification from "@/components/notifications/item/ActivityCommentAggregatedNotification";
+import ReviewCommentAggregatedNotification from "@/components/notifications/item/ReviewCommentAggregatedNotification";
 import sourceType = NotificationAggregateDto.sourceType;
 import category = NotificationAggregateDto.category;
-import ImporterWatchAggregatedNotification from "@/components/notifications/ImporterWatchAggregatedNotification";
-import ReportAggregatedNotification from "@/components/notifications/ReportAggregatedNotification";
-import ActivityAggregatedNotification from "@/components/notifications/ActivityAggregatedNotification";
 
 export interface AggregatedNotificationProps {
     aggregatedNotification: NotificationAggregateDto;
@@ -19,48 +21,28 @@ export interface AggregatedNotificationContentProps {
     aggregatedNotification: NotificationAggregateDto;
 }
 
-const AggregatedNotification = ({
-    aggregatedNotification,
-    onClick,
-    backgroundColor,
-}: AggregatedNotificationProps) => {
+const AggregatedNotification = ({ aggregatedNotification, onClick, backgroundColor }: AggregatedNotificationProps) => {
     const notificationContent = useMemo(() => {
         switch (aggregatedNotification.sourceType) {
-            case NotificationAggregateDto.sourceType.ACTIVITY:
-                return (
-                    <ActivityAggregatedNotification
-                        aggregatedNotification={aggregatedNotification}
-                    />
-                );
+            case sourceType.ACTIVITY:
+                return <ActivityAggregatedNotification aggregatedNotification={aggregatedNotification} />;
+            case sourceType.ACTIVITY_COMMENT:
+                return <ActivityCommentAggregatedNotification aggregatedNotification={aggregatedNotification} />;
             case sourceType.REVIEW:
-                return (
-                    <ReviewAggregatedNotification
-                        aggregatedNotification={aggregatedNotification}
-                    />
-                );
+                return <ReviewAggregatedNotification aggregatedNotification={aggregatedNotification} />;
+            case sourceType.REVIEW_COMMENT:
+                return <ReviewCommentAggregatedNotification aggregatedNotification={aggregatedNotification} />;
             case sourceType.PROFILE:
                 if (aggregatedNotification.category === category.FOLLOW)
-                    return (
-                        <FollowerAggregatedNotification
-                            aggregatedNotification={aggregatedNotification}
-                        />
-                    );
+                    return <FollowerAggregatedNotification aggregatedNotification={aggregatedNotification} />;
                 return null;
             case sourceType.IMPORTER:
                 if (aggregatedNotification.category === category.WATCH) {
-                    return (
-                        <ImporterWatchAggregatedNotification
-                            aggregatedNotification={aggregatedNotification}
-                        />
-                    );
+                    return <ImporterWatchAggregatedNotification aggregatedNotification={aggregatedNotification} />;
                 }
                 return null;
             case NotificationAggregateDto.sourceType.REPORT:
-                return (
-                    <ReportAggregatedNotification
-                        aggregatedNotification={aggregatedNotification}
-                    />
-                );
+                return <ReportAggregatedNotification aggregatedNotification={aggregatedNotification} />;
         }
 
         return null;

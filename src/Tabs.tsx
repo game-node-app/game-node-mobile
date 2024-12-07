@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import { IonRouterOutlet, IonTabBar, IonTabButton, IonTabs } from "@ionic/react";
 import CenteredLoading from "@/components/general/CenteredLoading";
-import { Route } from "react-router-dom";
+import { Redirect, Route } from "react-router-dom";
 import HomePage from "@/pages/home";
 import SearchResultsPage from "@/pages/search_results";
 import { getCommonRoutes } from "@/pages/routes/getCommonRoutes";
@@ -11,7 +11,7 @@ import LibraryPage from "@/pages/library";
 import NotificationsPage from "@/pages/notifications";
 import PreferencesPage from "@/pages/preferences";
 import { IconLibrary, IconRouteAltLeft, IconUser } from "@tabler/icons-react";
-import NotificationsIcon from "@/components/notifications/NotificationsIcon";
+import NotificationsIcon from "@/components/notifications/item/NotificationsIcon";
 import SupertokensAuthPage from "./pages/auth";
 import SupertokensAuthCallbackPage from "@/pages/auth_callback";
 
@@ -46,12 +46,15 @@ const Tabs = () => {
 
                     {/* ---- HOME ROUTES ---- */}
                     <Route exact path={"/"}>
+                        <Redirect to={"/home"} push={false} />
+                    </Route>
+                    <Route exact path={"/home"}>
                         <HomePage />
                     </Route>
-                    <Route exact path={`/search_results`}>
+                    <Route exact path={`/home/search_results`}>
                         <SearchResultsPage />
                     </Route>
-                    {getCommonRoutes("/")}
+                    {getCommonRoutes("/home")}
 
                     <Route exact path="/notifications">
                         <NotificationsPage />
@@ -74,7 +77,7 @@ const Tabs = () => {
                 <IonTabButton tab="explore" href="/explore">
                     <IconRouteAltLeft aria-hidden={"true"} />
                 </IonTabButton>
-                <IonTabButton tab={"home"} href={"/"}></IonTabButton>
+                <IonTabButton tab={"home"} href={"/home"}></IonTabButton>
                 <IonTabButton tab="notifications" href="/notifications">
                     <NotificationsIcon />
                 </IonTabButton>

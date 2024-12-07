@@ -7,10 +7,10 @@ import ProfileReviewListPage from "@/pages/profile/review_list";
 import AchievementsPage from "@/pages/achievements";
 import LibraryPage from "@/pages/library";
 import SupertokensAuthPage from "@/pages/auth";
-import NotificationsPage from "@/pages/notifications";
 import ImporterPage from "@/pages/importer/importer";
 import ImporterByTypePage from "@/pages/importer/type";
 import ActivityPage from "@/pages/activity";
+import ActivityDetailPage from "@/pages/activity/detail";
 
 /**
  * Retrieves a list of common routes that should be available in all tabs.
@@ -71,13 +71,14 @@ export function getCommonRoutes(prefix: string): React.ReactNode[] {
         />,
 
         <Route
+            exact
             key={`${prefix}-library`}
             path={`${prefix}/library/:userId`}
             render={(props) => {
                 return <LibraryPage userId={props.match.params.userId} />;
             }}
         />,
-        <Route key={`${prefix}-importer`} path={`${prefix}/importer`}>
+        <Route exact key={`${prefix}-importer`} path={`${prefix}/importer`}>
             <ImporterPage />
         </Route>,
         <Route
@@ -88,11 +89,19 @@ export function getCommonRoutes(prefix: string): React.ReactNode[] {
                 return <ImporterByTypePage type={props.match.params.type} />;
             }}
         />,
-        <Route key={`${prefix}-auth`} path={`${prefix}/auth`}>
+        <Route exact key={`${prefix}-auth`} path={`${prefix}/auth`}>
             <SupertokensAuthPage />
         </Route>,
-        <Route key={`${prefix}-activity`} path={`${prefix}/activity`}>
+        <Route exact key={`${prefix}-activity`} path={`${prefix}/activity`}>
             <ActivityPage />
         </Route>,
+        <Route
+            key={`${prefix}-activity-detail`}
+            path={`${prefix}/activity/detail/:activityId`}
+            render={(props) => {
+                // eslint-disable-next-line react/prop-types
+                return <ActivityDetailPage activityId={props.match.params.activityId} />;
+            }}
+        />,
     ];
 }

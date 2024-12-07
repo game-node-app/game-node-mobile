@@ -9,6 +9,7 @@ export type UpdateCommentDto = {
 export namespace UpdateCommentDto {
     export enum sourceType {
         REVIEW = 'review',
+        ACTIVITY = 'activity',
     }
 }
 

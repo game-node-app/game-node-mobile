@@ -1,12 +1,16 @@
 import { CommentService, FindAllCommentsDto } from "@/wrapper/server";
+import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import { UserComment } from "@/components/comment/types";
 import sourceType = FindAllCommentsDto.sourceType;
-import { useQuery } from "@tanstack/react-query";
 
 /**
  * Retrieves a single comment based on criteria.
  * Will only be enabled if commentId is not null.
  */
-export function useComment(commentId: string | undefined, sourceType: sourceType) {
+export function useComment<T extends UserComment = UserComment>(
+    commentId: string | undefined,
+    sourceType: sourceType,
+): UseQueryResult<T> {
     return useQuery({
         queryKey: ["comment", "findOne", sourceType, commentId],
         queryFn: async () => {

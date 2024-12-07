@@ -3,12 +3,13 @@ import { App, URLOpenListenerEvent } from "@capacitor/app";
 import { useHistory } from "react-router-dom";
 
 const getEquivalentDeepLink = (slug: string) => {
-    // TODO: convert website url to tab-based layout
     if (slug.startsWith("/search")) {
-        return "/";
+        return "/home";
+    } else if (slug.startsWith("/m/auth")) {
+        return slug;
     }
 
-    return slug;
+    return `/home/${slug}`;
 };
 
 const AppUrlListener = () => {

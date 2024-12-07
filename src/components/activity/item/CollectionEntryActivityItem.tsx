@@ -1,7 +1,6 @@
 import React from "react";
 import { Activity } from "@/wrapper/server";
 import useOnMobile from "@/components/general/hooks/useOnMobile";
-import { useReview } from "@/components/review/hooks/useReview";
 import { useGame } from "@/components/game/hooks/useGame";
 import { getSizedImageUrl, ImageSize } from "@/components/game/util/getSizedImageUrl";
 import { Box, Group, Overlay, Stack, Text, Title } from "@mantine/core";
@@ -12,7 +11,7 @@ import { UserAvatarGroup } from "@/components/general/avatar/UserAvatarGroup";
 import ActivityCreateDate from "@/components/activity/item/ActivityCreateDate";
 import { Link } from "react-router-dom";
 import { getTabAwareHref } from "@/util/getTabAwareHref";
-import { useIonRouter } from "@ionic/react";
+import ActivityItemComments from "@/components/activity/input/ActivityItemComments";
 
 interface Props {
     activity: Activity;
@@ -21,9 +20,6 @@ interface Props {
 const CollectionEntryActivityItem = ({ activity }: Props) => {
     const onMobile = useOnMobile();
     const collectionEntryQuery = useCollectionEntry(activity.collectionEntryId!);
-    const {
-        routeInfo: { pathname },
-    } = useIonRouter();
     const collectionQuery = useCollection(activity.collectionId!);
     const gameId = collectionEntryQuery.data?.gameId;
     const gameQuery = useGame(gameId, {
@@ -31,10 +27,7 @@ const CollectionEntryActivityItem = ({ activity }: Props) => {
             cover: true,
         },
     });
-    const imageUrl = getSizedImageUrl(
-        gameQuery.data?.cover?.url,
-        onMobile ? ImageSize.SCREENSHOT_MED : ImageSize.SCREENSHOT_BIG,
-    );
+    const imageUrl = getSizedImageUrl(gameQuery.data?.cover?.url, ImageSize.SCREENSHOT_MED);
     const isError = collectionQuery.isError || collectionEntryQuery.isError;
     if (isError) {
         return null;
@@ -62,7 +55,7 @@ const CollectionEntryActivityItem = ({ activity }: Props) => {
                         textProps={{
                             className: "text-sm md:text-md",
                         }}
-                        avatarProps={{ size: onMobile ? "lg" : "xl" }}
+                        avatarProps={{ size: "lg" }}
                         withHorizontalBreak
                     />
                 </Box>
@@ -90,11 +83,12 @@ const CollectionEntryActivityItem = ({ activity }: Props) => {
                                 `/library/${activity.profileUserId}?collectionId=${activity.collectionId}`,
                             )}
                         >
-                            <Title size={"h3"} lineClamp={onMobile ? 1 : 2}>
+                            <Title size={"h3"} lineClamp={2}>
                                 {collectionQuery.data?.name}
                             </Title>
                         </Link>
                         <Group>
+                            <ActivityItemComments activity={activity} />
                             <ActivityItemLikes activity={activity} />
                         </Group>
                     </Stack>

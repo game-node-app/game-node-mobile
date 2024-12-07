@@ -12,6 +12,7 @@ export type { AchievementGrantRequestDto } from './models/AchievementGrantReques
 export type { ActivitiesFeedPaginatedResponseDto } from './models/ActivitiesFeedPaginatedResponseDto';
 export type { ActivitiesPaginatedResponseDto } from './models/ActivitiesPaginatedResponseDto';
 export { Activity } from './models/Activity';
+export type { ActivityComment } from './models/ActivityComment';
 export type { ActivityStatistics } from './models/ActivityStatistics';
 export type { ChangeExclusionStatusDto } from './models/ChangeExclusionStatusDto';
 export type { Collection } from './models/Collection';

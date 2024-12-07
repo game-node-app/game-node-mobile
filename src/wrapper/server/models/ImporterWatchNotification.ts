@@ -9,7 +9,7 @@ export type ImporterWatchNotification = {
     library: Library;
     libraryUserId: string;
     source: ImporterWatchNotification.source;
-    games: Array<GameExternalGame>;
+    games: Array<GameExternalGame> | null;
 };
 export namespace ImporterWatchNotification {
     export enum source {
