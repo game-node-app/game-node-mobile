@@ -1,23 +1,24 @@
-import { Box, Button, Container, Flex, Stack } from "@mantine/core";
-import React, { useCallback, useMemo, useState } from "react";
-import SearchBar from "@/components/general/input/SearchBar/SearchBar";
+import { Container, Flex, Stack } from "@mantine/core";
+import React, { useMemo, useState } from "react";
 import {
-    ActionSheetButton,
-    IonActionSheet,
+    IonBackButton,
+    IonButtons,
     IonContent,
     IonHeader,
     IonPage,
     IonSearchbar,
     IonSelect,
     IonSelectOption,
+    IonTitle,
     IonToolbar,
     useIonRouter,
 } from "@ionic/react";
 import { FindStatisticsTrendingGamesDto, GameStatisticsPaginatedResponseDto } from "@/wrapper/server";
-import period = FindStatisticsTrendingGamesDto.period;
 import GameView from "@/components/game/view/GameView";
 import { useInfiniteTrendingGames } from "@/components/statistics/hooks/useInfiniteTrendingGames";
 import { useGames } from "@/components/game/hooks/useGames";
+import { getTabAwareHref } from "@/util/getTabAwareHref";
+import period = FindStatisticsTrendingGamesDto.period;
 
 const SELECT_PERIOD_DATA = [
     { label: "Week", value: period.WEEK },
@@ -40,9 +41,17 @@ const SELECT_PERIOD_DATA = [
     },
 ];
 
-const DEFAULT_LIMIT = 24;
+const DEFAULT_LIMIT = 48;
 
 const ExplorePage = () => {
+    const router = useIonRouter();
+
+    const pathname = router.routeInfo.pathname;
+
+    const isInTab = pathname.split("/").length === 2;
+
+    const [query, setQuery] = useState("");
+
     const [selectedPeriod, setSelectedPeriod] = useState(period.MONTH);
 
     const [trendingQueryDto, setTrendingQueryDto] = useState<FindStatisticsTrendingGamesDto>({
@@ -83,6 +92,33 @@ const ExplorePage = () => {
 
     return (
         <IonPage>
+            <IonHeader>
+                {isInTab ? null : (
+                    <IonToolbar>
+                        <IonButtons>
+                            <IonBackButton />
+                        </IonButtons>
+                        <IonTitle>Explore</IonTitle>
+                    </IonToolbar>
+                )}
+                <IonToolbar>
+                    <IonSearchbar
+                        type={"text"}
+                        animated={true}
+                        placeholder="Search for games"
+                        value={query}
+                        onIonInput={(evt) => {
+                            setQuery(evt.detail.value ?? "");
+                        }}
+                        onIonChange={(evt) => {
+                            setQuery(evt.detail.value ?? "");
+                            if (evt.detail.value && evt.detail.value.length >= 3) {
+                                router.push(getTabAwareHref(`/search_results?q=${query}`));
+                            }
+                        }}
+                    />
+                </IonToolbar>
+            </IonHeader>
             <IonContent>
                 <Container fluid className={"min-h-screen my-4"}>
                     <Stack className={"w-full"}>
@@ -100,15 +136,15 @@ const ExplorePage = () => {
                                 {periodSelectOptions}
                             </IonSelect>
                         </Flex>
-                        <GameView layout={"grid"}>
+                        <GameView layout={"grid"} loadMoreMode={"scroll"}>
                             <GameView.Content
                                 items={gamesQuery.data}
-                                isLoading={
-                                    trendingGamesQuery.isLoading || gamesQuery.isLoading || gamesQuery.isFetching
-                                }
+                                // This enables a loading spinner at the top
+                                isLoading={trendingGamesQuery.isLoading || gamesQuery.isLoading}
+                                // Handled by IonInfiniteScroll below
                                 isFetching={trendingGamesQuery.isFetching || gamesQuery.isFetching}
                                 hasNextPage={trendingGamesQuery.hasNextPage}
-                                onLoadMore={() => {
+                                onLoadMore={async () => {
                                     if (
                                         trendingGamesQuery.isFetching ||
                                         gamesQuery.isLoading ||
@@ -117,9 +153,9 @@ const ExplorePage = () => {
                                         return;
                                     }
 
-                                    trendingGamesQuery.fetchNextPage();
+                                    await trendingGamesQuery.fetchNextPage();
                                 }}
-                            ></GameView.Content>
+                            />
                         </GameView>
                     </Stack>
                 </Container>

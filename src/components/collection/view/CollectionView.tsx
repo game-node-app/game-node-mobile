@@ -1,69 +1,32 @@
-import React, { useCallback, useMemo, useState } from "react";
-import { Container, Divider, Group, Skeleton, Stack, Text, Title } from "@mantine/core";
+import React, { useMemo, useState } from "react";
+import { Divider, Group, Skeleton, Stack, Text, Title } from "@mantine/core";
 import { useCollection } from "@/components/collection/hooks/useCollection";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useGames } from "@/components/game/hooks/useGames";
-import useUserId from "@/components/auth/hooks/useUserId";
-import GameView from "@/components/game/view/GameView";
+import GameView, { GameViewLayoutOption } from "@/components/game/view/GameView";
 import { useInfiniteCollectionEntriesForCollectionId } from "../collection-entry/hooks/useInfiniteCollectionEntriesForCollectionId";
 import CenteredErrorMessage from "@/components/general/CenteredErrorMessage";
-import { GameViewLayoutOption } from "@/components/game/view/GameViewLayoutSwitcher";
 
 interface ICollectionViewProps {
     libraryUserId: string;
     collectionId: string;
 }
 
-const CollectionViewFormSchema = z.object({
-    page: z.number().optional().default(1),
-});
+const DEFAULT_LIMIT = 24;
 
-type CollectionViewFormValues = z.infer<typeof CollectionViewFormSchema>;
-
-const DEFAULT_LIMIT = 12;
-
-const DEFAULT_REQUEST_PARAMS = {
-    limit: DEFAULT_LIMIT,
-    offset: 0,
-};
-
-const CollectionView = ({ collectionId, libraryUserId }: ICollectionViewProps) => {
-    const { register, watch, setValue } = useForm<CollectionViewFormValues>({
-        mode: "onSubmit",
-        resolver: zodResolver(CollectionViewFormSchema),
-        defaultValues: {
-            page: 1,
-        },
-    });
-
+const CollectionView = ({ collectionId }: ICollectionViewProps) => {
     const [layout, setLayout] = useState<GameViewLayoutOption>("grid");
-
-    const ownUserId = useUserId();
-
-    const formPage = watch("page");
-
-    const requestParams = useMemo(() => {
-        const page = formPage || 1;
-        const offset = (page - 1) * DEFAULT_LIMIT;
-        return {
-            ...DEFAULT_REQUEST_PARAMS,
-            offset,
-        };
-    }, [formPage]);
 
     const collectionQuery = useCollection(collectionId);
     const collection = collectionQuery.data;
-    const isOwnCollection = libraryUserId === ownUserId;
+
     const collectionEntriesQuery = useInfiniteCollectionEntriesForCollectionId({
         collectionId,
-        offset: requestParams.offset,
-        limit: requestParams.limit,
+        limit: DEFAULT_LIMIT,
         orderBy: {
             addedDate: "DESC",
         },
     });
+
     const gamesIds = useMemo(() => {
         const ids = collectionEntriesQuery.data?.pages.flatMap((page) => page?.data.map((entry) => entry.gameId));
 

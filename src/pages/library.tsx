@@ -83,7 +83,7 @@ const LibraryPage = ({ userId }: Props) => {
                                     }
                                     stackProps={{ className: "w-full" }}
                                 >
-                                    <RecentCollectionEntriesView userId={userIdToUse!} />
+                                    <RecentCollectionEntriesView userId={userIdToUse!} limit={12} />
                                 </DetailsBox>
                             )}
                         </LibraryView>

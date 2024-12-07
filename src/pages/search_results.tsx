@@ -1,12 +1,10 @@
 import React, { useMemo, useState } from "react";
 import { useSearchParameters } from "@/components/general/hooks/useSearchParameters";
-import useSearchGames from "@/components/game/hooks/useSearchGames";
 import { Container, Group, Stack, Text } from "@mantine/core";
-import GameView from "@/components/game/view/GameView";
+import GameView, { GameViewLayoutOption } from "@/components/game/view/GameView";
 import { IonBackButton, IonButtons, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from "@ionic/react";
 import { useInfiniteSearchGames } from "@/components/game/hooks/useInfiniteSearchGames";
 import { TGameOrSearchGame } from "@/components/game/util/types";
-import { GameViewLayoutOption } from "@/components/game/view/GameViewLayoutSwitcher";
 
 const SearchResultsPage = () => {
     const params = useSearchParameters();

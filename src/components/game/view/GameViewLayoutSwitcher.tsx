@@ -1,10 +1,7 @@
 import React, { SetStateAction, useContext } from "react";
-import { ActionIcon, Divider, Group, Tooltip } from "@mantine/core";
 import { IconLayoutColumns, IconLayoutList } from "@tabler/icons-react";
-import { GameViewContext } from "@/components/game/view/GameView";
+import { GameViewContext, GameViewLayoutOption } from "@/components/game/view/GameView";
 import { IonSegment, IonSegmentButton } from "@ionic/react";
-
-export type GameViewLayoutOption = "grid" | "list";
 
 interface IGameViewLayoutSwitcherProps {
     setLayout: React.Dispatch<SetStateAction<GameViewLayoutOption>>;

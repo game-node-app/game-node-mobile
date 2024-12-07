@@ -1,7 +1,7 @@
 import React from "react";
-import { ActionIcon, Box, Container, Modal, Paper, Stack } from "@mantine/core";
+import { ActionIcon, Box, Center, Container, Paper } from "@mantine/core";
 import useUserProfile from "@/components/profile/hooks/useUserProfile";
-import { IconCameraPlus, IconEditCircle } from "@tabler/icons-react";
+import { IconCameraPlus } from "@tabler/icons-react";
 import { getServerStoredUpload } from "@/util/getServerStoredImages";
 import { useDisclosure } from "@mantine/hooks";
 import ProfileEditBannerUploader from "@/components/profile/edit/ProfileEditBannerUploader";
@@ -51,15 +51,19 @@ const ProfileBanner = ({ userId, showEditButton = false, customSource }: Profile
                     </IonContent>
                 </IonModal>
                 {showEditButton && (
-                    <ActionIcon
-                        size={"xl"}
-                        radius="xl"
-                        variant={"default"}
-                        onClick={editBannerModalUtils.open}
+                    <Center
                         className={"absolute left-1/2 right-1/2 -translate-x-1/2 -translate-y-1/2 top-1/2 bottom-1/2"}
                     >
-                        <IconCameraPlus />
-                    </ActionIcon>
+                        <ActionIcon
+                            size={"xl"}
+                            radius="xl"
+                            variant={"default"}
+                            onClick={editBannerModalUtils.open}
+                            className={""}
+                        >
+                            <IconCameraPlus />
+                        </ActionIcon>
+                    </Center>
                 )}
             </Paper>
         </Box>

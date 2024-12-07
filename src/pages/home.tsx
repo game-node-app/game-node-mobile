@@ -1,62 +1,65 @@
-import {
-    IonButtons,
-    IonContent,
-    IonFab,
-    IonFabButton,
-    IonHeader,
-    IonPage,
-    IonSearchbar,
-    IonToolbar,
-    useIonRouter,
-} from "@ionic/react";
-import React, { useRef, useState } from "react";
-import { Container, Stack, Transition } from "@mantine/core";
+import { IonContent, IonPage, IonRefresher, IonRefresherContent, useIonRouter } from "@ionic/react";
+import React, { useState } from "react";
+import { Container, Stack } from "@mantine/core";
 import TrendingReviewCarousel from "@/components/review/trending/TrendingReviewCarousel";
 import { DetailsBox } from "@/components/general/DetailsBox";
 import RecommendationCarousel from "@/components/recommendation/carousel/RecommendationCarousel";
 import useUserId from "@/components/auth/hooks/useUserId";
 import ActivityFeed from "@/components/activity/ActivityFeed";
-import { IconArrowUp } from "@tabler/icons-react";
 import ActivityFeedLayout, { ActivityFeedTabValue } from "@/components/activity/ActivityFeedLayout";
 import { getTabAwareHref } from "@/util/getTabAwareHref";
+import SearchBar from "@/components/general/input/SearchBar/SearchBar";
+import { useQueryClient } from "@tanstack/react-query";
 
 const HomePage = () => {
     const router = useIonRouter();
+
+    const queryClient = useQueryClient();
+
     const [query, setQuery] = useState<string>("");
 
     const userId = useUserId();
-    const contentRef = useRef<HTMLIonContentElement>(null);
     const [selectedActivityTab, setSelectedActivityTab] = useState<ActivityFeedTabValue>("all");
     return (
         <IonPage>
-            <IonContent fixedSlotPlacement="before" ref={contentRef}>
-                <IonFab horizontal="end" vertical="bottom" slot="fixed">
-                    <IonFabButton
-                        onClick={() => {
-                            contentRef.current?.scrollToTop(500);
-                        }}
-                    >
-                        <IconArrowUp />
-                    </IonFabButton>
-                </IonFab>
+            <IonContent>
+                <IonRefresher
+                    slot={"fixed"}
+                    onIonRefresh={async (evt) => {
+                        await queryClient.invalidateQueries({
+                            queryKey: ["recommendation"],
+                        });
+                        await queryClient.invalidateQueries({
+                            queryKey: ["activities"],
+                        });
+                        await queryClient.invalidateQueries({
+                            queryKey: ["comments"],
+                        });
+                        evt.detail.complete();
+                    }}
+                >
+                    <IonRefresherContent />
+                </IonRefresher>
 
                 <Container fluid className={"w-full my-4"}>
-                    <IonSearchbar
-                        type={"text"}
-                        className={"mb-3"}
-                        animated={true}
-                        placeholder="Search for games"
-                        value={query}
-                        onIonInput={(evt) => {
-                            setQuery(evt.detail.value ?? "");
+                    <form
+                        onSubmit={(evt) => {
+                            evt.preventDefault();
+                            router.push(getTabAwareHref(`/search_results?q=${query}`));
                         }}
-                        onIonChange={(evt) => {
-                            setQuery(evt.detail.value ?? "");
-                            if (evt.detail.value && evt.detail.value.length > 2) {
-                                router.push(getTabAwareHref(`/search_results?q=${query}`));
-                            }
-                        }}
-                    />
+                    >
+                        <SearchBar
+                            className={"my-3"}
+                            label={"Search for games"}
+                            onChange={(evt) => setQuery(evt.currentTarget.value ?? "")}
+                            onBlur={() => {
+                                if (query.length >= 3) {
+                                    router.push(getTabAwareHref(`/search_results?q=${query}`));
+                                }
+                            }}
+                            value={query}
+                        />
+                    </form>
                     <Stack className={"w-full gap-8"}>
                         {userId && (
                             <RecommendationCarousel

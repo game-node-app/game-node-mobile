@@ -98,7 +98,7 @@ const App: React.FC = () => {
                                 vertical="bottom"
                                 edge={false}
                             >
-                                <IonFabButton routerLink={"/"}>
+                                <IonFabButton routerLink={"/home"}>
                                     <IconHome />
                                 </IonFabButton>
                             </IonFab>

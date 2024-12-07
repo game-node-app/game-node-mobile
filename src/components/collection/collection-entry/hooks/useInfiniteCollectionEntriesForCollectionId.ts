@@ -5,21 +5,19 @@ import { keepPreviousData, useInfiniteQuery, useQueryClient } from "@tanstack/re
 interface UseInfiniteCollectionEntriesForCollectionIdProps {
     collectionId: string;
     limit?: number;
-    offset?: number;
     orderBy?: Record<string, unknown>;
 }
 
 export function useInfiniteCollectionEntriesForCollectionId({
     collectionId,
     limit,
-    offset,
     orderBy,
 }: UseInfiniteCollectionEntriesForCollectionIdProps): ExtendedUseInfiniteQueryResult<
     CollectionEntriesPaginatedResponseDto | undefined
 > {
     const limiteToUse = limit || 12;
     const queryClient = useQueryClient();
-    const queryKey = ["collection-entries", "infinite", collectionId, offset, limit, orderBy];
+    const queryKey = ["collection-entries", "infinite", collectionId, limit, orderBy];
     /**
      * This will also invalidate useCollectionEntriesForCollectionId
      */

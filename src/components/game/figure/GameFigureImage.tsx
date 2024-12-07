@@ -1,5 +1,5 @@
-import React, { PropsWithChildren, useEffect, useMemo, useState } from "react";
-import { AspectRatio, Image, ImageProps, Skeleton, SkeletonProps } from "@mantine/core";
+import React, { PropsWithChildren, useMemo } from "react";
+import { AspectRatio, Image, ImageProps } from "@mantine/core";
 import { getSizedImageUrl, ImageSize } from "@/components/game/util/getSizedImageUrl";
 import { TGameOrSearchGame } from "@/components/game/util/types";
 import { getCoverUrl } from "@/components/game/util/getCoverUrl";
@@ -35,6 +35,7 @@ const GameFigureImage = ({ game, imageProps, linkProps, onClick, children }: IGa
         <Link to={href} className="w-full h-auto" onClick={onClick} {...linkProps}>
             <AspectRatio ratio={264 / 354} pos="relative" h={"100%"} w={"auto"}>
                 <Image
+                    loading={"lazy"}
                     radius={"sm"}
                     src={sizedCoverUrl || "/img/game_placeholder.jpeg"}
                     alt={"Game cover"}

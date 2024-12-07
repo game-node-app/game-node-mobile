@@ -1,20 +1,16 @@
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { useInfiniteActivities } from "@/components/activity/hooks/useInfiniteActivities";
 import { Skeleton, Stack } from "@mantine/core";
 import CenteredErrorMessage from "@/components/general/CenteredErrorMessage";
-import { useIntersection } from "@mantine/hooks";
 import ActivityList from "@/components/activity/ActivityList";
 import { ActivityFeedTabValue } from "@/components/activity/ActivityFeedLayout";
-import CenteredLoading from "@/components/general/CenteredLoading";
+import { IonInfiniteScroll, IonInfiniteScrollContent } from "@ionic/react";
 
 interface Props {
     criteria: ActivityFeedTabValue;
 }
 
 const ActivityFeed = ({ criteria }: Props) => {
-    const { ref, entry } = useIntersection({
-        threshold: 1,
-    });
     const activityQuery = useInfiniteActivities({
         criteria,
         limit: 10,
@@ -42,22 +38,6 @@ const ActivityFeed = ({ criteria }: Props) => {
         });
     }, []);
 
-    useEffect(() => {
-        const lastElement = activityQuery.data?.pages[activityQuery.data?.pages.length - 1];
-        const hasNextPage =
-            lastElement != undefined && lastElement.data.length > 0 && lastElement.pagination.hasNextPage;
-
-        const canFetchNextPage = !isFetching && !isLoading && hasNextPage;
-
-        // Minimum amount of time (ms) since document creation for
-        // intersection to be considered valid
-        const minimumIntersectionTime = 3000;
-
-        if (canFetchNextPage && entry?.isIntersecting && entry.time > minimumIntersectionTime) {
-            activityQuery.fetchNextPage({ cancelRefetch: false });
-        }
-    }, [activityQuery, entry, isFetching, isLoading]);
-
     return (
         <Stack className={"w-full h-full"}>
             {activityQuery.isLoading && buildSkeletons()}
@@ -70,8 +50,16 @@ const ActivityFeed = ({ criteria }: Props) => {
                 />
             )}
             <ActivityList items={items} />
-            {activityQuery.isFetching && buildSkeletons()}
-            <div ref={ref} id={"last-element-tracker"}></div>
+
+            <IonInfiniteScroll
+                disabled={!activityQuery.hasNextPage}
+                onIonInfinite={async (evt) => {
+                    await activityQuery.fetchNextPage();
+                    await evt.target.complete();
+                }}
+            >
+                <IonInfiniteScrollContent loadingText={"Fetching more activities..."} />
+            </IonInfiniteScroll>
         </Stack>
     );
 };
