@@ -1,9 +1,9 @@
-import React, { ReactElement, ReactNode, useMemo } from "react";
+import React, { ReactNode, useMemo } from "react";
 import { Game } from "@/wrapper/server";
 import { Badge, Group, Skeleton } from "@mantine/core";
 import { DetailsBox } from "@/components/general/DetailsBox";
 import { useGame } from "@/components/game/hooks/useGame";
-import { Link } from "react-router-dom";
+import { DEFAULT_GAME_INFO_VIEW_DTO } from "@/components/game/info/GameInfoView";
 
 interface TagBuilderElement {
     id: number;
@@ -70,13 +70,7 @@ interface IProps {
  * @constructor
  */
 const GameInfoDetailsTags = ({ gameId }: IProps) => {
-    const gameQuery = useGame(gameId, {
-        relations: {
-            genres: true,
-            gameModes: true,
-            themes: true,
-        },
-    });
+    const gameQuery = useGame(gameId, DEFAULT_GAME_INFO_VIEW_DTO);
     const game = gameQuery.data;
 
     const badges: ReactNode[] = useMemo(() => {

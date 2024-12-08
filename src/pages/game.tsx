@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
     IonBackButton,
     IonButtons,
@@ -15,6 +15,7 @@ import { useGame } from "@/components/game/hooks/useGame";
 import GameExtraInfoView from "@/components/game/info/GameExtraInfoView";
 import GameInfoViewFab from "@/components/game/info/fab/GameInfoViewFab";
 import GameInfoReviewScreen from "@/components/game/info/review/GameInfoReviewScreen";
+import CenteredLoading from "@/components/general/CenteredLoading";
 
 interface Props {
     gameId: number;
@@ -22,6 +23,25 @@ interface Props {
 
 const GamePage = ({ gameId }: Props) => {
     const gameQuery = useGame(gameId, DEFAULT_GAME_INFO_VIEW_DTO);
+
+    const content = useMemo(() => {
+        if (gameQuery.isLoading) {
+            return <CenteredLoading />;
+        }
+
+        return (
+            <>
+                <GameInfoViewFab gameId={gameId} />
+                <Container fluid className={"min-h-screen my-4"}>
+                    <Stack className={"w-full"}>
+                        <GameInfoView id={gameId} />
+                        <GameInfoReviewScreen gameId={gameId} />
+                        <GameExtraInfoView id={gameId} />
+                    </Stack>
+                </Container>
+            </>
+        );
+    }, [gameId, gameQuery.isLoading]);
 
     return (
         <IonPage>
@@ -34,16 +54,7 @@ const GamePage = ({ gameId }: Props) => {
                     {gameQuery.isLoading && <IonProgressBar type="indeterminate" />}
                 </IonToolbar>
             </IonHeader>
-            <IonContent>
-                <GameInfoViewFab gameId={gameId} />
-                <Container fluid className={"min-h-screen my-4"}>
-                    <Stack className={"w-full"}>
-                        <GameInfoView id={gameId} />
-                        <GameInfoReviewScreen gameId={gameId} />
-                        <GameExtraInfoView id={gameId} />
-                    </Stack>
-                </Container>
-            </IonContent>
+            <IonContent>{content}</IonContent>
         </IonPage>
     );
 };

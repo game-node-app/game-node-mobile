@@ -12,6 +12,30 @@ import { useGame } from "@/components/game/hooks/useGame";
 export const DEFAULT_GAME_INFO_VIEW_DTO: GameRepositoryFindOneDto = {
     relations: {
         cover: true,
+        genres: true,
+        themes: true,
+        gameModes: true,
+        artworks: true,
+        screenshots: true,
+        platforms: true,
+        involvedCompanies: {
+            company: true,
+        },
+        similarGames: {
+            cover: true,
+        },
+        dlcOf: {
+            cover: true,
+        },
+        dlcs: {
+            cover: true,
+        },
+        expansionOf: {
+            cover: true,
+        },
+        expansions: {
+            cover: true,
+        },
     },
 };
 
@@ -24,6 +48,10 @@ const GameInfoView = ({ id }: IGameInfoViewProps) => {
     const game = gameQuery.data;
 
     const onMobile = useOnMobile();
+
+    if (!game) {
+        return null;
+    }
 
     return (
         <Paper w={"100%"} h={"100%"}>

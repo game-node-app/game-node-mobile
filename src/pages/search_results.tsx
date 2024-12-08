@@ -1,10 +1,12 @@
 import React, { useMemo, useState } from "react";
 import { useSearchParameters } from "@/components/general/hooks/useSearchParameters";
-import { Container, Group, Stack, Text } from "@mantine/core";
+import { Container, Group, Stack } from "@mantine/core";
 import GameView, { GameViewLayoutOption } from "@/components/game/view/GameView";
 import { IonBackButton, IonButtons, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from "@ionic/react";
 import { useInfiniteSearchGames } from "@/components/game/hooks/useInfiniteSearchGames";
 import { TGameOrSearchGame } from "@/components/game/util/types";
+import CenteredErrorMessage from "@/components/general/CenteredErrorMessage";
+import { getErrorMessage } from "@/util/getErrorMessage";
 
 const SearchResultsPage = () => {
     const params = useSearchParameters();
@@ -12,7 +14,7 @@ const SearchResultsPage = () => {
 
     const [layout, setLayout] = useState<GameViewLayoutOption>("grid");
 
-    const { data, isFetching, isLoading, hasNextPage, fetchNextPage, isError } = useInfiniteSearchGames(
+    const { data, isFetching, isLoading, hasNextPage, fetchNextPage, isError, error } = useInfiniteSearchGames(
         {
             query: query,
             limit: 12,
@@ -33,13 +35,13 @@ const SearchResultsPage = () => {
                     <IonButtons slot={"start"}>
                         <IonBackButton />
                     </IonButtons>
-                    <IonTitle>Search Results</IonTitle>
+                    <IonTitle>Results for {query}</IonTitle>
                 </IonToolbar>
             </IonHeader>
             <IonContent fullscreen>
                 <Container fluid className={"min-h-screen my-4"}>
                     <Stack className={"w-full h-full"}>
-                        {isError && <Text c={"yellow"}>No results found. Please go back and try again.</Text>}
+                        {isError && <CenteredErrorMessage message={getErrorMessage(error)} />}
                         <GameView layout={layout}>
                             <Group className={"w-full justify-end"}>
                                 <GameView.LayoutSwitcher setLayout={setLayout} />

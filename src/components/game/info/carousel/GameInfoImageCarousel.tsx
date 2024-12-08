@@ -1,13 +1,14 @@
 import React, { useMemo } from "react";
 import { Carousel, CarouselProps } from "@mantine/carousel";
 import { CarouselSlideProps } from "@mantine/carousel/lib/CarouselSlide/CarouselSlide";
-import { Flex, Text } from "@mantine/core";
+import { Flex } from "@mantine/core";
 import { getSizedImageUrl, ImageSize } from "@/components/game/util/getSizedImageUrl";
 import useOnMobile from "@/components/general/hooks/useOnMobile";
 import GameInfoImageCarouselSlide from "@/components/game/info/carousel/GameInfoImageCarouselSlide";
 import { useGame } from "@/components/game/hooks/useGame";
 import { Game } from "@/wrapper/server";
 import { DetailsBox } from "@/components/general/DetailsBox";
+import { DEFAULT_GAME_INFO_VIEW_DTO } from "@/components/game/info/GameInfoView";
 
 interface IGameInfoImageCarouselProps {
     gameId: number | undefined;
@@ -32,12 +33,7 @@ const getCombinedImages = (game: Game) => {
 
 const GameInfoImageCarousel = ({ gameId, carouselProps, imageSize }: IGameInfoImageCarouselProps) => {
     const onMobile = useOnMobile();
-    const gameQuery = useGame(gameId, {
-        relations: {
-            artworks: true,
-            screenshots: true,
-        },
-    });
+    const gameQuery = useGame(gameId, DEFAULT_GAME_INFO_VIEW_DTO);
 
     const game = gameQuery.data;
 
