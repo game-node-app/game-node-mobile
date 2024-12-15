@@ -40,7 +40,7 @@ const CollectionView = ({ collectionId }: ICollectionViewProps) => {
                 cover: true,
             },
         },
-        false,
+        true,
     );
 
     const games = gamesQuery.data;

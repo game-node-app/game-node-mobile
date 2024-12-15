@@ -3,20 +3,7 @@ import { z } from "zod";
 import { useMutation } from "@tanstack/react-query";
 import { notifications } from "@mantine/notifications";
 import { CollectionsEntriesService, ImporterService } from "@/wrapper/server";
-import {
-    Container,
-    Flex,
-    Group,
-    Paper,
-    Skeleton,
-    Stack,
-    Title,
-    Image,
-    Text,
-    Center,
-    Button,
-    Space,
-} from "@mantine/core";
+import { Button, Center, Container, Flex, Group, Image, Paper, Skeleton, Stack, Text } from "@mantine/core";
 import { useGames } from "@/components/game/hooks/useGames";
 import { useImporterEntries } from "@/components/importer/hooks/useImporterEntries";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -38,7 +25,7 @@ const ImporterFormSchema = z.object({
 
 type ImporterFormValues = z.infer<typeof ImporterFormSchema>;
 
-const DEFAULT_LIMIT = 20;
+const DEFAULT_LIMIT = 24;
 
 const getPlatformIdForType = (type: string) => {
     switch (type) {
@@ -260,8 +247,9 @@ const ImporterByTypePage = ({ type }: Props) => {
                                         />
                                         {hasSelectedFinishedGamesCollection && (
                                             <Text className={"text-sm text-yellow-300"}>
-                                                Selected games will be marked as "Finished" because a collection for
-                                                finished games is being used. You can change the finish date later.
+                                                Selected games will be marked as &quot;Finished&quot; because a
+                                                collection for finished games is being used. You can change the finish
+                                                date later.
                                             </Text>
                                         )}
                                     </Stack>
@@ -311,7 +299,15 @@ const ImporterByTypePage = ({ type }: Props) => {
                                         >
                                             {isLoading && buildLoadingSkeletons()}
                                         </GameSelectView.Content>
-                                        <Space h={"1.5rem"} />
+                                        {!isEmpty && (
+                                            <GameSelectView.Pagination
+                                                page={page}
+                                                paginationInfo={importerEntriesQuery.data?.pagination}
+                                                onPaginationChange={(v) => {
+                                                    setValue("page", v);
+                                                }}
+                                            />
+                                        )}
                                     </GameSelectView>
                                 </Stack>
                             </form>

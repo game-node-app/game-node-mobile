@@ -6,6 +6,7 @@ import { Group, Image, Text } from "@mantine/core";
 import { getServerStoredIcon } from "@/util/getServerStoredImages";
 import { Link } from "react-router-dom";
 import { getCapitalizedText } from "@/util/getCapitalizedText";
+import { getTabAwareHref } from "@/util/getTabAwareHref";
 
 const ImporterWatchAggregatedNotification = ({ aggregatedNotification }: AggregatedNotificationContentProps) => {
     const notificationQuery = useImporterNotification(aggregatedNotification.sourceId as number);
@@ -24,7 +25,7 @@ const ImporterWatchAggregatedNotification = ({ aggregatedNotification }: Aggrega
     }
 
     return (
-        <Link to={`/importer/${notificationQuery.data?.source}`}>
+        <Link to={getTabAwareHref(`/importer/${notificationQuery.data?.source}`)}>
             <Group className={"w-full flex-nowrap justify-center items-center"}>
                 <Image
                     alt={"Importer source icon"}
@@ -33,7 +34,7 @@ const ImporterWatchAggregatedNotification = ({ aggregatedNotification }: Aggrega
                     h={38}
                 />
                 <Text>
-                    We&apos;ve found {notificationQuery.data.games.length} new games ready to be imported from your{" "}
+                    We&apos;ve found {notificationQuery.data?.games?.length} new games ready to be imported from your{" "}
                     {sourceName} connection.
                 </Text>
             </Group>

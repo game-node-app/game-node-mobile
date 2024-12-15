@@ -1,6 +1,6 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { ExtendedUseInfiniteQueryResult } from "@/util/types/ExtendedUseQueryResult";
 import { ImporterPaginatedResponseDto, ImporterService } from "@/wrapper/server";
-import { ExtendedUseQueryResult } from "@/util/types/ExtendedUseQueryResult";
+import { keepPreviousData, useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 
 interface Props {
     source: string;
@@ -8,24 +8,30 @@ interface Props {
     offset?: number;
 }
 
-export function useImporterEntries({
+export function useInfiniteImporterEntries({
     source,
     offset,
-    limit,
-}: Props): ExtendedUseQueryResult<ImporterPaginatedResponseDto> {
+    limit = 20,
+}: Props): ExtendedUseInfiniteQueryResult<ImporterPaginatedResponseDto> {
     const queryClient = useQueryClient();
-    const queryKey = ["importer", "entries", "unprocessed", source, offset, limit];
+    const queryKey = ["importer", "infinite", "entries", "unprocessed", source, offset, limit];
     const invalidate = () => {
         queryClient.invalidateQueries({
             queryKey: queryKey.slice(0, 4),
         });
     };
+
     return {
-        ...useQuery({
+        ...useInfiniteQuery({
             queryKey,
             queryFn: async () => {
                 return ImporterService.importerControllerFindUnprocessedEntriesV1(source, limit, offset);
             },
+            placeholderData: keepPreviousData,
+            getNextPageParam: (previousData, allData, lastPageParam) => {
+                return lastPageParam + limit;
+            },
+            initialPageParam: 0,
             enabled: source != undefined,
         }),
         queryKey,
