@@ -1,6 +1,5 @@
-import { GameSearchRequestDto, GameSearchResponseDto } from "@/components/game/search/utils/types";
-import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
-import { ApiError, schema_GameSearchRequestDto, SearchService } from "@/wrapper/search";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { schema_GameSearchRequestDto, SearchService } from "@/wrapper/search";
 import { parseSearchGamesDto } from "@/components/game/hooks/useSearchGames";
 
 type InfiniteSearchGamesRequest = Omit<schema_GameSearchRequestDto, "page">;
@@ -18,7 +17,6 @@ export function useInfiniteSearchGames(searchParameters: InfiniteSearchGamesRequ
                 page: pageParam,
             });
         },
-        placeholderData: keepPreviousData,
         enabled,
         initialPageParam: 1,
         getNextPageParam: (lastPage, _, lastPageParam): number | undefined => {

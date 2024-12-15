@@ -1,6 +1,6 @@
 import { ExtendedUseInfiniteQueryResult } from "@/util/types/ExtendedUseQueryResult";
 import { ImporterPaginatedResponseDto, ImporterService } from "@/wrapper/server";
-import { keepPreviousData, useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 
 interface Props {
     source: string;
@@ -27,7 +27,6 @@ export function useInfiniteImporterEntries({
             queryFn: async () => {
                 return ImporterService.importerControllerFindUnprocessedEntriesV1(source, limit, offset);
             },
-            placeholderData: keepPreviousData,
             getNextPageParam: (previousData, allData, lastPageParam) => {
                 return lastPageParam + limit;
             },

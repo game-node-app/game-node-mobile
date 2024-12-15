@@ -1,6 +1,6 @@
 import { ExtendedUseInfiniteQueryResult } from "@/util/types/ExtendedUseQueryResult";
 import { CollectionEntriesPaginatedResponseDto, CollectionsEntriesService } from "@/wrapper/server";
-import { keepPreviousData, useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 
 interface UseInfiniteCollectionEntriesForCollectionIdProps {
     collectionId: string;
@@ -15,7 +15,7 @@ export function useInfiniteCollectionEntriesForCollectionId({
 }: UseInfiniteCollectionEntriesForCollectionIdProps): ExtendedUseInfiniteQueryResult<
     CollectionEntriesPaginatedResponseDto | undefined
 > {
-    const limiteToUse = limit || 12;
+    const limitToUse = limit || 12;
     const queryClient = useQueryClient();
     const queryKey = ["collection-entries", "infinite", collectionId, limit, orderBy];
     /**
@@ -42,12 +42,11 @@ export function useInfiniteCollectionEntriesForCollectionId({
             initialPageParam: 0,
             getNextPageParam: (lastPage, _, lastPageParam) => {
                 if (lastPage && lastPage.pagination && lastPage.pagination.hasNextPage) {
-                    return lastPageParam + limiteToUse;
+                    return lastPageParam + limitToUse;
                 }
 
                 return undefined;
             },
-            placeholderData: keepPreviousData,
         }),
     };
 }

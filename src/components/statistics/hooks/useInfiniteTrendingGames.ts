@@ -3,7 +3,7 @@ import {
     GameStatisticsPaginatedResponseDto,
     StatisticsService,
 } from "@/wrapper/server";
-import { keepPreviousData, useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { ExtendedUseInfiniteQueryResult } from "@/util/types/ExtendedUseQueryResult";
 
 export type InfiniteQueryTrendingGamesDto = Omit<FindStatisticsTrendingGamesDto, "offset" | "search">;
@@ -40,7 +40,6 @@ export function useInfiniteTrendingGames(
 
                 return undefined;
             },
-            placeholderData: keepPreviousData,
             initialPageParam: 0,
             staleTime: Infinity,
             enabled,
