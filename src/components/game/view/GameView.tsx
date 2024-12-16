@@ -4,23 +4,14 @@ import GameViewLayoutSwitcher from "@/components/game/view/GameViewLayoutSwitche
 
 export type GameViewLayoutOption = "grid" | "list";
 
-export type GameViewLoadMoreMode = "button" | "scroll";
-
 interface IGameViewProps extends PropsWithChildren {
     layout: GameViewLayoutOption;
-    /**
-     * Mode to be used to fetch more content.
-     * 'button' renders a Load More button.
-     * 'scroll' uses infinite scroll.
-     */
-    loadMoreMode?: GameViewLoadMoreMode;
 }
 
-type IGameViewContext = Pick<IGameViewProps, "layout" | "loadMoreMode">;
+type IGameViewContext = Pick<IGameViewProps, "layout">;
 
 export const GameViewContext = createContext<IGameViewContext>({
     layout: "grid",
-    loadMoreMode: "button",
 });
 
 /**
@@ -32,12 +23,8 @@ export const GameViewContext = createContext<IGameViewContext>({
  * @constructor
  *
  */
-const GameView = ({ children, layout = "grid", loadMoreMode = "button" }: IGameViewProps) => {
-    return (
-        <GameViewContext.Provider value={{ layout: layout, loadMoreMode: loadMoreMode }}>
-            {children}
-        </GameViewContext.Provider>
-    );
+const GameView = ({ children, layout = "grid" }: IGameViewProps) => {
+    return <GameViewContext.Provider value={{ layout: layout }}>{children}</GameViewContext.Provider>;
 };
 
 GameView.Content = GameViewContent;

@@ -22,7 +22,7 @@ export interface IGameFigureProps extends PropsWithChildren {
  * @constructor
  */
 const GameFigureImage = ({ game, imageProps, linkProps, onClick, children }: IGameFigureProps) => {
-    const { routeInfo, canGoBack } = useIonRouter();
+    const { routeInfo } = useIonRouter();
     const coverUrl = getCoverUrl(game);
     const sizedCoverUrl = getSizedImageUrl(coverUrl, ImageSize.COVER_BIG);
 
@@ -35,7 +35,6 @@ const GameFigureImage = ({ game, imageProps, linkProps, onClick, children }: IGa
         <Link to={href} className="w-full h-auto" onClick={onClick} {...linkProps}>
             <AspectRatio ratio={264 / 354} pos="relative" h={"100%"} w={"auto"}>
                 <Image
-                    loading={"lazy"}
                     radius={"sm"}
                     src={sizedCoverUrl || "/img/game_placeholder.jpeg"}
                     alt={"Game cover"}

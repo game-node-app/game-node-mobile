@@ -21,21 +21,6 @@ export const DEFAULT_GAME_INFO_VIEW_DTO: GameRepositoryFindOneDto = {
         involvedCompanies: {
             company: true,
         },
-        similarGames: {
-            cover: true,
-        },
-        dlcOf: {
-            cover: true,
-        },
-        dlcs: {
-            cover: true,
-        },
-        expansionOf: {
-            cover: true,
-        },
-        expansions: {
-            cover: true,
-        },
     },
 };
 

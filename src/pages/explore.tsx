@@ -136,12 +136,11 @@ const ExplorePage = () => {
                                 {periodSelectOptions}
                             </IonSelect>
                         </Flex>
-                        <GameView layout={"grid"} loadMoreMode={"scroll"}>
+                        <GameView layout={"grid"}>
                             <GameView.Content
                                 items={gamesQuery.data}
                                 // This enables a loading spinner at the top
                                 isLoading={trendingGamesQuery.isLoading || gamesQuery.isLoading}
-                                // Handled by IonInfiniteScroll below
                                 isFetching={trendingGamesQuery.isFetching || gamesQuery.isFetching}
                                 hasNextPage={trendingGamesQuery.hasNextPage}
                                 onLoadMore={async () => {

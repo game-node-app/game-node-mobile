@@ -23,8 +23,6 @@ const ActivityFeed = ({ criteria }: Props) => {
 
     const isLoading = activityQuery.isLoading;
     const isError = activityQuery.isError;
-    const isSuccess = activityQuery.isSuccess;
-    const isFetching = activityQuery.isFetching;
 
     const isEmpty =
         activityQuery.data != undefined &&

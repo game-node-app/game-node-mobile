@@ -36,17 +36,12 @@ const RecommendationCarousel = ({ criteria, limit = 10, ...others }: Props) => {
         return `${matchingCriteria?.name} games you may like`;
     }, [criteria, recommendationsQuery.data, resourceQuery.data]);
 
-    if (isEmpty) {
-        return null;
-    }
-
     return (
-        <DetailsBox title={criteriaTitle} {...others}>
+        <DetailsBox enabled={!isEmpty} title={criteriaTitle} {...others}>
             <GameInfoCarousel
                 games={gamesQuery.data}
                 isLoading={recommendationsQuery.isLoading || gamesQuery.isLoading}
                 isError={recommendationsQuery.isError || gamesQuery.isLoading}
-                slideSize={"45%"}
             ></GameInfoCarousel>
         </DetailsBox>
     );

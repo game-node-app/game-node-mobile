@@ -1,64 +1,51 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Carousel, CarouselProps } from "@mantine/carousel";
 import { Game } from "@/wrapper/server";
 import GameGridItem from "@/components/game/figure/GameGridItem";
-import { Flex, Skeleton, Text } from "@mantine/core";
-import CenteredLoading from "@/components/general/CenteredLoading";
+import { Skeleton } from "@mantine/core";
+import CenteredErrorMessage from "@/components/general/CenteredErrorMessage";
 
-interface IGameInfoCarouselProps extends CarouselProps {
+interface IGameInfoCarouselProps extends Omit<CarouselProps, "slideSize"> {
     isLoading: boolean;
     isError: boolean;
     games: Game[] | undefined;
 }
 
-const buildGamesFigures = (games: Game[] | undefined) => {
-    if (games == undefined || games.length === 0) return null;
+const GameInfoCarousel = ({ games, isLoading, isError, ...others }: IGameInfoCarouselProps) => {
+    const buildGamesFigures = useCallback(() => {
+        if (games == undefined || games.length === 0) return null;
 
-    return games.map((game, index) => {
-        if (index < 40) {
-            return (
-                <Carousel.Slide key={game.id} className={"w-full h-full"}>
-                    <GameGridItem game={game} withQuickAdd={false} />
-                </Carousel.Slide>
+        return games.map((game, index) => {
+            if (index < 40) {
+                return (
+                    <Carousel.Slide key={game.id} className={"w-full h-full"}>
+                        <GameGridItem game={game} withQuickAdd={false} />
+                    </Carousel.Slide>
+                );
+            }
+            return null;
+        });
+    }, [games]);
+
+    const buildLoadingSkeletons = useCallback(() => {
+        const skeletons = [];
+        for (let i = 0; i < 7; i++) {
+            skeletons.push(
+                <Carousel.Slide key={i} className="w-full h-full">
+                    <Skeleton height={190} />
+                </Carousel.Slide>,
             );
         }
-        return null;
-    });
-};
 
-const buildSkeletons = () => {
-    const skeletons = [];
-    for (let i = 0; i < 7; i++) {
-        skeletons.push(
-            <Carousel.Slide key={i} className="w-full h-full">
-                <Skeleton height={230} />
-            </Carousel.Slide>,
-        );
-    }
+        return skeletons;
+    }, []);
 
-    return skeletons;
-};
-
-const buildErrorView = () => {
-    return (
-        <Flex>
-            <Text>No entry found.</Text>
-        </Flex>
-    );
-};
-
-const GameInfoCarousel = ({ games, isLoading, isError, ...others }: IGameInfoCarouselProps) => {
     if (isError) {
-        return buildErrorView();
-    }
-
-    if ((!isLoading && games == undefined) || games?.length === 0) {
-        return buildErrorView();
+        return <CenteredErrorMessage message={"Failed to fetch items. Please try again."} />;
     }
 
     return (
         <Carousel
-            slideSize={"65%"}
             height={"fit-content"}
             align="start"
             slideGap={"xs"}
@@ -66,8 +53,9 @@ const GameInfoCarousel = ({ games, isLoading, isError, ...others }: IGameInfoCar
             withIndicators={false}
             dragFree
             {...others}
+            slideSize={"45%"}
         >
-            {isLoading ? <CenteredLoading /> : buildGamesFigures(games)}
+            {isLoading ? buildLoadingSkeletons() : buildGamesFigures()}
         </Carousel>
     );
 };

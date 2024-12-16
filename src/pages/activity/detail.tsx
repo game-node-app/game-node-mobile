@@ -23,14 +23,6 @@ const ActivityDetailPage = ({ activityId }: Props) => {
     const activityQuery = useActivity(activityId);
     const profileQuery = useUserProfile(activityQuery.data?.profileUserId);
 
-    if (activityQuery.isError || profileQuery.isError) {
-        return <CenteredErrorMessage message={"Failed to fetch activity. Please try again."} />;
-    }
-
-    if (activityId == undefined || activityId.length === 0 || activityQuery.data == undefined) {
-        return <CenteredErrorMessage message={"No activity found. Please try again."} />;
-    }
-
     return (
         <IonPage>
             <IonHeader>
@@ -45,6 +37,9 @@ const ActivityDetailPage = ({ activityId }: Props) => {
             <IonContent>
                 <Container fluid className={"my-4"}>
                     <Stack className={"w-full h-full"}>
+                        {(activityQuery.isError || profileQuery.isError) && (
+                            <CenteredErrorMessage message={"Failed to fetch activity. Please try again."} />
+                        )}
                         <ActivityDetailView activityId={activityId} />
                     </Stack>
                 </Container>

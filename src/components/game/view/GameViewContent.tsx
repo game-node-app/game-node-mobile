@@ -4,7 +4,7 @@ import { GameViewContext } from "@/components/game/view/GameView";
 import GameGridItem from "@/components/game/figure/GameGridItem";
 import { TGameOrSearchGame } from "@/components/game/util/types";
 import CenteredLoading from "@/components/general/CenteredLoading";
-import { IonInfiniteScroll, IonInfiniteScrollContent, IonItem, IonList } from "@ionic/react";
+import { IonItem, IonList } from "@ionic/react";
 import GameListItemWithSwipe from "@/components/game/figure/GameListItemWithSwipe";
 
 const GRID_COLUMNS_COUNT = 3;
@@ -14,12 +14,7 @@ interface IMetadataGridContentProps extends SimpleGridProps {
     isLoading: boolean;
     isFetching: boolean;
     hasNextPage: boolean;
-    /**
-     * If using 'scroll' as 'loadMoreMode', this should be a Promise, otherwise it's not possible
-     * to determine when a fetch is done to hide the loading state.
-     * @see IGameViewContext
-     */
-    onLoadMore: () => void | Promise<void>;
+    onLoadMore: () => void;
 }
 
 /**
@@ -41,7 +36,7 @@ const GameViewContent = ({
     onLoadMore,
     ...others
 }: IMetadataGridContentProps) => {
-    const { layout, loadMoreMode } = useContext(GameViewContext);
+    const { layout } = useContext(GameViewContext);
 
     const buildGridColumns = useCallback(() => {
         if (items == null || items.length === 0) {
@@ -71,16 +66,16 @@ const GameViewContent = ({
 
     const isEmpty = !isLoading && !isFetching && (items == undefined || items.length === 0);
 
-    const enableLoadMoreButton = !isLoading && !isFetching && loadMoreMode === "button" && hasNextPage;
+    const enableLoadingSpinner = isLoading;
 
-    const enableLoadingSkeletons = loadMoreMode === "button" && isFetching;
+    const enableLoadingSkeletons = !isLoading && isFetching;
 
-    const enableInfiniteScroll = loadMoreMode === "scroll";
+    const enableLoadMoreButton = !isLoading && !isFetching && hasNextPage;
 
     if (layout === "list") {
         return (
             <Stack className={"w-full h-full"}>
-                {isLoading && <CenteredLoading />}
+                {enableLoadingSpinner && <CenteredLoading />}
                 <IonList className={"w-full"}>
                     {buildListItems()}
                     {enableLoadingSkeletons && buildLoadingSkeletons()}
@@ -92,7 +87,7 @@ const GameViewContent = ({
                         </IonItem>
                     )}
                 </IonList>
-                {!isLoading && !isFetching && hasNextPage && (
+                {enableLoadMoreButton && (
                     <Group className={"w-full justify-center"}>
                         <Button onClick={onLoadMore}>Load more</Button>
                     </Group>
@@ -108,7 +103,7 @@ const GameViewContent = ({
                     <Text>No items to show.</Text>
                 </Center>
             )}
-            {isLoading && <CenteredLoading />}
+            {enableLoadingSpinner && <CenteredLoading />}
             <SimpleGrid id={"game-view-content"} cols={GRID_COLUMNS_COUNT} w={"100%"} h={"100%"} {...others}>
                 {buildGridColumns()}
                 {enableLoadingSkeletons && buildLoadingSkeletons()}
@@ -118,15 +113,6 @@ const GameViewContent = ({
                     <Button onClick={onLoadMore}>Load more</Button>
                 </Group>
             )}
-            <IonInfiniteScroll
-                disabled={!enableInfiniteScroll || !hasNextPage}
-                onIonInfinite={async (evt) => {
-                    await onLoadMore();
-                    await evt.target.complete();
-                }}
-            >
-                <IonInfiniteScrollContent loadingText={"Fetching more games..."} />
-            </IonInfiniteScroll>
         </Stack>
     );
 };
