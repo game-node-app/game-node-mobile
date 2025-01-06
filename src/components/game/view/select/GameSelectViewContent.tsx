@@ -19,6 +19,7 @@ interface Props extends PropsWithChildren<SimpleGridProps & SelectedProps> {
  * @param checkIsSelected
  * @param onSelected
  * @param excludeItemsInLibrary
+ * @param onExcludedItemClick
  * @param others
  * @constructor
  */
@@ -51,7 +52,7 @@ const GameSelectViewContent = ({
     }, [checkIsSelected, excludeItemsInLibrary, items, onExcludedItemClick, onSelected]);
 
     return (
-        <SimpleGrid id={"game-select-view-content"} cols={3} w={"100%"} h={"100%"} {...others}>
+        <SimpleGrid id={"game-select-view-content"} cols={2} w={"100%"} h={"100%"} {...others}>
             {columns}
             {children}
         </SimpleGrid>

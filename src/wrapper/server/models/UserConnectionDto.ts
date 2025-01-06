@@ -2,23 +2,20 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Profile } from './Profile';
-export type UserConnection = {
+export type UserConnectionDto = {
+    isImporterViable: boolean;
+    isImporterWatchViable: boolean;
     id: number;
-    type: UserConnection.type;
-    profile: Profile;
+    type: UserConnectionDto.type;
     profileUserId: string;
     sourceUserId: string;
     sourceUsername: string;
-    /**
-     * If this connection can be used by the 'importer' system.
-     */
-    isImporterViable: boolean;
     isImporterEnabled: boolean;
 };
-export namespace UserConnection {
+export namespace UserConnectionDto {
     export enum type {
         STEAM = 'steam',
+        PSN = 'psn',
     }
 }
 

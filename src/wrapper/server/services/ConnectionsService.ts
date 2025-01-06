@@ -4,7 +4,7 @@
 /* eslint-disable */
 import type { ConnectionCreateDto } from '../models/ConnectionCreateDto';
 import type { FindAvailableConnectionsResponseDto } from '../models/FindAvailableConnectionsResponseDto';
-import type { UserConnection } from '../models/UserConnection';
+import type { UserConnectionDto } from '../models/UserConnectionDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
@@ -35,10 +35,10 @@ export class ConnectionsService {
         });
     }
     /**
-     * @returns UserConnection
+     * @returns UserConnectionDto
      * @throws ApiError
      */
-    public static connectionsControllerFindOwnV1(): CancelablePromise<Array<UserConnection>> {
+    public static connectionsControllerFindOwnV1(): CancelablePromise<Array<UserConnectionDto>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/v1/connections/own',
@@ -46,12 +46,12 @@ export class ConnectionsService {
     }
     /**
      * @param type
-     * @returns UserConnection
+     * @returns UserConnectionDto
      * @throws ApiError
      */
     public static connectionsControllerFindOwnByTypeV1(
         type: string,
-    ): CancelablePromise<UserConnection> {
+    ): CancelablePromise<UserConnectionDto> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/v1/connections/own/{type}',

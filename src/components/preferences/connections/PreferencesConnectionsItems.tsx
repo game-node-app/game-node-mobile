@@ -1,8 +1,7 @@
 import React from "react";
-import { IonItem, IonItemDivider, IonItemGroup, IonLabel } from "@ionic/react";
+import { IonItemDivider, IonItemGroup, IonLabel } from "@ionic/react";
 import PreferencesConnectionItem from "@/components/preferences/connections/PreferencesConnectionItem";
-import { UserConnection } from "@/wrapper/server";
-import { getTabAwareHref } from "@/util/getTabAwareHref";
+import { UserConnectionDto } from "@/wrapper/server";
 
 const PreferencesConnectionsItems = () => {
     return (
@@ -10,7 +9,8 @@ const PreferencesConnectionsItems = () => {
             <IonItemDivider>
                 <IonLabel>Connections</IonLabel>
             </IonItemDivider>
-            <PreferencesConnectionItem type={UserConnection.type.STEAM} />
+            <PreferencesConnectionItem type={UserConnectionDto.type.STEAM} />
+            <PreferencesConnectionItem type={UserConnectionDto.type.PSN} />
         </IonItemGroup>
     );
 };

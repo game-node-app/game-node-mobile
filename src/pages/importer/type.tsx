@@ -16,6 +16,7 @@ import CenteredErrorMessage from "@/components/general/CenteredErrorMessage";
 import ImporterCollectionSelect from "@/components/importer/ImporterCollectionSelect";
 import GameSelectView from "@/components/game/view/select/GameSelectView";
 import { getCapitalizedText } from "@/util/getCapitalizedText";
+import { getErrorMessage } from "@/util/getErrorMessage";
 
 const ImporterFormSchema = z.object({
     selectedCollectionIds: z.array(z.string()).min(1, "Select at least one collection"),
@@ -26,15 +27,6 @@ const ImporterFormSchema = z.object({
 type ImporterFormValues = z.infer<typeof ImporterFormSchema>;
 
 const DEFAULT_LIMIT = 24;
-
-const getPlatformIdForType = (type: string) => {
-    switch (type) {
-        case "steam":
-            return 6;
-        default:
-            return undefined;
-    }
-};
 
 interface Props {
     type: string;
@@ -145,27 +137,22 @@ const ImporterByTypePage = ({ type }: Props) => {
         mutationFn: async ({ selectedCollectionIds, selectedGameIds }: ImporterFormValues) => {
             const importedGameIds: number[] = [];
             for (const selectedGameId of selectedGameIds) {
-                const platformId = getPlatformIdForType(type as string);
-                if (platformId == undefined) {
-                    throw new Error("Invalid source type. Please contact support");
-                }
-
-                const externalGame = importerEntriesQuery.data?.data.find((externalGame) => {
+                const importerItem = importerEntriesQuery.data?.data.find((externalGame) => {
                     return externalGame.gameId === selectedGameId;
                 });
 
-                if (!externalGame) {
+                if (!importerItem) {
                     throw new Error("Error while inserting game. Invalid external game ID. Please contact support.");
                 }
 
                 await CollectionsEntriesService.collectionsEntriesControllerCreateOrUpdateV1({
                     gameId: selectedGameId,
                     collectionIds: selectedCollectionIds,
-                    platformIds: [platformId],
+                    platformIds: [importerItem.preferredPlatformId],
                     isFavorite: false,
                 });
                 await ImporterService.importerControllerChangeStatusV1({
-                    externalGameId: externalGame.id,
+                    externalGameId: importerItem.id,
                     status: "processed",
                 });
                 importedGameIds.push(selectedGameId);
@@ -224,7 +211,7 @@ const ImporterByTypePage = ({ type }: Props) => {
                     <Flex justify={"center"} mih={"100vh"} p={0} wrap={"wrap"}>
                         <Paper className={"w-full lg:w-10/12 p-4"}>
                             <form
-                                className={"w-full h-full"}
+                                className={"w-full h-full flex flex-col"}
                                 onSubmit={handleSubmit((data) => {
                                     importMutation.mutate(data);
                                 })}
@@ -266,8 +253,8 @@ const ImporterByTypePage = ({ type }: Props) => {
                                         <CenteredErrorMessage message={formState.errors.selectedGameIds.message!} />
                                     )}
                                 </Group>
-                                <Stack w={"100%"} className={"mt-4"}>
-                                    {isError && error && <CenteredErrorMessage message={error.message} />}
+                                <Stack className={"w-full h-full"}>
+                                    {isError && error && <CenteredErrorMessage message={getErrorMessage(error)} />}
                                     {isEmpty && (
                                         <CenteredErrorMessage
                                             message={

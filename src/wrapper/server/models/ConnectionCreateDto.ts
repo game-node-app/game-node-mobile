@@ -14,6 +14,7 @@ export type ConnectionCreateDto = {
 export namespace ConnectionCreateDto {
     export enum type {
         STEAM = 'steam',
+        PSN = 'psn',
     }
 }
 

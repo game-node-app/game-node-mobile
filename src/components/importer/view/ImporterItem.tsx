@@ -1,32 +1,19 @@
 import React, { useMemo } from "react";
-import { UserConnection } from "@/wrapper/server";
+import { UserConnectionDto } from "@/wrapper/server";
 import { Button, Image, Paper, Stack, Title } from "@mantine/core";
 import { getServerStoredIcon } from "@/util/getServerStoredImages";
 import { Link } from "react-router-dom";
 import { getTabAwareHref } from "@/util/getTabAwareHref";
+import { getConnectionName } from "@/components/connections/util/getConnectionName";
 
 interface Props {
-    connection: UserConnection;
+    connection: UserConnectionDto;
 }
 
-const connectionTypeToName = (type: UserConnection.type) => {
-    switch (type) {
-        case UserConnection.type.STEAM:
-            return "Steam";
-        default:
-            return "Name not available";
-    }
-};
-
 const ImporterItem = ({ connection }: Props) => {
-    const connectionName = useMemo(() => connectionTypeToName(connection.type), [connection.type]);
+    const connectionName = useMemo(() => getConnectionName(connection.type), [connection.type]);
     return (
-        <Paper
-            style={{
-                backgroundColor: "#141414",
-            }}
-            className={"h-56 w-56"}
-        >
+        <Paper className={"h-56 w-56"}>
             <Stack className={"w-full h-full items-center"}>
                 <Image
                     alt={"Importer source icon"}

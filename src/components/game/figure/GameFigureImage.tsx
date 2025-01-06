@@ -33,7 +33,7 @@ const GameFigureImage = ({ game, imageProps, linkProps, onClick, children }: IGa
     }, [game?.id, routeInfo.pathname]);
     return (
         <Link to={href} className="w-full h-auto" onClick={onClick} {...linkProps}>
-            <AspectRatio ratio={264 / 354} pos="relative" h={"100%"} w={"auto"}>
+            <AspectRatio ratio={264 / 354} pos="relative" w={"auto"}>
                 <Image
                     radius={"sm"}
                     src={sizedCoverUrl || "/img/game_placeholder.jpeg"}

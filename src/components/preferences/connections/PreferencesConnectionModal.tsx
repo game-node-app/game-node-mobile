@@ -1,28 +1,21 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { BaseModalProps } from "@/util/types/modal-props";
-import { UserConnection } from "@/wrapper/server";
-import { Container, Modal } from "@mantine/core";
-import PreferencesConnectionSteamForm from "@/components/preferences/connections/steam/PreferencesConnectionSteamForm";
+import { UserConnectionDto } from "@/wrapper/server";
+import { Container } from "@mantine/core";
 import { IonButton, IonButtons, IonContent, IonHeader, IonModal, IonTitle, IonToolbar } from "@ionic/react";
+import PreferencesConnectionSetup from "@/components/preferences/connections/PreferencesConnectionSetup";
+import { getCapitalizedText } from "@/util/getCapitalizedText";
 
 interface Props extends BaseModalProps {
-    type: UserConnection.type;
+    type: UserConnectionDto.type;
 }
 
 const PreferencesConnectionModal = ({ opened, onClose, type }: Props) => {
-    const renderedConnectionForm = useMemo(() => {
-        switch (type) {
-            case UserConnection.type.STEAM:
-                return <PreferencesConnectionSteamForm onClose={onClose} />;
-            default:
-                return null;
-        }
-    }, [onClose, type]);
     return (
         <IonModal isOpen={opened} onDidDismiss={onClose} initialBreakpoint={0.5} breakpoints={[0.5, 0.75, 1]}>
             <IonHeader>
                 <IonToolbar>
-                    <IonTitle>Set up your {type} connection</IonTitle>
+                    <IonTitle>Set up your {getCapitalizedText(type)} connection</IonTitle>
                     <IonButtons slot="end">
                         <IonButton onClick={onClose}>Cancel</IonButton>
                     </IonButtons>
@@ -30,7 +23,7 @@ const PreferencesConnectionModal = ({ opened, onClose, type }: Props) => {
             </IonHeader>
             <IonContent>
                 <Container fluid className={"my-4"}>
-                    {renderedConnectionForm}
+                    <PreferencesConnectionSetup type={type} onClose={onClose} />
                 </Container>
             </IonContent>
         </IonModal>
